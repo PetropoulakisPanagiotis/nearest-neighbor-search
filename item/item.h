@@ -2,35 +2,46 @@
 #include <string>
 #include <vector>
 
-// Item class represents the points in data sets //
-// Each point is a vector with a given name      //
-// Error codes                                   //
-// 0: Success                                    //
-// -1: Out of range index/empty item             //
-// -2: Inconsistent dimensions                   //
+/* Item class represents the points in data sets */
+/* Each point is a vector with a given name      */
+/* Error codes:                                  */
+/* 0: Success                                    */
+/* -1: Out of range index/empty item             */
+/* -2: Inconsistent dimensions                   */
 class Item{
     private:
         std::string id;
         std::vector<double> components;
-    
+        int dim;
+
     public:
         Item();
+        Item(int&,int&);
         Item(std::string&,std::vector<double>&);
+        Item(const Item&);
+
         ~Item();
 
-        // Mutators //
+        /* Override operators */
+        Item& operator=(const Item&);
+        
+        /* Mutators */
         void ItemSetId(std::string&);
         void ItemSetComponent(double&,int&,int&);
-    
-        // Accessors //
+        void ItemAppendComponent(double&,int&);
+
+        /* Accessors */
         std::string ItemGetId(void);
         double ItemGetComponent(int&,int&);
         void ItemPrint(void);
 
+        /* Usefull functions */
 
-        // Metrices //
-        friend double EuclideanDist(Item&,Item&,int&);
-        friend double CosinDist(Item&,Item&,int&);
+        friend double innerProduct(Item&,item&,int&); 
+        friend double norm(Item&,int&);
+        /* Metrices */
+        friend double euclideanDist(Item&,Item&,int&);
+        friend double cosinDist(Item&,Item&,int&);
 };
 
 // PetropoulakisPanagiotis

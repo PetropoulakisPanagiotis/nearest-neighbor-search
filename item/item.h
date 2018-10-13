@@ -18,29 +18,27 @@ class Item{
         Item();
         Item(int&,int&);
         Item(std::string&,std::vector<double>&,int&);
-        Item(const Item&);
 
         ~Item();
 
-        /* Override operators */
-        Item& operator=(const Item&);
-        
         /* Mutators */
-        void ItemSetId(std::string&);
-        void ItemSetComponent(double&,int&,int&);
-        void ItemAppendComponent(double&,int&);
+        void setId(std::string&);
+        void setComponent(double&,int&,int&);
+        void appendComponent(double&,int&);
+        void concatenateComponents(std::vector<double>&,int&);
+        void resetComponents(std::vector<double>&,int&);
 
         /* Accessors */
-        std::string ItemGetId(void);
-        double ItemGetComponent(int&,int&);
-        void ItemPrint(void);
+        std::string getId(void);
+        double getComponent(int&,int&);
+        void print(void);
 
         /* Usefull functions */
-        friend double innerProduct(Item&,Item&,int&); 
-        friend double norm(Item&,int&);
+        double innerProduct(Item&,int&); 
+        double norm(int&);
         
         /* Metrices */
-        friend double euclideanDist(Item&,Item&,int&);
-        friend double cosinDist(Item&,Item&,int&);
+        double euclideanDist(Item&,int&);
+        double cosinDist(Item&,int&);
 };
 // PetropoulakisPanagiotis

@@ -12,12 +12,12 @@ class Item{
     private:
         std::string id;
         std::vector<double> components;
-        int dim;
+        int dim; // Dimension
 
     public:
         Item();
         Item(int&,int&);
-        Item(std::string&,std::vector<double>&);
+        Item(std::string&,std::vector<double>&,int&);
         Item(const Item&);
 
         ~Item();
@@ -36,12 +36,11 @@ class Item{
         void ItemPrint(void);
 
         /* Usefull functions */
-
-        friend double innerProduct(Item&,item&,int&); 
+        friend double innerProduct(Item&,Item&,int&); 
         friend double norm(Item&,int&);
+        
         /* Metrices */
         friend double euclideanDist(Item&,Item&,int&);
         friend double cosinDist(Item&,Item&,int&);
 };
-
 // PetropoulakisPanagiotis

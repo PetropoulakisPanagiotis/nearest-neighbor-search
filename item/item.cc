@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
-#include <new>
+#include <cmath>
 #include "item.h"
-#include "myLimits.h"
+#include "../myLimits/myLimits.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ Item::Item(int& dim, int& status){
 }
 
 /* Set all members */
-Item::Item(string& id, vector<double>& components, int&status):{
+Item::Item(string& id, vector<double>& components, int&status){
     status = 0;
 
     if(components.size() <= 0 || components.size() >MAX_DIM)
@@ -38,7 +38,7 @@ Item::Item(string& id, vector<double>& components, int&status):{
 }
 
 /* Copy constructor */
-Item::Item(const Item copy):id(copy.id),components(copy.components),dim(copy.dim){}
+Item::Item(const Item& copy):id(copy.id),components(copy.components),dim(copy.dim){}
 
 Item::~Item(){}
 
@@ -66,7 +66,7 @@ void Item::ItemSetId(string& newId){
 
 /* Set component-i */
 void Item::ItemSetComponent(double& newComponent, int& index, int& status){    
-    ststus = 0;
+    status = 0;
 
     /* Check parameters */
     if(index < 0 || index >= this->dim)
@@ -83,7 +83,7 @@ void Item::ItemAppendComponent(double& newComponent, int& status){
     if(this->dim == MAX_DIM)
         status = -2;
     else{
-        this->components.append(newComponent);
+        this->components.push_back(newComponent);
         this->dim += 1;
     }
 }
@@ -102,7 +102,7 @@ double Item::ItemGetComponent(int& index, int& status){
 
     /* Check parameters */
     if(index < 0 || index >= this->dim){
-        error =  -1;
+        status =  -1;
         return 0;
     }
     else
@@ -123,7 +123,7 @@ void Item::ItemPrint(void){
 }
 
 /* Calculate inner product of two items */
-friend double Item::innerProduct(Item& x, Item& y, int& status){
+double innerProduct(Item& x, Item& y, int& status){
     double product = 0;
     int i;
 
@@ -131,27 +131,51 @@ friend double Item::innerProduct(Item& x, Item& y, int& status){
 
     /* Check dimensions */
     if(x.dim == 0 || y.dim == 0){
-        error = -2;
+        status = -2;
         return 0;
     }
 
     if(x.dim != y.dim){
-        error = -2;
+        status = -2;
         return 0;
     }
 
     /* Calculate product */
-    for(i = 0; i < dim; i++)
+    for(i = 0; i < x.dim; i++)
         product += x.components[i] * y.components[i];
     
     return product;
+}
+
+double norm(Item& x, int& status){
+    double norm = 0;
+    int i;
+    double newComponent;
+
+    status = 0;
+
+    /* Check dimensions */
+    if(x.dim == 0){
+        status = -2;
+        return 0;
+    }
+
+    /* Calculate norm */
+    for(i = 0; i < x.dim; i++){
+        newComponent = x.components[i];
+        norm += newComponent * newComponent; 
+    } // End for
+    
+    norm = sqrt(norm);
+
+    return norm;
 }
 
 //////////////
 /* Metrices */
 //////////////
 
-friend double Item::euclideanDist(Item& x, Item& y, int& status){
+double euclideanDist(Item& x, Item& y, int& status){
     double dist = 0;
     int i;
     double newComponent;
@@ -160,17 +184,17 @@ friend double Item::euclideanDist(Item& x, Item& y, int& status){
 
     /* Check dimensions */
     if(x.dim == 0 || y.dim == 0){
-        error = -2;
+        status = -2;
         return 0;
     }
 
     if(x.dim != y.dim){
-        error = -2;
+        status = -2;
         return 0;
     }
 
     /* Calculate distance */
-    for(i = 0; i < dim; i++){
+    for(i = 0; i < x.dim; i++){
         newComponent = x.components[i] - y.components[i];
         dist += newComponent * newComponent; 
     } // End for
@@ -180,33 +204,40 @@ friend double Item::euclideanDist(Item& x, Item& y, int& status){
     return dist;
 }
 
-friend double Item::cosinDist(Item& x, Item& y, int& status){
+double cosinDist(Item& x, Item& y, int& status){
     double dist = 0;
     int i;
-    double newComponent;
+    double mult;
 
     status = 0;
 
     /* Check dimensions */
     if(x.dim == 0 || y.dim == 0){
-        error = -2;
+        status = -2;
         return 0;
     }
 
     if(x.dim != y.dim){
-        error = -2;
+        status = -2;
         return 0;
     }
 
-    /* Calculate distance */
-    for(i = 0; i < dim; i++){
-        newComponent = x.components[i] - y.components[i];
-        dist += newComponent * newComponent; 
-    } // End for
+    dist = innerProduct(x,y,status);
+    if(status != 0)
+        return 0;
+
+    mult = norm(x,status);
+    if(status != 0)
+        return 0;
+
+    mult *= norm(y,status);
+    if(status != 0)
+        return 0;
+
+    dist /= mult;
     
-    dist = sqrt(dist);
+    dist = 1 - dist;
 
     return dist;
 }
-
 // PetropoulakisPanagiotis

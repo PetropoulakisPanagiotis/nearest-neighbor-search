@@ -130,7 +130,7 @@ void Item::print(void){
     for(i = 0; i < this->dim; i++)
         cout << this->components[i] << " ";
 
-    cout << "\n";
+    cout << "\n\n";
 }
 
 /* Calculate inner product of two items */

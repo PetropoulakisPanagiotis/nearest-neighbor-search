@@ -5,9 +5,9 @@
 /* Item class represents the points in data sets */
 /* Each point is a vector with a given name      */
 /* Error codes:                                  */
-/* 0: Success                                    */
-/* -1: Out of range index/empty item             */
-/* -2: Inconsistent dimensions                   */
+/* Success: 0                                    */
+/* Out of range index/empty item: -1             */
+/* Inconsistent dimensions: -2                   */
 class Item{
     private:
         std::string id;

@@ -66,8 +66,8 @@ class hashFunction{
         virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
-        virtual unsigned int hash(Item&,int&) = 0;
-        virtual unsigned int hashLevel2(Item&,int&) = 0;
+        virtual int hash(Item&,int&) = 0;
+        virtual int hashLevel2(Item&,int&) = 0;
 
         /* Print statistics of hash function */
         virtual void print(void) = 0;
@@ -82,10 +82,11 @@ class hashFunctionEuclidean: public hashFunction{
         std::vector<int> R; // Random ri values - standard        
         std::vector<hEuclidean*> H; // H contains sub-hash functions        
         int& k; // Number of sub hash functions
+        int& tableSize;
 
     public:
-        hashFunctionCosin(std::string&,int&,int&);
-        ~hashFunctionCosin();
+        hashFunctionEuclidean(std::string&,int&,int&,int&);
+        ~hashFunctionEuclidean();
 
         /* Overide function */
         int hash(Item&,int&);

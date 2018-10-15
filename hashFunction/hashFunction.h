@@ -1,12 +1,8 @@
 #pragma once
+#include <vector>
 #include "../item/item.h"
 
 /* Abstract class for sub has functions */
-/* Error codes:                         */
-/* Success: 0                           */
-/* Invalid index: -1                    */
-/* Incosistent dimensions: -2           */
-/* Non-active hash function: -3         */
 class h{
     public:
         virtual ~h() = 0;
@@ -14,11 +10,15 @@ class h{
         /* Hash a given item and return a value */
         virtual int hash(Item&,int&) = 0;
 
+        /* Compare two sub has functions */
+        virtual int compare(h&,int&) = 0;
+
         /* Print statistics of hash function */
         virtual void print(void) = 0;
 };
 
 /* Sub euclidean hash function class */
+/* h(p) = floor((p . v + t) / W)     */
 class hEuclidean: public h{
     private:
         std::string id;
@@ -31,10 +31,13 @@ class hEuclidean: public h{
 
         /* Overide function */
         int hash(Item&,int&);
+        int compare(hEuclidean&,int&);
         void print(void);
 };
 
 /* Sub cosin hash function class */
+/* h(p) = 1, if r.p >= 0         */
+/* h(p) = 0, if r.p < 0          */
 class hCosin: public h{
     private:
         std::string id;
@@ -43,6 +46,36 @@ class hCosin: public h{
     public:
         hCosin(std::string&,int&);
         ~hCosin();
+
+        /* Overide function */
+        int hash(Item&,int&);
+        int compare(hCosin&,int&);
+        void print(void);
+};
+
+/* Abstract class for has function */
+class hasFunction{
+    public:
+        virtual ~hasFunction() = 0;
+
+        /* Hash a given item and return a value */
+        virtual int hash(Item&,int&) = 0;
+
+        /* Print statistics of hash function */
+        virtual void print(void) = 0;
+};
+
+/* Cosin hash function class                    */
+/* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
+class hashFunctionCosin: public hasFunction{
+    private:
+        std::string id;
+        std::vector<hEuclidean *>* H; // H contains sub-hash functions        
+        int& k; // Number of sub hash functions
+
+    public:
+        hashFunctionCosin(std::string&,int&,int&);
+        ~hashFunctionCosin();
 
         /* Overide function */
         int hash(Item&,int&);

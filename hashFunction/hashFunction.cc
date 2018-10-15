@@ -96,6 +96,12 @@ int hEuclidean::compare(hEuclidean& x, int& status){
 
 }
 
+/* Can't compare different hash functions */
+int hEuclidean::compare(hCosin& x, int& status){
+    status = -1;
+    return -1;
+}
+
 /* Print statistics of sub hash function */
 void hEuclidean::print(void){
 
@@ -187,6 +193,12 @@ int hCosin::compare(hCosin& x, int& status){
 
 }
 
+/* Can't compare different hash functions */
+int hCosin::compare(hEuclidean& x, int& status){
+    status = -1;
+    return -1;
+}
+
 /* Print statistics of sub hash function */
 void hCosin::print(void){
 
@@ -198,6 +210,8 @@ void hCosin::print(void){
         this->r->print();
     }
 }
+/* Abstract class for has function */
+
 /////////////////////////////////////////////////////////
 /* Implementation of abstract hash function class      */
 /* Note: No default dehaviors - behave like inrerface  */
@@ -209,27 +223,25 @@ hashFunction::~hashFunction(){}
 /* Implementation of cosin hash function class */
 /////////////////////////////////////////////////
 
-hashFunctionCosin::hashFunctionCosin(string& id, int& dim, int& k){
+hashFunctionCosin::hashFunctionCosin(string& id, int& dim, int& k):k(k){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K){
         this->H = NULL;
     }
     else{ 
-        int i,j;
-        hEuclidean* newFunc;
+        int i,j,status;
+        hCosin* newFunc;
         
-        /* Set number of sub hash functions */
-        this->k = k;
-
         /* Create vector of sun hash functions */
-        this->H = new vector<int>(k);
+        this->H = new vector<hCosin*>(k);
+        vector<hCosin*> &refH = *(this->H); // For calculations
 
         for(i = 0; i < this->k; i++){
-            newFunc = new hEuclidean(id,dim);
+            newFunc = new hCosin(id,dim);
             for(j = 0; j < this->k; j++){
             
                 /* Truncate same sub hash functions */
-                if(compare(*(this->H[i]) == *newFunc)){
+                if(refH[i]->compare(*newFunc,status) == 0){
                     delete newFunc;
                     break;
                 }
@@ -237,17 +249,19 @@ hashFunctionCosin::hashFunctionCosin(string& id, int& dim, int& k){
 
             /* Add function */
             if(j == this->k)
-                this->H[i] = newFunc;
+                refH[i] = newFunc;
         } // End for
     }
 }
 
 /* Destructor */
 hashFunctionCosin::~hashFunctionCosin(){
-    if(H != NULL){
+    if(this->H != NULL){
         int i;
+        vector<hCosin*>& refH = *(this->H); // For calculations
+        
         for(i = 0; i < this->k; i++)
-            delete &(this->H[i]);
+            delete &(refH[i]);
 
         delete this->H;
     }
@@ -257,7 +271,8 @@ hashFunctionCosin::~hashFunctionCosin(){
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
 int hashFunctionCosin::hash(Item& p, int& status){
     int result = 0,i;
-
+    vector<hCosin*>& refH = *(this->H); // For calculations
+    
     status = 0;
     if(this->H == NULL){
         status = -3;
@@ -265,7 +280,7 @@ int hashFunctionCosin::hash(Item& p, int& status){
     }
 
     for(i = 0; i < k; i++){
-        result = result * 10 * (i + 1) + this->H[i]->hash(p,status);     
+        result = result * 10 * (i + 1) + refH[i]->hash(p,status);     
         if(result != 0)
             return -1;
     }
@@ -279,12 +294,13 @@ void hashFunctionCosin::print(void){
         cout << "Invalid cosin hash function\n";
     else{
         int i;
-
+        vector<hCosin*>& refH = *(this->H); // For calculations
+        
         cout << "Cosin(G) id: " << this->id << "\n";
         cout << "Statistics of sub hash functions: \n";
         
         for(i = 0; i < this->k; i++)
-            this->H[i]->print();
+            refH[i]->print();
     }
 }
 

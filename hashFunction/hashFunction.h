@@ -2,6 +2,10 @@
 #include <vector>
 #include "../item/item.h"
 
+/* Forward declaration - for compare */
+class hEuclidean;
+class hCosin;
+
 /* Abstract class for sub has functions */
 class h{
     public:
@@ -11,7 +15,8 @@ class h{
         virtual int hash(Item&,int&) = 0;
 
         /* Compare two sub has functions */
-        virtual int compare(h&,int&) = 0;
+        virtual int compare(hEuclidean&,int&) = 0;
+        virtual int compare(hCosin&,int&) = 0;
 
         /* Print statistics of hash function */
         virtual void print(void) = 0;
@@ -32,6 +37,7 @@ class hEuclidean: public h{
         /* Overide function */
         int hash(Item&,int&);
         int compare(hEuclidean&,int&);
+        int compare(hCosin&,int&);
         void print(void);
 };
 
@@ -49,14 +55,15 @@ class hCosin: public h{
 
         /* Overide function */
         int hash(Item&,int&);
+        int compare(hEuclidean&,int&);
         int compare(hCosin&,int&);
         void print(void);
 };
 
-/* Abstract class for has function */
-class hasFunction{
+/* Abstract class for has functions */
+class hashFunction{
     public:
-        virtual ~hasFunction() = 0;
+        virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
         virtual int hash(Item&,int&) = 0;
@@ -67,10 +74,10 @@ class hasFunction{
 
 /* Cosin hash function class                    */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-class hashFunctionCosin: public hasFunction{
+class hashFunctionCosin: public hashFunction{
     private:
         std::string id;
-        std::vector<hEuclidean *>* H; // H contains sub-hash functions        
+        std::vector<hCosin*> *H; // H contains sub-hash functions        
         int& k; // Number of sub hash functions
 
     public:

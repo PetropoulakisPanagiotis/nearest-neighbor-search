@@ -15,7 +15,7 @@ int Item:: count = 0;
 ////////////////////////////////
 
 Item::Item(){
-    this->id = "item_" + count;
+    this->id = "item_" + to_string(count);
     this->count += 1;
 
     this->dim = 0;
@@ -43,7 +43,7 @@ Item::Item(int dim, errorCode& status){
     if(dim <= 0 || dim > MAX_DIM)
         status = INVALID_DIM;
     else{ 
-        this->id = "item_" + count;
+        this->id = "item_" + to_string(count);
 
         this->count += 1;
         this->components.reserve(dim);
@@ -74,7 +74,7 @@ Item::Item(vector<float>& components, errorCode& status){
         status = INVALID_DIM;
     else{
         
-        this->id = "item_" + count;
+        this->id = "item_" + to_string(count);
         this->components = components;
         this->dim = components.size();
         

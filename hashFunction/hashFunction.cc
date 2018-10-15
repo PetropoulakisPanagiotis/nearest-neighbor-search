@@ -33,7 +33,7 @@ hEuclidean::hEuclidean(int dim){
         errorCode status;
 
         /* Fix id */
-        this->id = "hEuclidean_i" + this->count;
+        this->id = "hEuclidean_" + to_string(this->count);
         this->count += 1;
 
         /* Pick a random t - uniform distribution */
@@ -99,13 +99,13 @@ int hEuclidean::compare(hEuclidean& x, errorCode& status){
 }
 
 /* Can't compare different hash functions */
-int hEuclidean::compare(hCosin& x, int& status){
+int hEuclidean::compare(hCosin& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
 
 /* Get number of sub hash functions */
-int getCount(void){
+int hEuclidean::getCount(void){
     return this->count;
 }
 
@@ -140,7 +140,7 @@ hCosin::hCosin(int dim){
         errorCode status;
 
         /* Fix id */
-        this->id = "hCosin_" + this->count; 
+        this->id = "hCosin_" + to_string(this->count); 
         this->count += 1;
 
         /* Fix item - Pick random float in standard distribution */
@@ -210,7 +210,7 @@ int hCosin::compare(hEuclidean& x, errorCode& status){
 }
 
 /* Get number of sub hash functions */
-int getCount(void){
+int hCosin::getCount(void){
     return this->count;
 }
 

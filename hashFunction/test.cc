@@ -6,26 +6,30 @@
 using namespace std;
 
 int main(void){
-    h* h;
+    h* r;
     string str = "hi";
-    int x = 5,i, status;
+    int x = 5,i;
+    errorCode status;
     Item* p;
-    vector<double> ve(5); 
-    
-    h = new hCosin(str,x);
+    vector<float> ve(5); 
+
+   
+    r = new hCosin(x);
 
     for(i = 0; i < 5;i++)
             ve[i] = i + 1;
 
-    p = new Item(str,ve,status);
+    p = new Item(ve,status);
 
-    h->print();
+    r->print();
 
-    cout << h->hash(*p,status) << "\n";
+    cout << r->hash(*p,status) << "\n";
     p->print();
 
 
-    delete h;
+    delete r;
     delete p;
+   
+
     return 0;
 }

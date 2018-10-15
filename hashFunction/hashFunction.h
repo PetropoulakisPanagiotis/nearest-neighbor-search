@@ -34,7 +34,7 @@ class hEuclidean: public h{
         std::string id;
         Item* v; // Random item - Standard distribution
         float t; // Random float [0,w) - Uniform distribution
-        static count;
+        static int count;
 
     public:
         hEuclidean(int);
@@ -57,6 +57,7 @@ class hCosin: public h{
     private:
         std::string id;
         Item* r; // Random item - Standard distribution
+        static int count;
 
     public:
         hCosin(int);

@@ -24,9 +24,9 @@ float getRandom(int type){
         return normalDist(generator);
 }
 /* Print type of error */
-void printError(errorCode){
+void printError(errorCode status){
 
-    switch(errorCode){
+    switch(status){
         case(SUCCESS):
             cout << "No error occured\n";
             break;
@@ -36,7 +36,17 @@ void printError(errorCode){
             break;
         
         case(INVALID_DIM):
-            cout << "Please give a valid positive dimension up to: " + MAX_DIM + "\n";
+            cout << "Please give a valid positive dimension up to: ";
+            cout << MAX_DIM;
+            cout << "\n";
+            break;
+        
+        case(INVALID_HASH_FUNCTION);
+            cout << "Hash function is broken. Has not been initialized properly\n";
+            break;
+
+        case(INVALID_COMPARE):
+            cout << "Can't compare different types of hash functions\n";
             break;
     } // End switch
 }

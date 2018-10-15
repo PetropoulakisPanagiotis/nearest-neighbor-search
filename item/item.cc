@@ -14,11 +14,26 @@ int Item:: count = 0;
 /* Constructors - destructors */
 ////////////////////////////////
 
-// Default action */
-Item::Item():dim(0){
-    this->id = "item_%d" + count;
-
+Item::Item(){
+    this->id = "item_" + count;
     this->count += 1;
+
+    this->dim = 0;
+}
+
+/* Set dimensions of item */
+Item::Item(string id, int dim, errorCode& status){
+    status = SUCCESS;
+
+    if(dim <= 0 || dim > MAX_DIM)
+        status = INVALID_DIM;
+    else{ 
+        this->id = id;
+
+        this->count += 1;
+        this->components.reserve(dim);
+        this->dim = dim;
+    }
 }
 
 /* Set dimensions of item */
@@ -28,7 +43,7 @@ Item::Item(int dim, errorCode& status){
     if(dim <= 0 || dim > MAX_DIM)
         status = INVALID_DIM;
     else{ 
-        this->id = "item_%d" + count;
+        this->id = "item_" + count;
 
         this->count += 1;
         this->components.reserve(dim);
@@ -44,6 +59,22 @@ Item::Item(string id, vector<float>& components, errorCode& status){
         status = INVALID_DIM;
     else{
         this->id = id;
+        this->components = components;
+        this->dim = components.size();
+        
+        this->count += 1;
+    }
+}
+
+/* Set all members */
+Item::Item(vector<float>& components, errorCode& status){
+    status = SUCCESS;
+
+    if(components.size() <= 0 || components.size() > MAX_DIM)
+        status = INVALID_DIM;
+    else{
+        
+        this->id = "item_" + count;
         this->components = components;
         this->dim = components.size();
         

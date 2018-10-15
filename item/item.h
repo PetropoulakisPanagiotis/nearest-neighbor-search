@@ -14,7 +14,9 @@ class Item{
 
     public:
         Item();
-        Item(int,errorCode&);
+        Item(int dim,errorCode&);
+        Item(std::string,int dim,errorCode&);
+        Item(std::vector<float>&,errorCode&);
         Item(std::string,std::vector<float>&,errorCode&);
 
         ~Item();

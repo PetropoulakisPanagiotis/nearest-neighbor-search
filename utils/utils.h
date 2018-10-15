@@ -4,7 +4,9 @@
 typedef enum errorCode{
     SUCCESS,
     INVALID_INDEX, // Invalid index parameter
-    INVALID_DIM // Invalid dimension 
+    INVALID_DIM, // Invalid dimension 
+    INVALID_HASH_FUNCTION,
+    INVALID_COMPARE
 }errorCode;
 
 ///////////////////////

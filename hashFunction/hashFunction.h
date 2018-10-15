@@ -5,6 +5,8 @@
 /* Forward declaration - for compare */
 class hEuclidean;
 class hCosin;
+class hashFunctionEuclidean;
+class hashFunctionCosin;
 
 /* Abstract class for sub has functions */
 class h{
@@ -12,11 +14,14 @@ class h{
         virtual ~h() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item&,int&) = 0;
+        virtual int hash(Item&,errorCode&) = 0;
 
         /* Compare two sub has functions */
-        virtual int compare(hEuclidean&,int&) = 0;
-        virtual int compare(hCosin&,int&) = 0;
+        virtual int compare(hEuclidean&,errorCode&) = 0;
+        virtual int compare(hCosin&,errorCode&) = 0;
+
+        /* Get total sub hash function */
+        virtual int getCount(void) = 0;
 
         /* Print statistics of hash function */
         virtual void print(void) = 0;
@@ -29,15 +34,19 @@ class hEuclidean: public h{
         std::string id;
         Item* v; // Random item - Standard distribution
         float t; // Random float [0,w) - Uniform distribution
+        static count;
 
     public:
-        hEuclidean(std::string&,int&);
+        hEuclidean(int);
         ~hEuclidean();
 
         /* Overide function */
-        int hash(Item&,int&);
-        int compare(hEuclidean&,int&);
-        int compare(hCosin&,int&);
+        int hash(Item&,errorCode&);
+
+        int compare(hEuclidean&,errorCode&);
+        int compare(hCosin&,errorCode&);
+        
+        int getCount(void);
         void print(void);
 };
 
@@ -50,13 +59,16 @@ class hCosin: public h{
         Item* r; // Random item - Standard distribution
 
     public:
-        hCosin(std::string&,int&);
+        hCosin(int);
         ~hCosin();
 
         /* Overide function */
-        int hash(Item&,int&);
-        int compare(hEuclidean&,int&);
-        int compare(hCosin&,int&);
+        int hash(Item&,errorCode&);
+        
+        int compare(hEuclidean&,errorCode&);
+        int compare(hCosin&,errorCode&);
+        
+        int getCount(void);
         void print(void);
 };
 

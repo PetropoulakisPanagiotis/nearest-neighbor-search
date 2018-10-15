@@ -4,12 +4,12 @@
 #include "hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
-#include "../myLimits/myLimits.h"
+#include "../utils/myLimits.h"
 
 using namespace std;
 
 /////////////////////////////////////////////////////////
-/* Implementation of abstract sub-hash functions class */
+/* Implementation of abstract sub hash functions class */
 /* Note: No default dehaviors - behave like inrerface  */
 /////////////////////////////////////////////////////////
 
@@ -19,18 +19,22 @@ h::~h(){}
 /* Implementation of sub euclidean hash function class */
 /////////////////////////////////////////////////////////
 
-hEuclidean::hEuclidean(string& id, int& dim){
+int hEuclidean::count = 0;
+
+hEuclidean::hEuclidean(int dim){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM){
         this->v = NULL;
     }
     else{ 
         /* Temporary vector for item v */
-        vector<double> components(dim);
-        int i = 0, status;
+        vector<float> components(dim);
+        int i = 0;
+        errorCode status;
 
         /* Fix id */
-        this->id = id;
+        this->id = "hEuclidean_i" + this->count;
+        this->count += 1;
 
         /* Pick a random t - uniform distribution */
         this->t = getRandom(0);
@@ -40,7 +44,7 @@ hEuclidean::hEuclidean(string& id, int& dim){
             components[i] = getRandom(1);
 
         /* Create item v */
-        this->v = new Item(id,components,status);
+        this->v = new Item(components,status);
         if(status != 0){
             delete this->v;
             this->v = NULL;
@@ -56,18 +60,18 @@ hEuclidean::~hEuclidean(){
 
 /* Calculate hash value of given p item */
 /* h(p) = floor((p . v + t) / W)        */
-int hEuclidean::hash(Item& p, int& status){
+int hEuclidean::hash(Item& p, errorCode& status){
     float innerProduct;
     int result;
 
-    status = 0;
+    status = SUCCESS;
     if(this->v == NULL){
-        status = -3;
+        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
     innerProduct = (float)p.innerProduct(*(this->v),status);
-    if(status != 0)
+    if(status != SUCCESS)
         return -1;
 
     result = floor((innerProduct + this->t) / W);
@@ -81,25 +85,28 @@ int hEuclidean::hash(Item& p, int& status){
 /* Compare given sub hash functions */
 /* Equal: 0                         */
 /* Not equal: 1                     */
-int hEuclidean::compare(hEuclidean& x, int& status){
+int hEuclidean::compare(hEuclidean& x, errorCode& status){
     
-    status = 0;
-
+    status = SUCCESS;
     if(this->v == NULL || x.v == NULL)
-        status = -1;
+        status = INVALID_HASH_FUNCTION;
     else{
        if((this->t == x.t) && this->v == x.v)
            return 0;
        else 
            return 1;
     }
-
 }
 
 /* Can't compare different hash functions */
 int hEuclidean::compare(hCosin& x, int& status){
-    status = -1;
+    status = INVALID_COMPARE;
     return -1;
+}
+
+/* Get number of sub hash functions */
+int getCount(void){
+    return this->count;
 }
 
 /* Print statistics of sub hash function */
@@ -119,24 +126,28 @@ void hEuclidean::print(void){
 /* Implementation of sub cosin hash function class */
 /////////////////////////////////////////////////////
 
-hCosin::hCosin(string& id, int& dim){
+int hCosin::count = 0;
+
+hCosin::hCosin(int dim){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM){
         this->r = NULL;
     }
     else{ 
         /* Temporary vector for item r */
-        vector<double> components(dim);
-        int i = 0, status;
+        vector<float> components(dim);
+        int i = 0;
+        errorCode status;
 
         /* Fix id */
-        this->id = id;
+        this->id = "hCosin_" + this->count; 
+        this->count += 1;
 
         /* Fix item - Pick random float in standard distribution */
         for(i = 0; i < dim; i++)
             components[i] = getRandom(1);
 
-        this->r = new Item(id,components,status);
+        this->r = new Item(components,status);
         if(status != 0){
             delete this->r;
             this->r = NULL;
@@ -153,18 +164,18 @@ hCosin::~hCosin(){
 /* Calculate hash value of given p item */
 /* h(p) = 1, if r.p >= 0                */
 /* h(p) = 0, if r.p < 0                 */
-int hCosin::hash(Item& p, int& status){
+int hCosin::hash(Item& p, errorCode& status){
     float innerProduct;
     int result;
 
-    status = 0;
+    status = SUCCESS;
     if(this->r == NULL){
-        status = -3;
+        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
     innerProduct = (float)p.innerProduct(*(this->r),status);
-    if(status != 0)
+    if(status != SUCCESS)
         return -1;
 
     if(innerProduct >= 0)
@@ -178,12 +189,12 @@ int hCosin::hash(Item& p, int& status){
 /* Compare given sub hash functions */
 /* Equal: 0                         */
 /* Not equal: 1                     */
-int hCosin::compare(hCosin& x, int& status){
+int hCosin::compare(hCosin& x, errorCode& status){
     
-    status = 0;
+    status = SUCCESS;
 
     if(this->r == NULL || x.r == NULL)
-        status = -1;
+        status = INVALID_HASH_FUNCTION;
     else{
        if(this->r == x.r)
            return 0;
@@ -193,9 +204,14 @@ int hCosin::compare(hCosin& x, int& status){
 }
 
 /* Can't compare different hash functions */
-int hCosin::compare(hEuclidean& x, int& status){
-    status = -1;
+int hCosin::compare(hEuclidean& x, errorCode& status){
+    status = INVALID_COMPARE;
     return -1;
+}
+
+/* Get number of sub hash functions */
+int getCount(void){
+    return this->count;
 }
 
 /* Print statistics of sub hash function */
@@ -209,7 +225,6 @@ void hCosin::print(void){
         this->r->print();
     }
 }
-/* Abstract class for has function */
 
 /////////////////////////////////////////////////////////
 /* Implementation of abstract hash function class      */

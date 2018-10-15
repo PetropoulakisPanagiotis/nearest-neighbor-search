@@ -2,38 +2,52 @@
 #include <string>
 #include <cmath>
 #include "item.h"
-#include "../myLimits/myLimits.h"
+#include "../utils/myLimits.h"
+#include "../utils/utils.h"
 
 using namespace std;
+
+/* Initialize static fields */
+int Item:: count = 0;
 
 ////////////////////////////////
 /* Constructors - destructors */
 ////////////////////////////////
 
-Item::Item():dim(0){}
+// Default action */
+Item::Item():dim(0){
+    this->id = "item_%d" + count;
+
+    this->count += 1;
+}
 
 /* Set dimensions of item */
-Item::Item(int& dim, int& status){
-    status = 0;
+Item::Item(int dim, errorCode& status){
+    status = SUCCESS;
 
     if(dim <= 0 || dim > MAX_DIM)
-        status = -2;
+        status = INVALID_DIM;
     else{ 
+        this->id = "item_%d" + count;
+
+        this->count += 1;
         this->components.reserve(dim);
         this->dim = dim;
     }
 }
 
 /* Set all members */
-Item::Item(string& id, vector<double>& components, int&status){
-    status = 0;
+Item::Item(string id, vector<float>& components, errorCode& status){
+    status = SUCCESS;
 
-    if(components.size() <= 0 || components.size() >MAX_DIM)
-        status = -2;
+    if(components.size() <= 0 || components.size() > MAX_DIM)
+        status = INVALID_DIM;
     else{
         this->id = id;
         this->components = components;
         this->dim = components.size();
+        
+        this->count += 1;
     }
 }
 
@@ -44,28 +58,28 @@ Item::~Item(){}
 //////////////
 
 /* Set id of item */
-void Item::setId(string& newId){
+void Item::setId(string newId){
     this->id = newId;
 }
 
 /* Set component-i */
-void Item::setComponent(double& newComponent, int& index, int& status){    
-    status = 0;
+void Item::setComponent(float newComponent, int index, errorCode& status){    
+    status = SUCCESS;
 
     /* Check parameters */
     if(index < 0 || index >= this->dim)
-        status =  -1;
+        status =  INVALID_INDEX;
     else
         this->components[index] = newComponent;
 }
 
 /* Append new component */
-void Item::appendComponent(double& newComponent, int& status){
-    status = 0;
+void Item::appendComponent(float newComponent, errorCode& status){
+    status = SUCCESS;
 
     /* Check size of components */
     if(this->dim == MAX_DIM)
-        status = -2;
+        status = INVALID_DIM;
     else{
         this->components.push_back(newComponent);
         this->dim += 1;
@@ -73,27 +87,27 @@ void Item::appendComponent(double& newComponent, int& status){
 }
 
 /* Concatenate given components with current components */
-void Item::concatenateComponents(vector<double>& newComponents, int& status){
-    status = 0;
+void Item::concatenateComponents(vector<float>& newComponents, errorCode& status){
+    status = SUCCESS;
 
     /* Check size of components */
     if(this->dim + newComponents.size() >= MAX_DIM)
-        status = -2;
+        status = INVALID_DIM;
     else if(newComponents.size() != 0){
-        this->components.insert(this->components.end(),newComponents.begin(),newComponents.end());
+        this->components.insert(this->components.end(), newComponents.begin(), newComponents.end());
         this->dim = this->components.size();
     }
 }
 
 /* Reset all components. Copy given values in current item */
-void Item::resetComponents(vector<double>& newComponents, int& status){    
-    status = 0;
+void Item::resetComponents(vector<float>& newComponents, errorCode& status){    
+    status = SUCCESS;
 
     /* Check parameters */
     if(newComponents.size() >= MAX_DIM)
-        status =  -2;
+        status =  INVALID_DIM;
     else if(newComponents.size() != 0){
-        this->components.assign(newComponents.begin(),newComponents.end());
+        this->components.assign(newComponents.begin(), newComponents.end());
         this->dim = this->components.size();
     }
 }
@@ -107,16 +121,21 @@ string Item::getId(void){
 }
 
 /* Get component-i */
-double Item::getComponent(int& index, int& status){
-    status = 0;
+float Item::getComponent(int index, errorCode& status){
+    status = SUCCESS;
 
     /* Check parameters */
     if(index < 0 || index >= this->dim){
-        status =  -1;
+        status =  INVALID_INDEX;
         return 0;
     }
     else
         return this->components[index];
+}
+
+/* Get total items */
+int Item::getCount(void){
+    return this->count;
 }
 
 /* Print Item */
@@ -134,20 +153,20 @@ void Item::print(void){
 }
 
 /* Calculate inner product of two items */
-double Item::innerProduct(Item& x, int& status){
-    double product = 0;
+float Item::innerProduct(Item& x, errorCode& status){
+    float product = 0;
     int i;
 
-    status = 0;
+    status = SUCCESS;
 
     /* Check dimensions */
     if(this->dim == 0 || x.dim == 0){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
     if(this->dim != x.dim){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
@@ -158,24 +177,22 @@ double Item::innerProduct(Item& x, int& status){
     return product;
 }
 
-double Item::norm(int& status){
-    double norm = 0;
+/* Get norm of vector */
+float Item::norm(errorCode& status){
+    float norm = 0;
     int i;
-    double newComponent;
 
-    status = 0;
+    status = SUCCESS;
 
     /* Check dimensions */
     if(this->dim == 0){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
     /* Calculate norm */
-    for(i = 0; i < this->dim; i++){
-        newComponent = this->components[i];
-        norm += newComponent * newComponent; 
-    } // End for
+    for(i = 0; i < this->dim; i++)
+        norm += this->components[i] * this->components[i]; 
     
     norm = sqrt(norm);
 
@@ -186,21 +203,20 @@ double Item::norm(int& status){
 /* Metrices */
 //////////////
 
-double Item::euclideanDist(Item& x, int& status){
-    double dist = 0;
+float Item::euclideanDist(Item& x, errorCode& status){
+    float dist = 0, newComponent;
     int i;
-    double newComponent;
 
-    status = 0;
+    status = SUCCESS;
 
     /* Check dimensions */
     if(this->dim == 0 || x.dim == 0){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
     if(this->dim != x.dim){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
@@ -215,34 +231,33 @@ double Item::euclideanDist(Item& x, int& status){
     return dist;
 }
 
-double Item::cosinDist(Item& x, int& status){
-    double dist = 0;
+float Item::cosinDist(Item& x, errorCode& status){
+    float dist = 0, mult;
     int i;
-    double mult;
 
-    status = 0;
+    status = SUCCESS;
 
     /* Check dimensions */
-    if(this->dim == 0 || x.dim == 0){
-        status = -2;
+    if(this->dim <= 0 || x.dim <= 0){
+        status = INVALID_DIM;
         return 0;
     }
 
     if(this->dim != x.dim){
-        status = -2;
+        status = INVALID_DIM;
         return 0;
     }
 
     dist = this->innerProduct(x,status);
-    if(status != 0)
+    if(status != SUCCESS)
         return 0;
 
     mult = this->norm(status);
-    if(status != 0)
+    if(status != SUCCESS)
         return 0;
 
     mult *= x.norm(status);
-    if(status != 0)
+    if(status != SUCCESS)
         return 0;
 
     dist /= mult;

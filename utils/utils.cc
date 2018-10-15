@@ -2,7 +2,7 @@
 #include <random>
 #include <chrono>
 #include "utils.h"
-#include "../myLimits/myLimits.h"
+#include "myLimits.h"
 
 using namespace std;
 
@@ -15,13 +15,30 @@ float getRandom(int type){
     static default_random_engine generator(seed);
         
     /* Set uniform and standard distribution */
-    static uniform_real_distribution<float> uniformDist(0,W);
-    static normal_distribution<float> normalDist(0,1);
+    static uniform_real_distribution<float> uniformDist(0,W); // [0,W)
+    static normal_distribution<float> normalDist(0,1); 
 
     if(type == 0)
         return uniformDist(generator);
     else
         return normalDist(generator);
+}
+/* Print type of error */
+void printError(errorCode){
+
+    switch(errorCode){
+        case(SUCCESS):
+            cout << "No error occured\n";
+            break;
+
+        case(INVALID_INDEX):
+            cout << "Please give a valid index\n";
+            break;
+        
+        case(INVALID_DIM):
+            cout << "Please give a valid positive dimension up to: " + MAX_DIM + "\n";
+            break;
+    } // End switch
 }
 
 // Petropoulakis Panagiotis

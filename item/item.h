@@ -1,44 +1,43 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "../utils/utils.h"
 
 /* Item class represents the points in data sets */
 /* Each point is a vector with a given name      */
-/* Error codes:                                  */
-/* Success: 0                                    */
-/* Out of range index/empty item: -1             */
-/* Inconsistent dimensions: -2                   */
 class Item{
     private:
         std::string id;
-        std::vector<double> components;
+        std::vector<float> components;
         int dim; // Dimension
+        static int count;
 
     public:
         Item();
-        Item(int&,int&);
-        Item(std::string&,std::vector<double>&,int&);
+        Item(int,errorCode&);
+        Item(std::string,std::vector<float>&,errorCode&);
 
         ~Item();
 
         /* Mutators */
-        void setId(std::string&);
-        void setComponent(double&,int&,int&);
-        void appendComponent(double&,int&);
-        void concatenateComponents(std::vector<double>&,int&);
-        void resetComponents(std::vector<double>&,int&);
+        void setId(std::string);
+        void setComponent(float,int,errorCode&);
+        void appendComponent(float,errorCode&);
+        void concatenateComponents(std::vector<float>&,errorCode&);
+        void resetComponents(std::vector<float>&,errorCode&);
 
         /* Accessors */
         std::string getId(void);
-        double getComponent(int&,int&);
+        float getComponent(int,errorCode&);
+        int getCount(void);
         void print(void);
 
         /* Usefull functions */
-        double innerProduct(Item&,int&); 
-        double norm(int&);
+        float innerProduct(Item&,errorCode&); 
+        float norm(errorCode&);
         
         /* Metrices */
-        double euclideanDist(Item&,int&);
-        double cosinDist(Item&,int&);
+        float euclideanDist(Item&,errorCode&);
+        float cosinDist(Item&,errorCode&);
 };
 // PetropoulakisPanagiotis

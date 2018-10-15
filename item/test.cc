@@ -1,5 +1,6 @@
 #include <iostream>
 #include "item.h"
+#include "../utils/utils.h"
 #include <vector>
 
 using namespace std;
@@ -7,10 +8,11 @@ using namespace std;
 int main(void){ 
     Item* x;
     Item* y;
-    vector<double> v1(5);
-    vector<double> v2(5);
-    int i,status;
-    double comp;
+    vector<float> v1(5);
+    vector<float> v2(5);
+    int i;
+    errorCode status;
+    float comp;
     Item z;
     string str="hi";
 

@@ -66,18 +66,21 @@ class hashFunction{
         virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item&,int&) = 0;
+        virtual unsigned int hash(Item&,int&) = 0;
+        virtual unsigned int hashLevel2(Item&,int&) = 0;
 
         /* Print statistics of hash function */
         virtual void print(void) = 0;
 };
 
-/* Cosin hash function class                    */
-/* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-class hashFunctionCosin: public hashFunction{
+/* Euclidean hash function class                                      */
+/* Basic hashing: F(p) = [(r1h1(p)+...+rkhk(p)) mod M] mod table size */ 
+/* Level 2 hashing: G(p) = h1(p).h2(p)...hk(p) -> Concatenation       */
+class hashFunctionEuclidean: public hashFunction{
     private:
         std::string id;
-        std::vector<hCosin*> *H; // H contains sub-hash functions        
+        std::vector<int> R; // Random ri values - standard        
+        std::vector<hEuclidean*> H; // H contains sub-hash functions        
         int& k; // Number of sub hash functions
 
     public:
@@ -86,6 +89,25 @@ class hashFunctionCosin: public hashFunction{
 
         /* Overide function */
         int hash(Item&,int&);
+        int hashLevel2(Item&,int&);
+        void print(void);
+};
+
+/* Cosin hash function class                    */
+/* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
+class hashFunctionCosin: public hashFunction{
+    private:
+        std::string id;
+        std::vector<hCosin*> H; // H contains sub-hash functions        
+        int& k; // Number of sub hash functions
+
+    public:
+        hashFunctionCosin(std::string&,int&,int&);
+        ~hashFunctionCosin();
+
+        /* Overide function */
+        int hash(Item&,int&);
+        int hashLevel2(Item&,int&);
         void print(void);
 };
 

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <unistd.h>
 #include "hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
@@ -86,6 +85,8 @@ int hEuclidean::hash(Item& p, errorCode& status){
         return -1;
 
     result = floor(tempDiv);
+
+    result = abs(result);
 
     return result;
 }
@@ -312,7 +313,7 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
     int result = 0,i,tmpMult;
 
     status = SUCCESS;    
-    if(this->k != -1){
+    if(this->k == -1){
         status = INVALID_HASH_FUNCTION;
         return -1;
     }
@@ -340,7 +341,7 @@ int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
     int result = 0, i, tempMult;
 
     status = SUCCESS;    
-    if(this->k != -1){
+    if(this->k == -1){
         status = INVALID_HASH_FUNCTION;
         return -1;
     }
@@ -348,7 +349,7 @@ int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
 
-        tempMult = myMultInt(result,10 * (i + 1),status);
+        tempMult = myMultInt(result,10,status);
         if(status != SUCCESS)
             return -1;
 
@@ -484,7 +485,7 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     int result = 0, i, tempMult;
 
     status = SUCCESS;    
-    if(this->k != -1){
+    if(this->k == -1){
         status = INVALID_HASH_FUNCTION;
         return -1;
     }
@@ -492,7 +493,7 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
 
-        tempMult = myMultInt(result,10 * (i + 1),status);
+        tempMult = myMultInt(result,10,status);
         if(status != SUCCESS)
             return -1;
 

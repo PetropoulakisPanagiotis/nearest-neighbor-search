@@ -1,0 +1,458 @@
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 7 -14 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 1.6583
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+0.809123 0.712559 -1.50989 0.939698 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 3.0285
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.0440314 0.331206 -2.29527 0.907817 
+
+f:0
+g:0
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -4 -11 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 0.787621
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+1.07209 -0.354838 -0.226143 -0.0189705 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 2.15576
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.249441 -0.239381 0.521289 0.21449 
+
+f:0
+g:0
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 17 -14 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 2.3157
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+-1.16383 0.307819 -0.936807 2.62364 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 2.10998
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+0.881881 0.207604 -0.28662 0.38294 
+
+f:0
+g:41
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 4 -17 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 2.2431
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+0.106883 0.461555 1.48462 -1.5043 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 3.10328
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+0.717703 -0.94397 1.48436 -1.2955 
+
+f:0
+g:0
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 19 4 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 2.84912
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+1.24797 1.22588 0.725775 0.846424 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 1.32145
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+0.974714 -0.199656 -0.7149 -1.63507 
+
+f:0
+g:62
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -12 -15 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 0.528607
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+-0.141177 -0.7548 0.0658476 -1.75499 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 0.913977
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-1.0917 -1.05382 0.054896 -0.159095 
+
+f:4
+g:41
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -20 -17 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 0.511766
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+-1.06452 -0.753456 -0.187447 -1.17859 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 3.88404
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.501385 0.114108 0.775145 2.00062 
+
+2
+3
+f:1
+2
+3
+g:43
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -19 -4 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 1.47097
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+1.97668 0.689332 1.5891 -0.656126 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 1.57157
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+0.456153 -0.168559 -2.65005 1.17864 
+
+1
+1
+f:3
+1
+1
+g:21
+No error occured
+1
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -4 -4 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 0.531918
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+-0.221582 -1.33904 -0.293316 0.952258 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 1.87888
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+1.29107 1.99597 0.489151 1.15313 
+
+0
+3
+f:2
+0
+0
+0
+0rs
+0
+-------
+3
+3
+3
+3rs
+0
+-------
+g:3
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -15 -19 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 0.00612067
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+0.802831 1.47064 -1.66383 -1.36575 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 0.010304
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.700275 -0.38455 -0.069731 0.78052 
+
+2
+0
+f:0
+2
+h2
+2
+2rs
+0
+-------
+0
+h0
+0
+40rs
+40
+-------
+g:40
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 6 6 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 3.52108
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+1.39705 -0.00533305 0.876162 -0.783522 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 0.512493
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-1.01753 -0.382445 -0.601044 -1.40237 
+
+1
+3
+f:4
+1
+h1
+1
+1rs
+0
+-------
+3
+h3
+3
+13rs
+10
+-------
+g:13
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: -6 -12 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 1.87571
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+0.77684 -0.699391 0.00577424 -0.50292 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 0.262926
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.393977 1.57879 -0.0389885 0.763756 
+
+1
+1
+f:3
+1
+1
+g:11
+No error occured
+Item id: item_0
+Item dimension: 4
+Item components:
+1 2 3 4 
+
+Euclidean hash function id: EuclideanHash_0
+Value of k: 2
+Value of table size: 10
+Values of ri: 7 -11 
+
+Statistics of sub hash functions: 
+
+Euclidean(h) id: hEuclidean_0
+Value of t: 1.28672
+Statistics of v: 
+Item id: item_1
+Item dimension: 4
+Item components:
+-1.2041 -0.156531 0.588686 -1.36669 
+
+Euclidean(h) id: hEuclidean_1
+Value of t: 2.55317
+Statistics of v: 
+Item id: item_2
+Item dimension: 4
+Item components:
+-0.942735 1.60979 -1.00377 -0.173355 
+
+f:2
+g:10
+No error occured

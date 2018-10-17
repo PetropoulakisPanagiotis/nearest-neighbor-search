@@ -85,16 +85,16 @@ double myMultDouble(double x, double y, errorCode& status){
         if(x > numeric_limits<double>::max() / y)
             return 0;
     
-    if(x > 0 && y < 0)
+    if(x > 0 && y <= 0)
         if(y < numeric_limits<double>::lowest() / x)
             return 0;
     
     if(x < 0 && y > 0)
-        if(x > numeric_limits<double>::lowest() / y)
+        if(x < numeric_limits<double>::lowest() / y)
             return 0;
 
-    if(x < 0 && y < 0)
-        if(y < numeric_limits<double>::max() / x)
+    if(x < 0 && y <= 0)
+        if(x != 0 && y < numeric_limits<double>::max() / x)
             return 0;
 
     status = SUCCESS;
@@ -157,16 +157,16 @@ int myMultInt(int x, int y, errorCode& status){
         if(x > numeric_limits<int>::max() / y)
             return 0;
     
-    if(x > 0 && y < 0)
+    if(x > 0 && y <= 0)
         if(y < numeric_limits<int>::lowest() / x)
             return 0;
     
     if(x < 0 && y > 0)
-        if(x > numeric_limits<int>::lowest() / y)
+        if(x < numeric_limits<int>::lowest() / y)
             return 0;
 
-    if(x < 0 && y < 0)
-        if(y < numeric_limits<int>::max() / x)
+    if(x < 0 && y <= 0)
+        if(x != 0 && y < numeric_limits<int>::max() / x)
             return 0;
 
     status = SUCCESS;

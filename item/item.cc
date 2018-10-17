@@ -177,11 +177,13 @@ void Item::print(void){
 
     cout <<  "Item id: " << this->id << "\n";
     cout <<  "Item dimension: " << this->dim << "\n";
-    cout <<  "Item components: ";
+    cout <<  "Item components:\n";
     
-    for(i = 0; i < this->dim; i++)
+    for(i = 0; i < this->dim; i++){
         cout << this->components[i] << " ";
-
+        if(i % 10 == 0 && i != 0)
+            cout << "\n";
+    }
     cout << "\n\n";
 }
 

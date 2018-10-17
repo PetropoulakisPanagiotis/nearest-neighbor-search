@@ -9,20 +9,38 @@ using namespace std;
 /* Get random float number */
 /* Type 0: uniform float   */
 /* Type 1: standard float  */
+/* Type 2: uniform float   */
 float getRandom(int type){
     /* Set random engine */
     static unsigned seed = chrono::system_clock::now().time_since_epoch().count();    
     static default_random_engine generator(seed);
         
     /* Set uniform and standard distribution */
-    static uniform_real_distribution<float> uniformDist(0,W); // [0,W)
+    static uniform_real_distribution<float> uniformDist1(0,W); // [0,W)
+    static uniform_real_distribution<float> uniformDist2(MY_MIN_RANDOM,MY_MAX_RANDOM);
     static normal_distribution<float> normalDist(0,1); 
 
     if(type == 0)
-        return uniformDist(generator);
-    else
+        return uniformDist1(generator);
+    else if(type == 1)
         return normalDist(generator);
+    else
+        return uniformDist2(generator);
 }
+
+/* Get mod of given number */
+int getMod(int x, int y){
+
+    if(x >= 0)
+        return (x % y);
+    else{
+        if(abs(x) >= y)   
+            return ((((-1) * x) % y) % y);
+        else 
+            return (x + y);
+    }
+}
+
 /* Print type of error */
 void printError(errorCode status){
 

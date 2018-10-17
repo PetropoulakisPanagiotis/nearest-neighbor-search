@@ -2,10 +2,13 @@
 #include <vector>
 #include "hashFunction.h"
 #include "../item/item.h"
+#include "../utils/utils.h"
 
 using namespace std;
 
 int main(void){
+
+    /*
     h* r;
     string str = "hi";
     int x = 5,i;
@@ -29,7 +32,8 @@ int main(void){
 
     delete r;
     delete p;
-   
+   */
+
 
     return 0;
 }

@@ -76,9 +76,6 @@ int hEuclidean::hash(Item& p, errorCode& status){
 
     result = floor((innerProduct + this->t) / W);
 
-    /* Truncate negative values */
-    result = abs(result);
-
     return result;
 }
 
@@ -237,7 +234,9 @@ hashFunction::~hashFunction(){}
 /* Implementation of euclidean hash function class */
 /////////////////////////////////////////////////////
 
-hashFunctionEuclidean::hashFunctionEuclidean(string& id, int& dim, int& k, int& tableSize):tableSize(tableSize),k(k){
+int hashFunctionEuclidean::count = 0;
+
+hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tableSize(tableSize),k(k){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K || M > MAX_M || M < MIN_M || tableSize <= 0){
         this->k = -1;
@@ -246,12 +245,16 @@ hashFunctionEuclidean::hashFunctionEuclidean(string& id, int& dim, int& k, int& 
         int i,j,status;
         hEuclidean* newFunc;
         
+        this->id = "EuclideanHash_" + to_String(this->count); 
+        this->count += 1;
+
         /* Set size of R */
         this->R.reserve(k);
 
         /* Set size of H */
         this->H.reserve(k);
 
+        /* Pick k hash(h) functions */
         for(i = 0; i < this->k; i++){
             newFunc = new hEuclidean(id,dim);
 
@@ -271,7 +274,7 @@ hashFunctionEuclidean::hashFunctionEuclidean(string& id, int& dim, int& k, int& 
 
         /* Pick random R values */
         for(i = 0; i < this->k; i++)
-            this->R[i] = getRandom(1);
+            this->R[i] = (int)getRandom(2);
     }
 }
 

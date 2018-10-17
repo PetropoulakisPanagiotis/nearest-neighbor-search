@@ -82,6 +82,9 @@ class hashFunction{
         virtual int hash(Item&,int&) = 0;
         virtual int hashLevel2(Item&,int&) = 0;
 
+        /* Get total sub hash function */
+        virtual int getCount(void) = 0;
+        
         /* Print statistics of hash function */
         virtual void print(void) = 0;
 };
@@ -94,16 +97,20 @@ class hashFunctionEuclidean: public hashFunction{
         std::string id;
         std::vector<int> R; // Random ri values - standard        
         std::vector<hEuclidean*> H; // H contains sub-hash functions        
-        int& k; // Number of sub hash functions
-        int& tableSize;
+        int k; // Number of sub hash functions
+        int tableSize;
+        static int count;
 
     public:
-        hashFunctionEuclidean(std::string&,int&,int&,int&);
+        hashFunctionEuclidean(int,int,int);
         ~hashFunctionEuclidean();
 
         /* Overide function */
         int hash(Item&,int&);
         int hashLevel2(Item&,int&);
+        
+        int getCount(void);
+
         void print(void);
 };
 

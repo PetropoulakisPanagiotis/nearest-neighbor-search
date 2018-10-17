@@ -16,6 +16,9 @@ typedef enum errorCode{
 /* Get random number - standard or uniform distribution */
 float getRandom(int);
 
+/* My mod functions. Works also with negative values */
+int getMod(int,int);
+
 /* Print type of error */
 void printError(errorCode);
 // Petropoulakis Panagiotis

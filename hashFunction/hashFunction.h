@@ -84,8 +84,8 @@ class hashFunction{
         virtual int hashLevel2(Item&,errorCode&) = 0;
 
         /* Compare two has functions */
-        int compare(hashFunctionEuclidean&,errorCode&);
-        int compare(hashFunctionCosin&,errorCode&);
+        virtual int compare(hashFunctionEuclidean&,errorCode&) = 0;
+        virtual int compare(hashFunctionCosin&,errorCode&) = 0;
 
         /* Get total sub hash function */
         virtual int getCount(void) = 0;

@@ -31,7 +31,7 @@ float getRandom(int type){
 }
 
 /* Get mod of given number */
-int getMod(int x, int y){
+int myMod(int x, int y){
 
     if(x >= 0)
         return (x % y);

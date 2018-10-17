@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <math.h>
+#include <cmath>
+#include <unistd.h>
 #include "hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
@@ -273,17 +274,17 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tabl
         for(i = 0; i < this->k; i++){
             newFunc = new hEuclidean(dim);
 
-            for(j = 0; j < this->k; j++){
+            for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
-                if(this->H[i]->compare(*newFunc,status) == 0){
+                if(this->H[j]->compare(*newFunc,status) == 0){
                     delete newFunc;
                     break;
                 }
             } // End for
-
+             
             /* Add function */
-            if(j == this->k)
+            if(j == i)
                 this->H[i] = newFunc;
         } // End for
 
@@ -415,9 +416,9 @@ void hashFunctionEuclidean::print(void){
         cout << "Values of ri: ";
         for(i = 0; i < this->k; i++)
             cout << this->R[i] << " ";
-        cout << "\n";
+        cout << "\n\n";
 
-        cout << "Statistics of sub hash functions: \n";
+        cout << "Statistics of sub hash functions: \n\n";
         
         for(i = 0; i < this->k; i++)
             this->H[i]->print();
@@ -449,7 +450,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
 
         for(i = 0; i < this->k; i++){
             newFunc = new hCosin(dim);
-            for(j = 0; j < this->k; j++){
+            for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
                 if(this->H[i]->compare(*newFunc,status) == 0){
@@ -459,7 +460,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             } // End for
 
             /* Add function */
-            if(j == this->k)
+            if(j == i)
                 this->H[i] = newFunc;
         } // End for
     }
@@ -554,8 +555,8 @@ void hashFunctionCosin::print(void){
         int i;
         
         cout << "Cosin has function id: " << this->id << "\n";
-        cout << "Value of k: " << this->k << "\n";
-        cout << "Statistics of sub hash functions: \n";
+        cout << "Value of k: " << this->k << "\n\n";
+        cout << "Statistics of sub hash functions: \n\n";
         
         for(i = 0; i < this->k; i++)
             this->H[i]->print();

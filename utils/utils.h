@@ -21,7 +21,7 @@ typedef enum errorCode{
 float getRandom(int);
 
 /* My mod functions. Works also with negative values */
-int getMod(int,int);
+int myMod(int,int);
 
 /* Detect overflow in given operation*/
 double mySumDouble(double,double,errorCode&);

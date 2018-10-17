@@ -35,9 +35,9 @@ class Item{
         void print(void);
 
         /* Usefull functions */
+        int compare(Item&,errorCode&);
         double innerProduct(Item&,errorCode&); 
         double norm(errorCode&);
-        int compare(Item&,errorCode&);
 
         /* Metrices */
         double euclideanDist(Item&,errorCode&);

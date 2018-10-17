@@ -43,9 +43,41 @@ int getMod(int x, int y){
     }
 }
 
+/* Sum given numbers - check for overflow */
+double mySum(double x, double y, errorCode& status){
+
+    status = SUM_OVERFLOW;
+
+    if(y > 0 && x > numeric_limits<double>::max() - y)
+        return 0;
+   
+    if(y < 0 && x < numeric_limits<double>::lowest() - y)
+        return 0;
+  
+    
+    status = SUCCESS;
+    
+    return x + y;
+}
+
+/* Subtract given numbers - check for overflow */
+double mySub(double x, double y, errorCode& status){
+
+    status = SUB_OVERFLOW;
+
+    if(y > 0 && x < numeric_limits<double>::lowest() + y)
+        return 0;
+   
+    if(y < 0 && x > numeric_limits<double>::max() + y)
+        return 0;  
+    
+    status = SUCCESS;
+    
+    return x - y;
+}
+
 /* Multiply given numbers - check for overflow */
 double myMult(double x, double y, errorCode& status){
-    int result;
 
     status = MULT_OVERFLOW;
 
@@ -70,6 +102,18 @@ double myMult(double x, double y, errorCode& status){
     return x * y;
 }
 
+/* Divide given numbers - check for overflow */
+double myDiv(double x, double y, errorCode& status){
+
+    status = DIV_OVERFLOW;
+
+    if( y == 0 || (a == numeric_limits<double>::lowest && y == -1)
+        return 0;  
+    
+    status = SUCCESS;
+    
+    return x / y;
+}
 /* Print type of error */
 void printError(errorCode status){
 
@@ -96,8 +140,20 @@ void printError(errorCode status){
             cout << "Can't compare different types of hash functions\n";
             break;
     
+        case(SUM_OVERFLOW):
+            cout << "Can't add given numbers. Possible overflow occures\n";
+            break;
+        
+        case(SUB_OVERFLOW):
+            cout << "Can't subtract given numbers. Possible overflow occures\n";
+            break;
+        
         case(MULT_OVERFLOW):
             cout << "Can't multiply given numbers. Possible overflow occures\n";
+            break;
+        
+        case(DIV_OVERFLOW):
+            cout << "Can't divide given numbers. Possible overflow occures\n";
             break;
     } // End switch
 }

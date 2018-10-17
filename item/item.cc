@@ -185,52 +185,9 @@ void Item::print(void){
     cout << "\n\n";
 }
 
-/* Calculate inner product of two items */
-double Item::innerProduct(Item& x, errorCode& status){
-    double product = 0;
-    int i;
-
-    status = SUCCESS;
-
-    /* Check dimensions */
-    if(this->dim == 0 || x.dim == 0){
-        status = INVALID_DIM;
-        return 0;
-    }
-
-    if(this->dim != x.dim){
-        status = INVALID_DIM;
-        return 0;
-    }
-
-    /* Calculate product */
-    for(i = 0; i < this->dim; i++)
-        product += this->components[i] * x.components[i];
-    
-    return product;
-}
-
-/* Get norm of vector */
-double Item::norm(errorCode& status){
-    double norm = 0;
-    int i;
-
-    status = SUCCESS;
-
-    /* Check dimensions */
-    if(this->dim == 0){
-        status = INVALID_DIM;
-        return 0;
-    }
-
-    /* Calculate norm */
-    for(i = 0; i < this->dim; i++)
-        norm += this->components[i] * this->components[i]; 
-    
-    norm = sqrt(norm);
-
-    return norm;
-}
+////////////////////////
+/* Usefull operations */
+////////////////////////
 
 /* Compare given items */
 /* Discard id          */
@@ -255,12 +212,73 @@ int Item::compare(Item& x, errorCode& status){
         return 1;
 }
 
+/* Calculate inner product of two items */
+double Item::innerProduct(Item& x, errorCode& status){
+    double product = 0, tempMult;
+    int i;
+
+    status = SUCCESS;
+
+    /* Check dimensions */
+    if(this->dim == 0 || x.dim == 0){
+        status = INVALID_DIM;
+        return 0;
+    }
+
+    if(this->dim != x.dim){
+        status = INVALID_DIM;
+        return 0;
+    }
+
+    /* Calculate product */
+    for(i = 0; i < this->dim; i++){
+        tempMult= myMult(this->components[i],x.components[i],status);
+        if(status != SUCCESS)
+            return 0;
+
+        product = mySum(tempMult,product,status);
+        if(status != SUCCESS)
+            return 0;
+    } // End for
+
+    return product;
+}
+
+/* Get norm of vector */
+double Item::norm(errorCode& status){
+    double norm = 0, tempMult;
+    int i;
+
+    status = SUCCESS;
+
+    /* Check dimensions */
+    if(this->dim == 0){
+        status = INVALID_DIM;
+        return 0;
+    }
+
+    /* Calculate norm */
+    for(i = 0; i < this->dim; i++){
+        tempMult= myMult(this->components[i],this->components[i],status);
+        if(status != SUCCESS)
+            return 0;
+
+        norm = mySum(tempMult,norm,status);
+        if(status != SUCCESS)
+            return 0;
+    } // End for
+
+    norm = sqrt(norm);
+
+    return norm;
+}
+
 //////////////
 /* Metrices */
 //////////////
 
 double Item::euclideanDist(Item& x, errorCode& status){
-    double dist = 0, newComponent;
+    double dist = 0, newComponent, tempMult;
     int i;
 
     status = SUCCESS;
@@ -278,8 +296,17 @@ double Item::euclideanDist(Item& x, errorCode& status){
 
     /* Calculate distance */
     for(i = 0; i < this->dim; i++){
-        newComponent = this->components[i] - x.components[i];
-        dist += newComponent * newComponent; 
+        newComponent = mySub(this->components[i],x.components[i],status);
+        if(status != SUCCESS)
+            return 0;
+
+        tempMult= myMult(newComponent,newComponent,status);
+        if(status != SUCCESS)
+            return 0;
+
+        dist = mySum(dist,tempMult,status);
+        if(status != SUCCESS)
+            return 0;
     } // End for
     
     dist = sqrt(dist);
@@ -287,9 +314,11 @@ double Item::euclideanDist(Item& x, errorCode& status){
     return dist;
 }
 
+/* dist(x,y) = 1 cos(x,y) = 1 - (x.y / norm(x) * norm(y)) */
 double Item::cosinDist(Item& x, errorCode& status){
     double dist = 0, mult;
     int i;
+    double normX, normY;
 
     status = SUCCESS;
 
@@ -308,17 +337,25 @@ double Item::cosinDist(Item& x, errorCode& status){
     if(status != SUCCESS)
         return 0;
 
-    mult = this->norm(status);
+    normX = this->norm(status);
     if(status != SUCCESS)
         return 0;
 
-    mult *= x.norm(status);
+    normY = x.norm(status);
     if(status != SUCCESS)
         return 0;
 
-    dist /= mult;
-    
-    dist = 1 - dist;
+    mult = myMult(normX,normY,status);
+    if(status != SUCCESS)
+        return 0;
+
+    dist = myDiv(dist,mult,status);
+    if(status != SUCCESS)
+        return 0;
+
+    dist = mySub(1,dist,status);
+    if(status != SUCCESS)
+        return 0;
 
     return dist;
 }

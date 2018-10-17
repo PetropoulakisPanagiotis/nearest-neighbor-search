@@ -63,7 +63,7 @@ hEuclidean::~hEuclidean(){
 /* Calculate hash value of given p item */
 /* h(p) = floor((p . v + t) / W)        */
 int hEuclidean::hash(Item& p, errorCode& status){
-    double innerProduct;
+    double innerProduct,tempSum,tempDiv;
     int result;
 
     status = SUCCESS;
@@ -76,7 +76,15 @@ int hEuclidean::hash(Item& p, errorCode& status){
     if(status != SUCCESS)
         return -1;
 
-    result = floor((innerProduct + this->t) / W);
+    tempSum = mySum(innerProduct,this->t,status);
+    if(status != SUCCESS)
+        return -1;
+
+    tempDiv = myDiv(tempSum,W,status);
+    if(status != SUCCESS)
+        return -1;
+
+    result = floor(tempDiv);
 
     return result;
 }
@@ -300,7 +308,7 @@ hashFunctionEuclidean::~hashFunctionEuclidean(){
 /* Calculate hash value of given p item                */
 /* F(p) = [(r1h1(p)+...+rkhk(p)) mod M] mod table size */ 
 int hashFunctionEuclidean::hash(Item& p, errorCode& status){
-    int result = 0,i,tmp;
+    int result = 0,i,tmpMult;
 
     status = SUCCESS;    
     if(this->k != -1){
@@ -310,11 +318,17 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     /* Calculate F(p) */
     for(i = 0; i < k; i++){
-        result += this->H[i]->hash(p,status) * this->R[i];
-        if(result != SUCCESS)
+        tmpMult = myMult(this->H[i]->hash(p,status),this->R[i],status);
+        if(status != SUCCESS)
             return -1;
- 
+
+        result = mySum(result,tmpMult,status);
+        if(status != SUCCESS)
+            return -1;
     }
+
+    result = myMod(result,M);
+    result = myMod(result,tableSize);
 
     return result;
 }
@@ -322,7 +336,7 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
 int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
-    int result = 0,i;
+    int result = 0, i, tempMult;
 
     status = SUCCESS;    
     if(this->k != -1){

@@ -329,7 +329,7 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
             return -1;
     }
 
-    result = myMod(result,M);
+    //result = myMod(result,M);
     result = myMod(result,tableSize);
 
     return result;
@@ -454,7 +454,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
-                if(this->H[i]->compare(*newFunc,status) == 0){
+                if(this->H[j]->compare(*newFunc,status) == 0){
                     delete newFunc;
                     break;
                 }

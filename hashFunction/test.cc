@@ -20,7 +20,7 @@ int main(void){
     Item* i = new Item(vec,status);
     i->print();
 
-    f = new hashFunctionEuclidean(4,2,10);
+    f = new hashFunctionCosin(4,3);
 
     f->print();
     
@@ -28,6 +28,7 @@ int main(void){
     cout << "g:" << f->hashLevel2(*i,status) << "\n";
     
     printError(status);
+    
     
     delete f;
     delete i;

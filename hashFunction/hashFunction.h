@@ -83,6 +83,10 @@ class hashFunction{
         virtual int hash(Item&,errorCode&) = 0;
         virtual int hashLevel2(Item&,errorCode&) = 0;
 
+        /* Compare two has functions */
+        int compare(hashFunctionEuclidean&,errorCode&);
+        int compare(hashFunctionCosin&,errorCode&);
+
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
         
@@ -109,6 +113,9 @@ class hashFunctionEuclidean: public hashFunction{
         /* Overide function */
         int hash(Item&,errorCode&);
         int hashLevel2(Item&,errorCode&);
+ 
+        int compare(hashFunctionEuclidean&,errorCode&);
+        int compare(hashFunctionCosin&,errorCode&);       
         
         int getCount(void);
 
@@ -132,6 +139,9 @@ class hashFunctionCosin: public hashFunction{
         int hash(Item&,errorCode&);
         int hashLevel2(Item&,errorCode&);
 
+        int compare(hashFunctionEuclidean&,errorCode&);
+        int compare(hashFunctionCosin&,errorCode&);
+        
         int getCount(void);
 
         void print(void);

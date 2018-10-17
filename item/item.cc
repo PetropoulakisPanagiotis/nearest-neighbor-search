@@ -82,7 +82,9 @@ Item::Item(vector<double>& components, errorCode& status){
     }
 }
 
-Item::~Item(){}
+Item::~Item(){
+    this->count -= 1;
+}
 
 //////////////
 /* Mutators */
@@ -228,6 +230,29 @@ double Item::norm(errorCode& status){
     norm = sqrt(norm);
 
     return norm;
+}
+
+/* Compare given items */
+/* Discard id          */
+/* Equal: 0            */
+/* Note equal: 1       */
+int Item::compare(Item& x, errorCode& status){
+
+    status = SUCCESS;
+
+    /* Check dimensions */
+    if(this->dim == 0){
+        status = INVALID_DIM;
+        return 0;
+    }
+    
+    if(this->dim != x.dim)
+        return 1;
+
+    if(equal(this->components.begin(), this->components.end(),x.components.begin()))
+        return 0;
+    else
+        return 1;
 }
 
 //////////////

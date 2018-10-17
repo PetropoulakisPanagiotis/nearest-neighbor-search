@@ -54,8 +54,10 @@ hEuclidean::hEuclidean(int dim){
 
 /* Destructor */
 hEuclidean::~hEuclidean(){
-    if(v != NULL)
+    if(v != NULL){
+        this->count -= 1;
         delete v;
+    }
 }
 
 /* Calculate hash value of given p item */
@@ -80,6 +82,7 @@ int hEuclidean::hash(Item& p, errorCode& status){
 }
 
 /* Compare given sub hash functions */
+/* Discard id                       */
 /* Equal: 0                         */
 /* Not equal: 1                     */
 int hEuclidean::compare(hEuclidean& x, errorCode& status){
@@ -88,7 +91,7 @@ int hEuclidean::compare(hEuclidean& x, errorCode& status){
     if(this->v == NULL || x.v == NULL)
         status = INVALID_HASH_FUNCTION;
     else{
-       if((this->t == x.t) && this->v == x.v)
+       if((this->v->compare(*(x.v),status) == 0) && this->t == x.t)
            return 0;
        else 
            return 1;
@@ -154,8 +157,10 @@ hCosin::hCosin(int dim){
 
 /* Destructor */
 hCosin::~hCosin(){
-    if(r != NULL)
+    if(r != NULL){
+        this->count -= 1;
         delete r;
+    }
 }
 
 /* Calculate hash value of given p item */
@@ -184,6 +189,7 @@ int hCosin::hash(Item& p, errorCode& status){
 }
 
 /* Compare given sub hash functions */
+/* Discard id                       */
 /* Equal: 0                         */
 /* Not equal: 1                     */
 int hCosin::compare(hCosin& x, errorCode& status){
@@ -193,7 +199,7 @@ int hCosin::compare(hCosin& x, errorCode& status){
     if(this->r == NULL || x.r == NULL)
         status = INVALID_HASH_FUNCTION;
     else{
-       if(this->r == x.r)
+       if(this->r->compare(*(x.r),status) == 0)
            return 0;
        else 
            return 1;
@@ -284,6 +290,8 @@ hashFunctionEuclidean::~hashFunctionEuclidean(){
     if(this->k != -1){
         int i;
         
+        this->count -= 1;
+
         for(i = 0; i < this->k; i++)
             delete this->H[i];
     }
@@ -330,6 +338,42 @@ int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
     }
 
     return result;
+}
+
+/* Compare given hash functions */
+/* Discard id                   */
+/* Equal: 0                     */
+/* Not equal: 1                 */
+int hashFunctionEuclidean::compare(hashFunctionEuclidean& x, errorCode& status){
+    int i;
+
+    status = SUCCESS;
+
+    if(this->k == -1 || x.k == -1){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    if(this->k != x.k || this->tableSize != x.tableSize)
+        return 1;
+
+    /* Compare h functions */
+    for(i = 0; i < this->k; i++)
+        if(this->H[i]->compare(*(x.H[i]),status) != 0)
+            return 1;
+    
+    /* Compare r values */
+    for(i = 0; i < this->k; i++)
+        if(this->R[i] != x.R[i])
+            return 1;
+
+    return 0;
+}
+
+/* Can't compare different hash functions */
+int hashFunctionEuclidean::compare(hashFunctionCosin& x, errorCode& status){
+    status = INVALID_COMPARE;
+    return -1;
 }
 
 /* Get number of euclidean has functions */
@@ -407,6 +451,8 @@ hashFunctionCosin::~hashFunctionCosin(){
     if(this->k != -1){
         int i;
         
+        this->count -= 1;
+
         for(i = 0; i < this->k; i++)
             delete this->H[i];
     }
@@ -437,6 +483,42 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
 int hashFunctionCosin::hashLevel2(Item& p, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
+}
+
+/* Compare given hash functions */
+/* Discard id                   */
+/* Equal: 0                     */
+/* Not equal: 1                 */
+int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
+    int i;
+
+    status = SUCCESS;
+
+    if(this->k == -1 || x.k == -1){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    if(this->k != x.k)
+        return 1;
+
+    /* Compare h functions */
+    for(i = 0; i < this->k; i++)
+        if(this->H[i]->compare(*(x.H[i]),status) != 0)
+            return 1;
+
+    return 0;
+}
+
+/* Can't compare different hash functions */
+int hashFunctionCosin::compare(hashFunctionEuclidean& x, errorCode& status){
+    status = INVALID_COMPARE;
+    return -1;
+}
+
+/* Get total cosin functions */
+int hashFunctionCosin::getCount(void){
+    return this->count;
 }
 
 /* Print statistics of sub hash function */

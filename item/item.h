@@ -37,7 +37,8 @@ class Item{
         /* Usefull functions */
         double innerProduct(Item&,errorCode&); 
         double norm(errorCode&);
-        
+        int compare(Item&,errorCode&);
+
         /* Metrices */
         double euclideanDist(Item&,errorCode&);
         double cosinDist(Item&,errorCode&);

@@ -8,11 +8,11 @@ using namespace std;
 int main(void){ 
     Item* x;
     Item* y;
-    vector<float> v1(5);
-    vector<float> v2(5);
+    vector<double> v1(5);
+    vector<double> v2(5);
     int i;
     errorCode status;
-    float comp;
+    double comp;
     Item z;
     string str="hi";
 

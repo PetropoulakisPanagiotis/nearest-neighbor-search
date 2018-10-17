@@ -41,7 +41,7 @@ void printError(errorCode status){
             cout << "\n";
             break;
         
-        case(INVALID_HASH_FUNCTION);
+        case(INVALID_HASH_FUNCTION):
             cout << "Hash function is broken. Has not been initialized properly\n";
             break;
 

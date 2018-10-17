@@ -8,7 +8,7 @@
 class Item{
     private:
         std::string id;
-        std::vector<float> components;
+        std::vector<double> components;
         int dim; // Dimension
         static int count;
 
@@ -16,30 +16,30 @@ class Item{
         Item();
         Item(int dim,errorCode&);
         Item(std::string,int dim,errorCode&);
-        Item(std::vector<float>&,errorCode&);
-        Item(std::string,std::vector<float>&,errorCode&);
+        Item(std::vector<double>&,errorCode&);
+        Item(std::string,std::vector<double>&,errorCode&);
 
         ~Item();
 
         /* Mutators */
         void setId(std::string);
-        void setComponent(float,int,errorCode&);
-        void appendComponent(float,errorCode&);
-        void concatenateComponents(std::vector<float>&,errorCode&);
-        void resetComponents(std::vector<float>&,errorCode&);
+        void setComponent(double,int,errorCode&);
+        void appendComponent(double,errorCode&);
+        void concatenateComponents(std::vector<double>&,errorCode&);
+        void resetComponents(std::vector<double>&,errorCode&);
 
         /* Accessors */
         std::string getId(void);
-        float getComponent(int,errorCode&);
+        double getComponent(int,errorCode&);
         int getCount(void);
         void print(void);
 
         /* Usefull functions */
-        float innerProduct(Item&,errorCode&); 
-        float norm(errorCode&);
+        double innerProduct(Item&,errorCode&); 
+        double norm(errorCode&);
         
         /* Metrices */
-        float euclideanDist(Item&,errorCode&);
-        float cosinDist(Item&,errorCode&);
+        double euclideanDist(Item&,errorCode&);
+        double cosinDist(Item&,errorCode&);
 };
 // PetropoulakisPanagiotis

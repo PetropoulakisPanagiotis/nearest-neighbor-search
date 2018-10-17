@@ -52,7 +52,7 @@ Item::Item(int dim, errorCode& status){
 }
 
 /* Set all members */
-Item::Item(string id, vector<float>& components, errorCode& status){
+Item::Item(string id, vector<double>& components, errorCode& status){
     status = SUCCESS;
 
     if(components.size() <= 0 || components.size() > MAX_DIM)
@@ -67,7 +67,7 @@ Item::Item(string id, vector<float>& components, errorCode& status){
 }
 
 /* Set all members */
-Item::Item(vector<float>& components, errorCode& status){
+Item::Item(vector<double>& components, errorCode& status){
     status = SUCCESS;
 
     if(components.size() <= 0 || components.size() > MAX_DIM)
@@ -94,7 +94,7 @@ void Item::setId(string newId){
 }
 
 /* Set component-i */
-void Item::setComponent(float newComponent, int index, errorCode& status){    
+void Item::setComponent(double newComponent, int index, errorCode& status){    
     status = SUCCESS;
 
     /* Check parameters */
@@ -105,7 +105,7 @@ void Item::setComponent(float newComponent, int index, errorCode& status){
 }
 
 /* Append new component */
-void Item::appendComponent(float newComponent, errorCode& status){
+void Item::appendComponent(double newComponent, errorCode& status){
     status = SUCCESS;
 
     /* Check size of components */
@@ -118,7 +118,7 @@ void Item::appendComponent(float newComponent, errorCode& status){
 }
 
 /* Concatenate given components with current components */
-void Item::concatenateComponents(vector<float>& newComponents, errorCode& status){
+void Item::concatenateComponents(vector<double>& newComponents, errorCode& status){
     status = SUCCESS;
 
     /* Check size of components */
@@ -131,7 +131,7 @@ void Item::concatenateComponents(vector<float>& newComponents, errorCode& status
 }
 
 /* Reset all components. Copy given values in current item */
-void Item::resetComponents(vector<float>& newComponents, errorCode& status){    
+void Item::resetComponents(vector<double>& newComponents, errorCode& status){    
     status = SUCCESS;
 
     /* Check parameters */
@@ -152,7 +152,7 @@ string Item::getId(void){
 }
 
 /* Get component-i */
-float Item::getComponent(int index, errorCode& status){
+double Item::getComponent(int index, errorCode& status){
     status = SUCCESS;
 
     /* Check parameters */
@@ -184,8 +184,8 @@ void Item::print(void){
 }
 
 /* Calculate inner product of two items */
-float Item::innerProduct(Item& x, errorCode& status){
-    float product = 0;
+double Item::innerProduct(Item& x, errorCode& status){
+    double product = 0;
     int i;
 
     status = SUCCESS;
@@ -209,8 +209,8 @@ float Item::innerProduct(Item& x, errorCode& status){
 }
 
 /* Get norm of vector */
-float Item::norm(errorCode& status){
-    float norm = 0;
+double Item::norm(errorCode& status){
+    double norm = 0;
     int i;
 
     status = SUCCESS;
@@ -234,8 +234,8 @@ float Item::norm(errorCode& status){
 /* Metrices */
 //////////////
 
-float Item::euclideanDist(Item& x, errorCode& status){
-    float dist = 0, newComponent;
+double Item::euclideanDist(Item& x, errorCode& status){
+    double dist = 0, newComponent;
     int i;
 
     status = SUCCESS;
@@ -262,8 +262,8 @@ float Item::euclideanDist(Item& x, errorCode& status){
     return dist;
 }
 
-float Item::cosinDist(Item& x, errorCode& status){
-    float dist = 0, mult;
+double Item::cosinDist(Item& x, errorCode& status){
+    double dist = 0, mult;
     int i;
 
     status = SUCCESS;

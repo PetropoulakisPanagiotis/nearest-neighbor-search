@@ -28,7 +28,7 @@ hEuclidean::hEuclidean(int dim){
     }
     else{ 
         /* Temporary vector for item v */
-        vector<float> components(dim);
+        vector<double> components(dim);
         int i = 0;
         errorCode status;
 
@@ -61,7 +61,7 @@ hEuclidean::~hEuclidean(){
 /* Calculate hash value of given p item */
 /* h(p) = floor((p . v + t) / W)        */
 int hEuclidean::hash(Item& p, errorCode& status){
-    float innerProduct;
+    double innerProduct;
     int result;
 
     status = SUCCESS;
@@ -70,7 +70,7 @@ int hEuclidean::hash(Item& p, errorCode& status){
         return -1;
     }
 
-    innerProduct = (float)p.innerProduct(*(this->v),status);
+    innerProduct = p.innerProduct(*(this->v),status);
     if(status != SUCCESS)
         return -1;
 
@@ -132,7 +132,7 @@ hCosin::hCosin(int dim){
     }
     else{ 
         /* Temporary vector for item r */
-        vector<float> components(dim);
+        vector<double> components(dim);
         int i = 0;
         errorCode status;
 
@@ -162,7 +162,7 @@ hCosin::~hCosin(){
 /* h(p) = 1, if r.p >= 0                */
 /* h(p) = 0, if r.p < 0                 */
 int hCosin::hash(Item& p, errorCode& status){
-    float innerProduct;
+    double innerProduct;
     int result;
 
     status = SUCCESS;
@@ -171,7 +171,7 @@ int hCosin::hash(Item& p, errorCode& status){
         return -1;
     }
 
-    innerProduct = (float)p.innerProduct(*(this->r),status);
+    innerProduct = p.innerProduct(*(this->r),status);
     if(status != SUCCESS)
         return -1;
 
@@ -238,14 +238,15 @@ int hashFunctionEuclidean::count = 0;
 
 hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tableSize(tableSize),k(k){
     /* Check parameters */
-    if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K || M > MAX_M || M < MIN_M || tableSize <= 0){
+    if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K || tableSize <= 0){
         this->k = -1;
     }
     else{ 
-        int i,j,status;
+        int i,j;
+        errorCode status;
         hEuclidean* newFunc;
         
-        this->id = "EuclideanHash_" + to_String(this->count); 
+        this->id = "EuclideanHash_" + to_string(this->count); 
         this->count += 1;
 
         /* Set size of R */
@@ -256,7 +257,7 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tabl
 
         /* Pick k hash(h) functions */
         for(i = 0; i < this->k; i++){
-            newFunc = new hEuclidean(id,dim);
+            newFunc = new hEuclidean(dim);
 
             for(j = 0; j < this->k; j++){
             
@@ -290,19 +291,19 @@ hashFunctionEuclidean::~hashFunctionEuclidean(){
 
 /* Calculate hash value of given p item                */
 /* F(p) = [(r1h1(p)+...+rkhk(p)) mod M] mod table size */ 
-int hashFunctionEuclidean::hash(Item& p, int& status){
+int hashFunctionEuclidean::hash(Item& p, errorCode& status){
     int result = 0,i,tmp;
 
-    status = 0;    
+    status = SUCCESS;    
     if(this->k != -1){
-        status = -3;
+        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
     /* Calculate F(p) */
     for(i = 0; i < k; i++){
         result += this->H[i]->hash(p,status) * this->R[i];
-        if(result != 0)
+        if(result != SUCCESS)
             return -1;
  
     }
@@ -312,12 +313,12 @@ int hashFunctionEuclidean::hash(Item& p, int& status){
 
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-int hashFunctionEuclidean::hashLevel2(Item& p, int& status){
+int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
     int result = 0,i;
 
-    status = 0;    
+    status = SUCCESS;    
     if(this->k != -1){
-        status = -3;
+        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -329,6 +330,11 @@ int hashFunctionEuclidean::hashLevel2(Item& p, int& status){
     }
 
     return result;
+}
+
+/* Get number of euclidean has functions */
+int hashFunctionEuclidean::getCount(void){
+    return this->count;
 }
 
 /* Print statistics of sub hash function */
@@ -359,20 +365,27 @@ void hashFunctionEuclidean::print(void){
 /* Implementation of cosin hash function class */
 /////////////////////////////////////////////////
 
-hashFunctionCosin::hashFunctionCosin(string& id, int& dim, int& k):k(k){
+int hashFunctionCosin::count = 0;
+
+hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K){
         this->k = -1;
     }
     else{ 
-        int i,j,status;
+        int i,j;
+        errorCode status;
         hCosin* newFunc;
        
+        /* Set name */
+        this->id = "CosinHash_" + to_string(this->count);
+        this->count += 1;
+
         /* Set size of H */
         this->H.reserve(k);
 
         for(i = 0; i < this->k; i++){
-            newFunc = new hCosin(id,dim);
+            newFunc = new hCosin(dim);
             for(j = 0; j < this->k; j++){
             
                 /* Truncate same sub hash functions */
@@ -401,19 +414,19 @@ hashFunctionCosin::~hashFunctionCosin(){
 
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-int hashFunctionCosin::hash(Item& p, int& status){
+int hashFunctionCosin::hash(Item& p, errorCode& status){
     int result = 0,i;
 
-    status = 0;    
+    status = SUCCESS;    
     if(this->k == -1){
-        status = -3;
+        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
         result = result * 10 * (i + 1) + this->H[i]->hash(p,status);     
-        if(result != 0)
+        if(result != SUCCESS)
             return -1;
     }
 
@@ -421,8 +434,8 @@ int hashFunctionCosin::hash(Item& p, int& status){
 }
 
 /* There isn't level 2 hashing in cosin */
-int hashFunctionCosin::hashLevel2(Item& p, int& status){
-    status = -1;
+int hashFunctionCosin::hashLevel2(Item& p, errorCode& status){
+    status = INVALID_COMPARE;
     return -1;
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "../item/item.h"
+#include "../utils/utils.h"
 
 /* Forward declaration - for compare */
 class hEuclidean;
@@ -79,8 +80,8 @@ class hashFunction{
         virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item&,int&) = 0;
-        virtual int hashLevel2(Item&,int&) = 0;
+        virtual int hash(Item&,errorCode&) = 0;
+        virtual int hashLevel2(Item&,errorCode&) = 0;
 
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
@@ -106,8 +107,8 @@ class hashFunctionEuclidean: public hashFunction{
         ~hashFunctionEuclidean();
 
         /* Overide function */
-        int hash(Item&,int&);
-        int hashLevel2(Item&,int&);
+        int hash(Item&,errorCode&);
+        int hashLevel2(Item&,errorCode&);
         
         int getCount(void);
 
@@ -120,15 +121,19 @@ class hashFunctionCosin: public hashFunction{
     private:
         std::string id;
         std::vector<hCosin*> H; // H contains sub-hash functions        
-        int& k; // Number of sub hash functions
+        int k; // Number of sub hash functions
+        static int count;
 
     public:
-        hashFunctionCosin(std::string&,int&,int&);
+        hashFunctionCosin(int,int);
         ~hashFunctionCosin();
 
         /* Overide function */
-        int hash(Item&,int&);
-        int hashLevel2(Item&,int&);
+        int hash(Item&,errorCode&);
+        int hashLevel2(Item&,errorCode&);
+
+        int getCount(void);
+
         void print(void);
 };
 

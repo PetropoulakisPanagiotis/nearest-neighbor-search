@@ -24,10 +24,15 @@ float getRandom(int);
 int getMod(int,int);
 
 /* Detect overflow in given operation*/
-double mySum(double,double,errorCode&);
-double mySub(double,double,errorCode&);
-double myMult(double,double,errorCode&);
-double myDiv(double,double,errorCode&);
+double mySumDouble(double,double,errorCode&);
+double mySubDouble(double,double,errorCode&);
+double myMultDouble(double,double,errorCode&);
+double myDivDouble(double,double,errorCode&);
+
+int mySumInt(int,int,errorCode&);
+int mySubInt(int,int,errorCode&);
+int myMultInt(int,int,errorCode&);
+int myDivInt(int,int,errorCode&);
 
 /* Print type of error */
 void printError(errorCode);

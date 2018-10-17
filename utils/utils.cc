@@ -19,7 +19,7 @@ float getRandom(int type){
         
     /* Set uniform and standard distribution */
     static uniform_real_distribution<float> uniformDist1(0,W); // [0,W)
-    static uniform_real_distribution<float> uniformDist2(MY_MIN_RANDOM,MY_MAX_RANDOM);
+    static uniform_int_distribution<int> uniformDist2(MY_MIN_RANDOM,MY_MAX_RANDOM);
     static normal_distribution<float> normalDist(0,1); 
 
     if(type == 0)
@@ -27,7 +27,7 @@ float getRandom(int type){
     else if(type == 1)
         return normalDist(generator);
     else
-        return uniformDist2(generator);
+        return (float)uniformDist2(generator);
 }
 
 /* Get mod of given number */
@@ -44,7 +44,7 @@ int getMod(int x, int y){
 }
 
 /* Sum given numbers - check for overflow */
-double mySum(double x, double y, errorCode& status){
+double mySumDouble(double x, double y, errorCode& status){
 
     status = SUM_OVERFLOW;
 
@@ -61,7 +61,7 @@ double mySum(double x, double y, errorCode& status){
 }
 
 /* Subtract given numbers - check for overflow */
-double mySub(double x, double y, errorCode& status){
+double mySubDouble(double x, double y, errorCode& status){
 
     status = SUB_OVERFLOW;
 
@@ -77,7 +77,7 @@ double mySub(double x, double y, errorCode& status){
 }
 
 /* Multiply given numbers - check for overflow */
-double myMult(double x, double y, errorCode& status){
+double myMultDouble(double x, double y, errorCode& status){
 
     status = MULT_OVERFLOW;
 
@@ -103,17 +103,90 @@ double myMult(double x, double y, errorCode& status){
 }
 
 /* Divide given numbers - check for overflow */
-double myDiv(double x, double y, errorCode& status){
+double myDivDouble(double x, double y, errorCode& status){
 
     status = DIV_OVERFLOW;
 
-    if( y == 0 || (a == numeric_limits<double>::lowest && y == -1)
+    if(y == 0 || (x == numeric_limits<double>::lowest() && y == -1))
         return 0;  
     
     status = SUCCESS;
     
     return x / y;
 }
+
+/* Sum given numbers - check for overflow */
+int mySumInt(int x, int y, errorCode& status){
+
+    status = SUM_OVERFLOW;
+
+    if(y > 0 && x > numeric_limits<int>::max() - y)
+        return 0;
+   
+    if(y < 0 && x < numeric_limits<int>::lowest() - y)
+        return 0;
+  
+    
+    status = SUCCESS;
+    
+    return x + y;
+}
+
+/* Subtract given numbers - check for overflow */
+int mySubInt(int x, int y, errorCode& status){
+
+    status = SUB_OVERFLOW;
+
+    if(y > 0 && x < numeric_limits<int>::lowest() + y)
+        return 0;
+   
+    if(y < 0 && x > numeric_limits<int>::max() + y)
+        return 0;  
+    
+    status = SUCCESS;
+    
+    return x - y;
+}
+
+/* Multiply given numbers - check for overflow */
+int myMultInt(int x, int y, errorCode& status){
+
+    status = MULT_OVERFLOW;
+
+    if(x > 0 && y > 0)
+        if(x > numeric_limits<int>::max() / y)
+            return 0;
+    
+    if(x > 0 && y < 0)
+        if(y < numeric_limits<int>::lowest() / x)
+            return 0;
+    
+    if(x < 0 && y > 0)
+        if(x > numeric_limits<int>::lowest() / y)
+            return 0;
+
+    if(x < 0 && y < 0)
+        if(y < numeric_limits<int>::max() / x)
+            return 0;
+
+    status = SUCCESS;
+    
+    return x * y;
+}
+
+/* Divide given numbers - check for overflow */
+int myDivInt(int x, int y, errorCode& status){
+
+    status = DIV_OVERFLOW;
+
+    if(y == 0 || (x == numeric_limits<int>::lowest() && y == -1))
+        return 0;  
+    
+    status = SUCCESS;
+    
+    return x / y;
+}
+
 /* Print type of error */
 void printError(errorCode status){
 

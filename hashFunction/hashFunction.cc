@@ -76,11 +76,11 @@ int hEuclidean::hash(Item& p, errorCode& status){
     if(status != SUCCESS)
         return -1;
 
-    tempSum = mySum(innerProduct,this->t,status);
+    tempSum = mySumDouble(innerProduct,this->t,status);
     if(status != SUCCESS)
         return -1;
 
-    tempDiv = myDiv(tempSum,W,status);
+    tempDiv = myDivDouble(tempSum,W,status);
     if(status != SUCCESS)
         return -1;
 
@@ -318,11 +318,11 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     /* Calculate F(p) */
     for(i = 0; i < k; i++){
-        tmpMult = myMult(this->H[i]->hash(p,status),this->R[i],status);
+        tmpMult = myMultInt(this->H[i]->hash(p,status),this->R[i],status);
         if(status != SUCCESS)
             return -1;
 
-        result = mySum(result,tmpMult,status);
+        result = mySumInt(result,tmpMult,status);
         if(status != SUCCESS)
             return -1;
     }
@@ -346,8 +346,13 @@ int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
 
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
-        result = result * 10 * (i + 1) + this->H[i]->hash(p,status);     
-        if(result != 0)
+
+        tempMult = myMultInt(result,10 * (i + 1),status);
+        if(status != SUCCESS)
+            return -1;
+
+        result = mySumInt(tempMult,this->H[i]->hash(p,status),status);
+        if(status != SUCCESS)
             return -1;
     }
 
@@ -475,18 +480,23 @@ hashFunctionCosin::~hashFunctionCosin(){
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
 int hashFunctionCosin::hash(Item& p, errorCode& status){
-    int result = 0,i;
+    int result = 0, i, tempMult;
 
     status = SUCCESS;    
-    if(this->k == -1){
+    if(this->k != -1){
         status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
-        result = result * 10 * (i + 1) + this->H[i]->hash(p,status);     
-        if(result != SUCCESS)
+
+        tempMult = myMultInt(result,10 * (i + 1),status);
+        if(status != SUCCESS)
+            return -1;
+
+        result = mySumInt(tempMult,this->H[i]->hash(p,status),status);
+        if(status != SUCCESS)
             return -1;
     }
 

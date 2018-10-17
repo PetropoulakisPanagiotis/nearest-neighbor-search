@@ -232,11 +232,11 @@ double Item::innerProduct(Item& x, errorCode& status){
 
     /* Calculate product */
     for(i = 0; i < this->dim; i++){
-        tempMult= myMult(this->components[i],x.components[i],status);
+        tempMult= myMultDouble(this->components[i],x.components[i],status);
         if(status != SUCCESS)
             return 0;
 
-        product = mySum(tempMult,product,status);
+        product = mySumDouble(tempMult,product,status);
         if(status != SUCCESS)
             return 0;
     } // End for
@@ -259,11 +259,11 @@ double Item::norm(errorCode& status){
 
     /* Calculate norm */
     for(i = 0; i < this->dim; i++){
-        tempMult= myMult(this->components[i],this->components[i],status);
+        tempMult= myMultDouble(this->components[i],this->components[i],status);
         if(status != SUCCESS)
             return 0;
 
-        norm = mySum(tempMult,norm,status);
+        norm = mySumDouble(tempMult,norm,status);
         if(status != SUCCESS)
             return 0;
     } // End for
@@ -296,15 +296,15 @@ double Item::euclideanDist(Item& x, errorCode& status){
 
     /* Calculate distance */
     for(i = 0; i < this->dim; i++){
-        newComponent = mySub(this->components[i],x.components[i],status);
+        newComponent = mySubDouble(this->components[i],x.components[i],status);
         if(status != SUCCESS)
             return 0;
 
-        tempMult= myMult(newComponent,newComponent,status);
+        tempMult= myMultDouble(newComponent,newComponent,status);
         if(status != SUCCESS)
             return 0;
 
-        dist = mySum(dist,tempMult,status);
+        dist = mySumDouble(dist,tempMult,status);
         if(status != SUCCESS)
             return 0;
     } // End for
@@ -345,17 +345,15 @@ double Item::cosinDist(Item& x, errorCode& status){
     if(status != SUCCESS)
         return 0;
 
-    mult = myMult(normX,normY,status);
+    mult = myMultDouble(normX,normY,status);
     if(status != SUCCESS)
         return 0;
 
-    dist = myDiv(dist,mult,status);
+    dist = myDivDouble(dist,mult,status);
     if(status != SUCCESS)
         return 0;
 
-    dist = mySub(1,dist,status);
-    if(status != SUCCESS)
-        return 0;
+    dist = 1 - dist;
 
     return dist;
 }

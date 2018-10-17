@@ -1,6 +1,8 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <limits>
+#include <cmath>
 #include "utils.h"
 #include "myLimits.h"
 
@@ -41,6 +43,33 @@ int getMod(int x, int y){
     }
 }
 
+/* Multiply given numbers - check for overflow */
+double myMult(double x, double y, errorCode& status){
+    int result;
+
+    status = MULT_OVERFLOW;
+
+    if(x > 0 && y > 0)
+        if(x > numeric_limits<double>::max() / y)
+            return 0;
+    
+    if(x > 0 && y < 0)
+        if(y < numeric_limits<double>::lowest() / x)
+            return 0;
+    
+    if(x < 0 && y > 0)
+        if(x > numeric_limits<double>::lowest() / y)
+            return 0;
+
+    if(x < 0 && y < 0)
+        if(y < numeric_limits<double>::max() / x)
+            return 0;
+
+    status = SUCCESS;
+    
+    return x * y;
+}
+
 /* Print type of error */
 void printError(errorCode status){
 
@@ -65,6 +94,10 @@ void printError(errorCode status){
 
         case(INVALID_COMPARE):
             cout << "Can't compare different types of hash functions\n";
+            break;
+    
+        case(MULT_OVERFLOW):
+            cout << "Can't multiply given numbers. Possible overflow occures\n";
             break;
     } // End switch
 }

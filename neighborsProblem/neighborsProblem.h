@@ -4,7 +4,7 @@
 #include "../utils/utils.h"
 #include "../hashFunctions/hashFunctions.h"
 
-/* Abstract class for sub has functions */
+/* Abstract class for neighbors problem */
 class neighborsProblem{
     public:
         virtual ~h() = 0;
@@ -31,13 +31,13 @@ class neighborsProblem{
         virtual void print(void) = 0;
 };
 
+/* Neighbors problem using lsh euclidean */
 class LshEuclidean: public neighbors{
     private:
-
         /* Entries in hash tables */
         typedef struct entry{
             Item& point;
-            int valueG; // Value of g hash function
+            int valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
         }entry;
 
         std::vector<Item> points; 
@@ -64,9 +64,16 @@ class LshEuclidean: public neighbors{
         void print(void);
 };
 
+/* Neighbors problem using lsh cosin */
 class LshCosin: public neighbors{
     private:
-
+        std::vector<Item> points; 
+        std::vector<std::vector<std::list<Item&>>> tables; // Each table is a hash table(vector of lists)
+        int n; // Number of items 
+        int tableSize;
+        int l; // Total tables 
+        int k; // Number of sub hash functions
+        std::vector<hashFunctionsCosin>; // Each table has one hash function       
 
     public:
         void fit(std::list<Item>& points, errorCode& status);

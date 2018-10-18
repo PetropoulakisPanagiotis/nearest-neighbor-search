@@ -15,11 +15,11 @@ class h{
         virtual ~h() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item&,errorCode&) = 0;
+        virtual int hash(Item& p, errorCode& status) = 0;
 
         /* Compare two sub has functions */
-        virtual int compare(hEuclidean&,errorCode&) = 0;
-        virtual int compare(hCosin&,errorCode&) = 0;
+        virtual int compare(hEuclidean& x, errorCode& status) = 0;
+        virtual int compare(hCosin& x, errorCode& status) = 0;
 
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
@@ -42,10 +42,10 @@ class hEuclidean: public h{
         ~hEuclidean();
 
         /* Overide function */
-        int hash(Item&,errorCode&);
+        int hash(Item& p, errorCode& status);
 
-        int compare(hEuclidean&,errorCode&);
-        int compare(hCosin&,errorCode&);
+        int compare(hEuclidean& x, errorCode& status);
+        int compare(hCosin& x, errorCode& status);
         
         int getCount(void);
         void print(void);
@@ -65,10 +65,10 @@ class hCosin: public h{
         ~hCosin();
 
         /* Overide function */
-        int hash(Item&,errorCode&);
+        int hash(Item& p, errorCode& status);
         
-        int compare(hEuclidean&,errorCode&);
-        int compare(hCosin&,errorCode&);
+        int compare(hEuclidean& x, errorCode& status);
+        int compare(hCosin& x,errorCode& status);
         
         int getCount(void);
         void print(void);
@@ -80,12 +80,12 @@ class hashFunction{
         virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item&,errorCode&) = 0;
-        virtual int hashLevel2(Item&,errorCode&) = 0;
+        virtual int hash(Item& p,errorCode& status) = 0;
+        virtual int hashLevel2(Item& p, errorCode& status) = 0;
 
         /* Compare two has functions */
-        virtual int compare(hashFunctionEuclidean&,errorCode&) = 0;
-        virtual int compare(hashFunctionCosin&,errorCode&) = 0;
+        virtual int compare(hashFunctionEuclidean& x, errorCode& status) = 0;
+        virtual int compare(hashFunctionCosin& x ,errorCode& status) = 0;
 
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
@@ -107,15 +107,15 @@ class hashFunctionEuclidean: public hashFunction{
         static int count;
 
     public:
-        hashFunctionEuclidean(int,int,int);
+        hashFunctionEuclidean(int dim, int k, int tableSiz)e;
         ~hashFunctionEuclidean();
 
         /* Overide function */
-        int hash(Item&,errorCode&);
-        int hashLevel2(Item&,errorCode&);
+        int hash(Item& p, errorCode& status);
+        int hashLevel2(Item& p, errorCode& status);
  
-        int compare(hashFunctionEuclidean&,errorCode&);
-        int compare(hashFunctionCosin&,errorCode&);       
+        int compare(hashFunctionEuclidean& x, errorCode& status);
+        int compare(hashFunctionCosin& x, errorCode& status);       
         
         int getCount(void);
 
@@ -132,15 +132,15 @@ class hashFunctionCosin: public hashFunction{
         static int count;
 
     public:
-        hashFunctionCosin(int,int);
+        hashFunctionCosin(int dim, int k);
         ~hashFunctionCosin();
 
         /* Overide function */
-        int hash(Item&,errorCode&);
-        int hashLevel2(Item&,errorCode&);
+        int hash(Item& p, errorCode& status);
+        int hashLevel2(Item& p, errorCode& status);
 
-        int compare(hashFunctionEuclidean&,errorCode&);
-        int compare(hashFunctionCosin&,errorCode&);
+        int compare(hashFunctionEuclidean& x, errorCode& status);
+        int compare(hashFunctionCosin& x, errorCode& status);
         
         int getCount(void);
 

@@ -44,7 +44,7 @@ hEuclidean::hEuclidean(int dim){
             components[i] = getRandom(1);
 
         /* Create item v */
-        this->v = new Item(components,status);
+        this->v = new Item(components, status);
         if(status != 0){
             delete this->v;
             this->v = NULL;
@@ -72,15 +72,15 @@ int hEuclidean::hash(Item& p, errorCode& status){
         return -1;
     }
 
-    innerProduct = p.innerProduct(*(this->v),status);
+    innerProduct = p.innerProduct(*(this->v), status);
     if(status != SUCCESS)
         return -1;
 
-    tempSum = mySumDouble(innerProduct,this->t,status);
+    tempSum = mySumDouble(innerProduct, this->t, status);
     if(status != SUCCESS)
         return -1;
 
-    tempDiv = myDivDouble(tempSum,W,status);
+    tempDiv = myDivDouble(tempSum, W, status);
     if(status != SUCCESS)
         return -1;
 
@@ -157,7 +157,7 @@ hCosin::hCosin(int dim){
         for(i = 0; i < dim; i++)
             components[i] = getRandom(1);
 
-        this->r = new Item(components,status);
+        this->r = new Item(components, status);
         if(status != 0){
             delete this->r;
             this->r = NULL;
@@ -186,7 +186,7 @@ int hCosin::hash(Item& p, errorCode& status){
         return -1;
     }
 
-    innerProduct = p.innerProduct(*(this->r),status);
+    innerProduct = p.innerProduct(*(this->r), status);
     if(status != SUCCESS)
         return -1;
 
@@ -209,7 +209,7 @@ int hCosin::compare(hCosin& x, errorCode& status){
     if(this->r == NULL || x.r == NULL)
         status = INVALID_HASH_FUNCTION;
     else{
-       if(this->r->compare(*(x.r),status) == 0)
+       if(this->r->compare(*(x.r), status) == 0)
            return 0;
        else 
            return 1;
@@ -278,7 +278,7 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tabl
             for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
-                if(this->H[j]->compare(*newFunc,status) == 0){
+                if(this->H[j]->compare(*newFunc, status) == 0){
                     delete newFunc;
                     break;
                 }
@@ -320,17 +320,16 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     /* Calculate F(p) */
     for(i = 0; i < k; i++){
-        tmpMult = myMultInt(this->H[i]->hash(p,status),this->R[i],status);
+        tmpMult = myMultInt(this->H[i]->hash(p, status), this->R[i], status);
         if(status != SUCCESS)
             return -1;
 
-        result = mySumInt(result,tmpMult,status);
+        result = mySumInt(result, tmpMult, status);
         if(status != SUCCESS)
             return -1;
     }
 
-    //result = myMod(result,M);
-    result = myMod(result,tableSize);
+    result = myMod(result, tableSize);
 
     return result;
 }
@@ -349,11 +348,11 @@ int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
 
-        tempMult = myMultInt(result,10,status);
+        tempMult = myMultInt(result, 10, status);
         if(status != SUCCESS)
             return -1;
 
-        result = mySumInt(tempMult,this->H[i]->hash(p,status),status);
+        result = mySumInt(tempMult, this->H[i]->hash(p, status), status);
         if(status != SUCCESS)
             return -1;
     }
@@ -380,7 +379,7 @@ int hashFunctionEuclidean::compare(hashFunctionEuclidean& x, errorCode& status){
 
     /* Compare h functions */
     for(i = 0; i < this->k; i++)
-        if(this->H[i]->compare(*(x.H[i]),status) != 0)
+        if(this->H[i]->compare(*(x.H[i]), status) != 0)
             return 1;
     
     /* Compare r values */
@@ -454,7 +453,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
-                if(this->H[j]->compare(*newFunc,status) == 0){
+                if(this->H[j]->compare(*newFunc, status) == 0){
                     delete newFunc;
                     break;
                 }
@@ -493,11 +492,11 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
 
-        tempMult = myMultInt(result,10,status);
+        tempMult = myMultInt(result, 10, status);
         if(status != SUCCESS)
             return -1;
 
-        result = mySumInt(tempMult,this->H[i]->hash(p,status),status);
+        result = mySumInt(tempMult, this->H[i]->hash(p, status), status);
         if(status != SUCCESS)
             return -1;
     }
@@ -530,7 +529,7 @@ int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
 
     /* Compare h functions */
     for(i = 0; i < this->k; i++)
-        if(this->H[i]->compare(*(x.H[i]),status) != 0)
+        if(this->H[i]->compare(*(x.H[i]), status) != 0)
             return 1;
 
     return 0;

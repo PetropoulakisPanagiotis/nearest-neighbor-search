@@ -14,33 +14,33 @@ class Item{
 
     public:
         Item();
-        Item(int dim,errorCode&);
-        Item(std::string,int dim,errorCode&);
-        Item(std::vector<double>&,errorCode&);
-        Item(std::string,std::vector<double>&,errorCode&);
+        Item(int dim, errorCode& status);
+        Item(std::string id, int dim, errorCode& status);
+        Item(std::vector<double>& components, errorCode& status);
+        Item(std::string id, std::vector<double>& components, errorCode& status);
 
         ~Item();
 
         /* Mutators */
-        void setId(std::string);
-        void setComponent(double,int,errorCode&);
-        void appendComponent(double,errorCode&);
-        void concatenateComponents(std::vector<double>&,errorCode&);
-        void resetComponents(std::vector<double>&,errorCode&);
+        void setId(std::string id);
+        void setComponent(double newComponent, int index, errorCode& status);
+        void appendComponent(double newComponent, errorCode& status);
+        void concatenateComponents(std::vector<double>& newComponents, errorCode& status);
+        void resetComponents(std::vector<double>& newComponents, errorCode& status);
 
         /* Accessors */
         std::string getId(void);
-        double getComponent(int,errorCode&);
+        double getComponent(int index,errorCode&);
         int getCount(void);
         void print(void);
 
         /* Usefull functions */
-        int compare(Item&,errorCode&);
-        double innerProduct(Item&,errorCode&); 
-        double norm(errorCode&);
+        int compare(Item& x, errorCode& status);
+        double innerProduct(Item& x, errorCode& status); 
+        double norm(errorCode& status);
 
         /* Metrices */
-        double euclideanDist(Item&,errorCode&);
-        double cosinDist(Item&,errorCode&);
+        double euclideanDist(Item& x, errorCode& status);
+        double cosinDist(Item& x,errorCode& status);
 };
 // PetropoulakisPanagiotis

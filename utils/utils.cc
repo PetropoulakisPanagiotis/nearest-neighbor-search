@@ -18,9 +18,9 @@ float getRandom(int type){
     static default_random_engine generator(seed);
         
     /* Set uniform and standard distribution */
-    static uniform_real_distribution<float> uniformDist1(0,W); // [0,W)
-    static uniform_int_distribution<int> uniformDist2(MY_MIN_RANDOM,MY_MAX_RANDOM);
-    static normal_distribution<float> normalDist(0,1); 
+    static uniform_real_distribution<float> uniformDist1(0, W); // [0,W)
+    static uniform_int_distribution<int> uniformDist2(MY_MIN_RANDOM, MY_MAX_RANDOM);
+    static normal_distribution<float> normalDist(0, 1); 
 
     if(type == 0)
         return uniformDist1(generator);
@@ -188,7 +188,7 @@ int myDivInt(int x, int y, errorCode& status){
 }
 
 /* Print type of error */
-void printError(errorCode status){
+void printError(errorCode& status){
 
     switch(status){
         case(SUCCESS):

@@ -18,22 +18,22 @@ typedef enum errorCode{
 ///////////////////////
 
 /* Get random number - standard or uniform distribution */
-float getRandom(int);
+float getRandom(int type);
 
 /* My mod functions. Works also with negative values */
-int myMod(int,int);
+int myMod(int x, int y);
 
 /* Detect overflow in given operation*/
-double mySumDouble(double,double,errorCode&);
-double mySubDouble(double,double,errorCode&);
-double myMultDouble(double,double,errorCode&);
-double myDivDouble(double,double,errorCode&);
+double mySumDouble(double x, double y, errorCode& status);
+double mySubDouble(double x, double y, errorCode& status);
+double myMultDouble(double x, double y, errorCode& status);
+double myDivDouble(double x, double y, errorCode& status);
 
-int mySumInt(int,int,errorCode&);
-int mySubInt(int,int,errorCode&);
-int myMultInt(int,int,errorCode&);
-int myDivInt(int,int,errorCode&);
+int mySumInt(int x, int y, errorCode& status);
+int mySubInt(int x, int y, errorCode& status);
+int myMultInt(int x, int y, errorCode& status);
+int myDivInt(int x, int y, errorCode& status);
 
 /* Print type of error */
-void printError(errorCode);
+void printError(errorCode& status);
 // Petropoulakis Panagiotis

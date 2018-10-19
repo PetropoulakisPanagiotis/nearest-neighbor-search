@@ -27,13 +27,14 @@ class neighborsProblem{
         /* Accessors */
         virtual int getNumberOfPoints(errorCode& status) = 0;
         virtual int getTableSize(errorCode& status) = 0;
- 
+        virtual int getDim(errorCode& status) = 0;
+
         /* Print some statistics */
         virtual void print(void) = 0;
 };
 
 /* Neighbors problem using lsh euclidean */
-class LshEuclidean: public neighborsProblem{
+class lshEuclidean: public neighborsProblem{
     private:
         /* Entries in hash tables */
         typedef struct entry{
@@ -41,54 +42,73 @@ class LshEuclidean: public neighborsProblem{
             int valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
         }entry;
 
-        std::vector<Item> points; 
+        std::vector<Item*> points; 
         std::vector<std::vector<std::list<entry>>> tables; // Each table is a hash table(vector of lists)
-        int n; // Number of items 
         int tableSize;
-        int l; // Total tables 
+        float coefficient; // Table size == n * coefficient, (coefficient <= 1)
+        int n; // Number of items 
+        int l; // Total tables, hash functions
         int k; // Number of sub hash functions
-        std::vector<hashFunctionEuclidean> hashfunctions; // Each table has one hash function
+        int w; // Window size
+        int dim; // Dimension
+        std::vector<hashFunctionEuclidean*> hashFunctions; // Each table has one hash function
 
     public:
-        void fit(std::list<Item>& points, errorCode& status);
-        void fitAppend(std::list<Item>& points, errorCode& status);
 
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status);
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, errorCode& status);
+        lshEuclidean();
+        lshEuclidean(int l, int k, int w, float coefficient, errorCode& status);
         
-        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status);
-        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status);
+        ~lshEuclidean();
+
+        void fit(std::list<Item>& points, errorCode& status) {};
+        void fitAppend(std::list<Item>& points, errorCode& status) {};
+
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status){};
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, errorCode& status){};
         
-        int getNumberOfPoints(errorCode& status);
-        int getTableSize(errorCode& status);
+        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status){};
+        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status){};
+        
+        int getNumberOfPoints(errorCode& status){};
+        int getTableSize(errorCode& status){};
+        int getDim(errorCode& status){};
 
         void print(void);
 };
 
 /* Neighbors problem using lsh cosin */
-class LshCosin: public neighborsProblem{
+class lshCosin: public neighborsProblem{
     private:
-        std::vector<Item> points; 
-        std::vector<std::vector<std::list<Item&>>> tables; // Each table is a hash table(vector of lists)
+        std::vector<Item*> points; 
+        std::vector<std::vector<std::list<Item*>>> tables; // Each table is a hash table(vector of lists)
         int n; // Number of items 
         int tableSize;
+        float coefficient; // Table size == n * coefficient, (coefficient <= 1)
         int l; // Total tables 
         int k; // Number of sub hash functions
-        std::vector<hashFunctionCosin> hashFunctions; // Each table has one hash function       
+        int dim; // Dimension
+        std::vector<hashFunctionCosin*> hashFunctions; // Each table has one hash function       
 
     public:
-        void fit(std::list<Item>& points, errorCode& status);
-        void fitAppend(std::list<Item>& points, errorCode& status);
 
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status);
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, errorCode& status);
-        
-        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status);
-        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status);
-        
-        int getNumberOfPoints(errorCode& status);
-        int getTableSize(errorCode&status);
+        lshCosin();
+        lshCosin(int l, int k, float coefficient, errorCode& status);
 
+        ~lshCosin();
+
+        void fit(std::list<Item>& points, errorCode& status){};
+        void fitAppend(std::list<Item>& points, errorCode& status){};
+
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status){};
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, errorCode& status){};
+        
+        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>& neighborsRadius, errorCode& status){};
+        void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status){};
+        
+        int getNumberOfPoints(errorCode& status){};
+        int getTableSize(errorCode&status){};
+        int getDim(errorCode& status){};
+        
         void print(void);
 
 };

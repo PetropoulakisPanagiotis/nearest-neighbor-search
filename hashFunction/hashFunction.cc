@@ -79,7 +79,7 @@ int hEuclidean::hash(Item& p, errorCode& status){
     if(status != SUCCESS)
         return -1;
 
-    tempDiv = myDivDouble(tempSum, W, status);
+    tempDiv = myDivDouble(tempSum, this->w, status);
     if(status != SUCCESS)
         return -1;
 

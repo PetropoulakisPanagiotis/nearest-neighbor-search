@@ -1,14 +1,16 @@
 #pragma once
 
-/* Set defines */
-#define W 4 // Window size
-
 /* Set limits */
 #define MAX_DIM 20000 // Max dimension
 #define MAX_K 40 // Max number of sub hash functions
 #define MIN_K 1
-#define MAX_W 500 // Max window size
+#define MAX_W 800 // Max window size
 #define MIN_W 2
+#define MAX_L 50 // Max  number of hash tables
+#define MIN_L 1
+#define MAX_C 1 // Max coefficient
+#define MIN_C 0.03125 // 1/32
+#define MIN_POINTS 9000 // Minimum given data set
 #define MY_MAX_RANDOM 20
 #define MY_MIN_RANDOM -20
 
@@ -23,7 +25,9 @@ typedef enum errorCode{
     SUB_OVERFLOW,
     MULT_OVERFLOW,
     DIV_OVERFLOW,
-    ALLOCATION_FAILED
+    ALLOCATION_FAILED,
+    INVALID_METHOD,
+    INVALID_PARAMETERS
 }errorCode;
 
 ///////////////////////

@@ -35,10 +35,11 @@ class hEuclidean: public h{
         std::string id;
         Item* v; // Random item - Standard distribution
         float t; // Random float [0,w) - Uniform distribution
+        int w; // Window size
         static int count;
 
     public:
-        hEuclidean(int);
+        hEuclidean(int dim, int w);
         ~hEuclidean();
 
         /* Overide function */
@@ -103,11 +104,12 @@ class hashFunctionEuclidean: public hashFunction{
         std::vector<int> R; // Random ri values - standard        
         std::vector<hEuclidean*> H; // H contains sub-hash functions        
         int k; // Number of sub hash functions
+        int w; // Window size
         int tableSize;
         static int count;
 
     public:
-        hashFunctionEuclidean(int dim, int k, int tableSiz)e;
+        hashFunctionEuclidean(int dim, int k, int w, int tableSize);
         ~hashFunctionEuclidean();
 
         /* Overide function */

@@ -4,7 +4,6 @@
 #include <limits>
 #include <cmath>
 #include "utils.h"
-#include "myLimits.h"
 
 using namespace std;
 
@@ -12,13 +11,13 @@ using namespace std;
 /* Type 0: uniform float   */
 /* Type 1: standard float  */
 /* Type 2: uniform float   */
-float getRandom(int type){
+float getRandom(int type, int w){
     /* Set random engine */
     static unsigned seed = chrono::system_clock::now().time_since_epoch().count();    
     static default_random_engine generator(seed);
         
     /* Set uniform and standard distribution */
-    static uniform_real_distribution<float> uniformDist1(0, W); // [0,W)
+    static uniform_real_distribution<float> uniformDist1(0, w); // [0,W)
     static uniform_int_distribution<int> uniformDist2(MY_MIN_RANDOM, MY_MAX_RANDOM);
     static normal_distribution<float> normalDist(0, 1); 
 
@@ -227,6 +226,9 @@ void printError(errorCode& status){
         
         case(DIV_OVERFLOW):
             cout << "Can't divide given numbers. Possible overflow occures\n";
+            break;
+        case(ALLOCATION_FAILED):
+            cout << "Allocation error occured. Check that you have enough memory or change your given parameters\n";
             break;
     } // End switch
 }

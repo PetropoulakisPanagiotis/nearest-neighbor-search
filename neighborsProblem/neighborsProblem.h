@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
+#include <list>
 #include "../item/item.h"
 #include "../utils/utils.h"
-#include "../hashFunctions/hashFunctions.h"
+#include "../hashFunction/hashFunction.h"
 
 /* Abstract class for neighbors problem */
 class neighborsProblem{
     public:
-        virtual ~h() = 0;
+        virtual ~neighborsProblem() = 0;
 
         /* Fit the model with data - Reset existing data */
         virtual void fit(std::list<Item>& points, errorCode& status) = 0;
@@ -25,14 +26,14 @@ class neighborsProblem{
 
         /* Accessors */
         virtual int getNumberOfPoints(errorCode& status) = 0;
-        virtual int getTableSize(errorCode&,status) = 0;
+        virtual int getTableSize(errorCode& status) = 0;
  
         /* Print some statistics */
         virtual void print(void) = 0;
 };
 
 /* Neighbors problem using lsh euclidean */
-class LshEuclidean: public neighbors{
+class LshEuclidean: public neighborsProblem{
     private:
         /* Entries in hash tables */
         typedef struct entry{
@@ -46,7 +47,7 @@ class LshEuclidean: public neighbors{
         int tableSize;
         int l; // Total tables 
         int k; // Number of sub hash functions
-        std::vector<hashFunctionsEuclidean>; // Each table has one hash function
+        std::vector<hashFunctionEuclidean> hashfunctions; // Each table has one hash function
 
     public:
         void fit(std::list<Item>& points, errorCode& status);
@@ -59,13 +60,13 @@ class LshEuclidean: public neighbors{
         void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status);
         
         int getNumberOfPoints(errorCode& status);
-        int getTableSize(errorCode&,status);
+        int getTableSize(errorCode& status);
 
         void print(void);
 };
 
 /* Neighbors problem using lsh cosin */
-class LshCosin: public neighbors{
+class LshCosin: public neighborsProblem{
     private:
         std::vector<Item> points; 
         std::vector<std::vector<std::list<Item&>>> tables; // Each table is a hash table(vector of lists)
@@ -73,7 +74,7 @@ class LshCosin: public neighbors{
         int tableSize;
         int l; // Total tables 
         int k; // Number of sub hash functions
-        std::vector<hashFunctionsCosin>; // Each table has one hash function       
+        std::vector<hashFunctionCosin> hashFunctions; // Each table has one hash function       
 
     public:
         void fit(std::list<Item>& points, errorCode& status);
@@ -86,7 +87,7 @@ class LshCosin: public neighbors{
         void kNeighbors(Item& query, int k, std::list<Item>& neighbors, errorCode& status);
         
         int getNumberOfPoints(errorCode& status);
-        int getTableSize(errorCode&,status);
+        int getTableSize(errorCode&status);
 
         void print(void);
 

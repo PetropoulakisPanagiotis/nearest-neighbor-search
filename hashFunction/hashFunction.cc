@@ -4,7 +4,6 @@
 #include "hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
-#include "../utils/myLimits.h"
 
 using namespace std;
 
@@ -21,9 +20,9 @@ h::~h(){}
 
 int hEuclidean::count = 0;
 
-hEuclidean::hEuclidean(int dim){
+hEuclidean::hEuclidean(int dim, int w):w(w){
     /* Check parameters */
-    if(dim <= 0 || dim > MAX_DIM){
+    if(dim <= 0 || dim > MAX_DIM || w < MIN_W || w > MAX_W){
         this->v = NULL;
     }
     else{ 
@@ -37,7 +36,7 @@ hEuclidean::hEuclidean(int dim){
         this->count += 1;
 
         /* Pick a random t - uniform distribution */
-        this->t = getRandom(0);
+        this->t = getRandom(0,this->w);
 
         /* Fix item - Pick random float in standard distribution */
         for(i = 0; i < dim; i++)
@@ -98,8 +97,10 @@ int hEuclidean::hash(Item& p, errorCode& status){
 int hEuclidean::compare(hEuclidean& x, errorCode& status){
     
     status = SUCCESS;
-    if(this->v == NULL || x.v == NULL)
+    if(this->v == NULL || x.v == NULL){
         status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
     else{
        if((this->v->compare(*(x.v),status) == 0) && this->t == x.t)
            return 0;
@@ -206,8 +207,10 @@ int hCosin::compare(hCosin& x, errorCode& status){
     
     status = SUCCESS;
 
-    if(this->r == NULL || x.r == NULL)
+    if(this->r == NULL || x.r == NULL){
         status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
     else{
        if(this->r->compare(*(x.r), status) == 0)
            return 0;
@@ -252,9 +255,9 @@ hashFunction::~hashFunction(){}
 
 int hashFunctionEuclidean::count = 0;
 
-hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tableSize(tableSize),k(k){
+hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSize):k(k),w(w),tableSize(tableSize){
     /* Check parameters */
-    if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K || tableSize <= 0){
+    if(dim <= 0 || dim > MAX_DIM || k < MIN_K || k > MAX_K || tableSize <= 0 || w < MIN_W || w > MAX_W){
         this->k = -1;
     }
     else{ 
@@ -273,7 +276,7 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int tableSize):tabl
 
         /* Pick k hash(h) functions */
         for(i = 0; i < this->k; i++){
-            newFunc = new hEuclidean(dim);
+            newFunc = new hEuclidean(dim,w);
 
             for(j = 0; j < i; j++){
             

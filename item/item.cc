@@ -2,7 +2,6 @@
 #include <string>
 #include <cmath>
 #include "item.h"
-#include "../utils/myLimits.h"
 #include "../utils/utils.h"
 
 using namespace std;
@@ -319,7 +318,6 @@ double Item::euclideanDist(Item& x, errorCode& status){
 /* dist(x,y) = 1 cos(x,y) = 1 - (x.y / norm(x) * norm(y)) */
 double Item::cosinDist(Item& x, errorCode& status){
     double dist = 0, mult;
-    int i;
     double normX, normY;
 
     status = SUCCESS;

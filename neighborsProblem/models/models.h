@@ -6,7 +6,7 @@
 #include "../hashFunction/hashFunction.h"
 
 /* Abstract class for neighbors problem */
-class neighborsProblem{
+class models{
     public:
         virtual ~neighborsProblem() = 0;
 

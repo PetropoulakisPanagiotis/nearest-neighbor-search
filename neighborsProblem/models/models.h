@@ -29,7 +29,7 @@ class models{
 };
 
 /* Neighbors problem using lsh euclidean */
-class lshEuclidean: public neighborsProblem{
+class lshEuclidean: public models{
     private:
         /* Entries in hash tables */
         typedef struct entry{
@@ -68,7 +68,7 @@ class lshEuclidean: public neighborsProblem{
 };
 
 /* Neighbors problem using lsh cosin */
-class lshCosin: public neighborsProblem{
+class lshCosin: public models{
     private:
         std::vector<Item*> points; 
         std::vector<std::vector<std::list<Item*>>> tables; // Each table is a hash table(vector of lists)

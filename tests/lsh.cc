@@ -20,14 +20,22 @@ int main(void){
         vec[i] = i + 1;
 
     it = new Item(vec,status);
+    l.push_back(*it);
+    delete it;
 
     model = new lshEuclidean(3,3,3,1,status);
-   
-    l.push_back(*it);
-   
-    model->fit(l,status);
+ 
+    for(i = 0; i < 10; i++)
+        vec[i] = i + 2;
+
+    it = new Item(vec,status);
     
-    printError(status);
+    l.push_back(*it);
+    model->fit(l,status);
+   
+    model->print();
+
+    
     delete it;
     delete model;
     

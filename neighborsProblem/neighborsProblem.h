@@ -21,11 +21,11 @@ class neighborsProblem{
 
         /* Accessors */
         virtual int getNumberOfPoints(errorCode& status) = 0;
-        virtual int getTableSize(errorCode& status) = 0;
         virtual int getDim(errorCode& status) = 0;
 
         /* Print some statistics */
         virtual void print(void) = 0;
+        virtual void printHashFunctions(void) = 0;
 };
 
 /* Neighbors problem using lsh euclidean */
@@ -60,11 +60,11 @@ class lshEuclidean: public neighborsProblem{
         void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
         void nNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
         
-        int getNumberOfPoints(errorCode& status){};
-        int getTableSize(errorCode& status){};
-        int getDim(errorCode& status){};
+        int getNumberOfPoints(errorCode& status);
+        int getDim(errorCode& status);
 
         void print(void);
+        void printHashFunctions(void);
 };
 
 /* Neighbors problem using lsh cosin */
@@ -93,10 +93,10 @@ class lshCosin: public neighborsProblem{
         void nNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
         
         int getNumberOfPoints(errorCode& status){};
-        int getTableSize(errorCode&status){};
         int getDim(errorCode& status){};
         
         void print(void);
+        void printHashFunctions(void);
 
 };
 

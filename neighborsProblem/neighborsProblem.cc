@@ -201,6 +201,33 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
         this->fitted = 1;
 }
 
+///////////////
+/* Accessors */
+///////////////
+
+int lshEuclidean::getNumberOfPoints(errorCode& status){
+    status = SUCCESS;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return 0;
+    }
+    else
+        return this->n;
+}
+
+int lshEuclidean::getDim(errorCode& status){
+    status = SUCCESS;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return 0;
+    }
+    else
+        return this->dim;
+}
+
+
 /* Print statistics */
 void lshEuclidean::print(void){
 
@@ -208,8 +235,29 @@ void lshEuclidean::print(void){
         cout << "Invalid method\n";
     else{
 
+        cout << "Lsh euclidean statistics\n";
+        cout << "Number of hash tables(l): " << this->l << "\n";
+        cout << "Size per table: " << this->tableSize << "\n";
+        cout << "Coefficient factor: " << this->coefficient << "\n";
+        cout << "Window size(w): " << this->w << "\n";
+        cout << "Number of sub hash functions(k): " << this->k << "\n\n";
     }
 }
+
+void lshEuclidean::printHashFunctions(void){
+
+    if(this->k == -1)
+        cout << "Invalid method\n";
+    else if(this->fitted == 0)
+        cout << "Method not fitted\n";
+    else{
+
+        int i;
+        for(i = 0; i < this->l; i++)
+            this->hashFunctions[i]->print();
+    }
+}
+
 
 ///////////////////////////////////////
 /* Implementation of lsh cosin class */

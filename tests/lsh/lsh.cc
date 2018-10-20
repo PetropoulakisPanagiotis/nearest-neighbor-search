@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include "../utils/utils.h"
-#include "../neighborsProblem/neighborsProblem.h"
-#include "../item/item.h"
+#include "../../neighborsProblem/utils/utils.h"
+#include "../../neighborsProblem/models/models.h"
+#include "../../neighborsProblem/item/item.h"
 
 using namespace std;
 

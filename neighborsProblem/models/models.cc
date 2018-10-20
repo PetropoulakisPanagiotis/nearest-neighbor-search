@@ -4,7 +4,7 @@
 #include "../hashFunction/hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
-#include "neighborsProblem.h"
+#include "models.h"
 
 using namespace std;
 

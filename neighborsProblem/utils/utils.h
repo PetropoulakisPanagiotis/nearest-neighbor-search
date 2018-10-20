@@ -2,25 +2,25 @@
 
 /* Set limits */
 #define MAX_DIM 20000 // Max dimension
-#define MAX_K 40 // Max number of sub hash functions
+#define MAX_K 50 // Max number of sub hash functions
 #define MIN_K 1
-#define MAX_W 800 // Max window size
+#define MAX_W 1000 // Max window size
 #define MIN_W 2
-#define MAX_L 50 // Max  number of hash tables
+#define MAX_L 80 // Max  number of hash tables
 #define MIN_L 1
 #define MAX_C 1 // Max coefficient
 #define MIN_C 0.03125 // 1/32
-#define MAX_POINTS 1500000 // Minimum given data set
+#define MAX_POINTS 1500000 // Max points that models can handle
 #define MIN_POINTS 0
-#define MY_MAX_RANDOM 20
-#define MY_MIN_RANDOM -20
+#define MY_MAX_RANDOM 5
+#define MY_MIN_RANDOM -5
 
 /* Errors */
 typedef enum errorCode{
     SUCCESS,
     INVALID_INDEX, 
     INVALID_DIM,  
-    INVALID_HASH_FUNCTION,
+    INVALID_HASH_FUNCTION, 
     INVALID_COMPARE,
     SUM_OVERFLOW,
     SUB_OVERFLOW,

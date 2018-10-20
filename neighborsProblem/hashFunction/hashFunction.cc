@@ -85,8 +85,6 @@ int hEuclidean::hash(Item& p, errorCode& status){
 
     result = floor(tempDiv);
 
-    result = abs(result);
-
     return result;
 }
 

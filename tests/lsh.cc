@@ -27,6 +27,7 @@ int main(void){
    
     model->fit(l,status);
     
+    printError(status);
     delete it;
     delete model;
     

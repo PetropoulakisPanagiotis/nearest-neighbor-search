@@ -235,6 +235,9 @@ void printError(errorCode& status){
         case(INVALID_POINTS):
             cout << "Please give an apropriate number of items[" + to_string(MIN_POINTS) + "," + to_string(MAX_POINTS) +"]\n";
             break;
+        case(METHOD_ALREADY_USED):
+            cout << "Method is fitted\n";
+            break;
     } // End switch
 }
 

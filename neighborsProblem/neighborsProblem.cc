@@ -20,7 +20,7 @@ neighborsProblem::~neighborsProblem(){}
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4){
+lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4),fitted(0){
     /* Set size of hash functions */
     int i;
     this->hashFunctions.reserve(this->l);
@@ -32,7 +32,7 @@ lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4){
         this->tables.push_back(vector<list<entry> >(this->l));
 }
 
-lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& status):l(l),k(k),w(w),coefficient(coefficient){
+lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& status):l(l),k(k),w(w),coefficient(coefficient),fitted(0){
 
     /* Check parameters */
     if(l < MIN_L || l > MAX_L || k < MIN_K || k > MAX_K || w < MIN_W || w > MAX_W || coefficient < MIN_C || coefficient > MAX_C){
@@ -61,43 +61,36 @@ lshEuclidean::~lshEuclidean(){
         return;
     }   
     
-    int i,j;
-    list<entry>::iterator iter; // Iterate through entries
+    int i;
 
     /* Delete hash functions */
-    for(i = 0; i < this->l; i++)
-        if(this->hashFunctions[i])
+    if(this->fitted == 1)
+        for(i = 0; i < this->l; i++)
             delete this->hashFunctions[i];
-        else
-            break;
-
-    /* Empty tables */
-    if(this->tables.size() == 0)
-        return;
-
-    /* Delete entries */
-    for(i = 0; i < this->l; i++)
-        for(j = 0; j < this->tableSize; j++)
-            for(iter = this->tables[i][j].begin(); iter != this->tables[i][j].end(); iter++)
-                if(iter->point)
-                    delete iter->point;
 }
 
-/* Fix hash table, members of lshEuclidean and add given points in the hash tables */
-/* Note: all existing data will be cleared                                         */
+/* Fix hash table, members of lsh euclidean and add given points in the hash tables */
 void lshEuclidean::fit(list<Item>& points, errorCode& status){
     int i, j, k;
     int flag = 0; // Invalid points
     int pos; // Pos(line) in current hash table
     entry newEntry;
+
+    /* Iteratiors */
     list<Item>::iterator iterPoints = points.begin(); // Iterate through points
     list<entry>::iterator iterEntries;  // Iterate through entries
-    
+   
     status = SUCCESS;
 
     /* Check method */
     if(this->k == -1){
         status = INVALID_METHOD;
+        return;
+    }
+
+    /* Already fitted */
+    if(this->fitted == 1){
+        status = METHOD_ALREADY_USED;
         return;
     }
 
@@ -114,15 +107,10 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
         return;
     }
 
-    /* Set table size and all hash tables */
+    /* Set table size */
     this->tableSize = (int)(this->n * this->coefficient);
   
-    /* Clear existing data */
-    //for(i = 0; i < this->l; i++)
-      //  for(j = 0; j < this->tableSize; j++)
-        //    this->tables[i].clear();
-
-    /* Each table has table size cells of lists */
+    /* Fix each table - Each table contains lists of entries */
     for(i = 0; i < this->l; i++)
         for(j = 0; j < this->tableSize; j++)
             this->tables[i].push_back(list<entry>());
@@ -138,15 +126,12 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     /* Set hash functions */
     ////////////////////////
 
-    /* Clear existing hash functions */
-   // this->hashFunctions.clear();
-
-    hashFunctionEuclidean* newFunc; // Function that will be inserted in hash functions table
+    /* Function that will be inserted in hash functions table */
+    hashFunctionEuclidean* newFunc;  
     
     for(i = 0; i < this->l; i++){
-
         newFunc = new hashFunctionEuclidean(this->dim, this->k, this->w, this->tableSize);
-
+        
         /* Truncate same hash functions */
         for(j = 0; j < i; j++){
             if(this->hashFunctions[j]->compare(*newFunc,status) == 0){
@@ -166,6 +151,7 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     /* Set hash tables */
     /////////////////////
 
+    /* Scan each table */
     for(i = 0; i < this->l; i++){
     
         /* Scan given points */
@@ -186,20 +172,33 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
             }
            
             /* Set new entry */
-            newEntry.point = new Item(*iterPoints);
+            newEntry.point = *(iterPoints);
             newEntry.valueG = this->hashFunctions[i]->hashLevel2(*iterPoints,status);
             
-            /* Add item */
-            this->tables[i][pos].push_back(newEntry);//new entry(newItem,newValueG));
+            /* Add point */
+            this->tables[i][pos].push_back(newEntry);
+
         } // End for - Points
 
         if(flag == 1)
             break;
     } // End for - Hash tables
   
-    //////////////////////////////////////
     /* Error occured - Clear structures */
-    //////////////////////////////////////
+    if(flag == 1){
+       
+        /* Clear points */
+        for(i = 0; i < this->l; i++)
+            for(j = 0; j < this->tableSize; j++)
+                this->tables[i].clear();
+ 
+        /* Clear hash functions */
+        for(i = 0; i < this->l; i++)
+            delete this->hashFunctions[i];      
+    }
+    else
+        /* Method fitted */
+        this->fitted = 1;
 }
 
 /* Print statistics */

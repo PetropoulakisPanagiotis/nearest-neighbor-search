@@ -10,7 +10,7 @@ class neighborsProblem{
     public:
         virtual ~neighborsProblem() = 0;
 
-        /* Fit the model with data - Reset existing data */
+        /* Fit the model with data */
         virtual void fit(std::list<Item>& points, errorCode& status) = 0;
 
         /* Finds the neighbors within a given radius of an item */
@@ -33,15 +33,11 @@ class lshEuclidean: public neighborsProblem{
     private:
         /* Entries in hash tables */
         typedef struct entry{
-            Item* point;
+            Item point;
             int valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
-        
-            ~entry(){
-                delete point;
-            }
         }entry;
 
-        std::vector<std::vector<std::list<entry>  > > tables; // Each table is a hash table(vector of lists)
+        std::vector<std::vector<std::list<entry> > > tables; // Each table is a hash table(vector of lists)
         int tableSize;
         float coefficient; // Table size == n * coefficient, (coefficient <= 1)
         int n; // Number of items 
@@ -50,7 +46,8 @@ class lshEuclidean: public neighborsProblem{
         int w; // Window size
         int dim; // Dimension
         std::vector<hashFunction*> hashFunctions; // Each table has one hash function
-
+        int fitted; // Method is fitted with data
+    
     public:
 
         lshEuclidean();

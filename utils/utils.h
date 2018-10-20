@@ -30,6 +30,7 @@ typedef enum errorCode{
     INVALID_METHOD,
     INVALID_PARAMETERS,
     INVALID_POINTS,
+    METHOD_ALREADY_USED
 }errorCode;
 
 ///////////////////////

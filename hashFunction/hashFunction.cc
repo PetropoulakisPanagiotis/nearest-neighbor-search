@@ -290,6 +290,8 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
             /* Add function */
             if(j == i)
                 this->H[i] = newFunc;
+            else
+                i -= 1;
         } // End for
 
         /* Pick random R values */
@@ -465,6 +467,8 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             /* Add function */
             if(j == i)
                 this->H[i] = newFunc;
+            else 
+                i -= 1;
         } // End for
     }
 }

@@ -227,8 +227,13 @@ void printError(errorCode& status){
         case(DIV_OVERFLOW):
             cout << "Can't divide given numbers. Possible overflow occures\n";
             break;
+
         case(ALLOCATION_FAILED):
             cout << "Allocation error occured. Check that you have enough memory or change your given parameters\n";
+            break;
+        
+        case(INVALID_POINTS):
+            cout << "Please give an apropriate number of items[" + to_string(MIN_POINTS) + "," + to_string(MAX_POINTS) +"]\n";
             break;
     } // End switch
 }

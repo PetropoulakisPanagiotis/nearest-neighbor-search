@@ -10,7 +10,8 @@
 #define MIN_L 1
 #define MAX_C 1 // Max coefficient
 #define MIN_C 0.03125 // 1/32
-#define MIN_POINTS 9000 // Minimum given data set
+#define MAX_POINTS 1500000 // Minimum given data set
+#define MIN_POINTS 0
 #define MY_MAX_RANDOM 20
 #define MY_MIN_RANDOM -20
 
@@ -27,7 +28,8 @@ typedef enum errorCode{
     DIV_OVERFLOW,
     ALLOCATION_FAILED,
     INVALID_METHOD,
-    INVALID_PARAMETERS
+    INVALID_PARAMETERS,
+    INVALID_POINTS,
 }errorCode;
 
 ///////////////////////

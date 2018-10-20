@@ -81,6 +81,15 @@ Item::Item(vector<double>& components, errorCode& status){
     }
 }
 
+Item::Item(const Item& x){
+
+    /* Set members */
+    this->id = "item_" + to_string(count);
+    this->count +=  1;
+    this->components = x.components;   
+    this->dim = x.dim;
+}
+
 Item::~Item(){
     this->count -= 1;
 }
@@ -165,6 +174,10 @@ double Item::getComponent(int index, errorCode& status){
         return this->components[index];
 }
 
+int Item::getDim(void){
+    return this->dim;
+}
+
 /* Get total items */
 int Item::getCount(void){
     return this->count;
@@ -180,7 +193,7 @@ void Item::print(void){
     
     for(i = 0; i < this->dim; i++){
         cout << this->components[i] << " ";
-        if(i % 10 == 0 && i != 0)
+        if(i % 20 == 0 && i != 0)
             cout << "\n";
     }
     cout << "\n\n";

@@ -18,6 +18,7 @@ class Item{
         Item(std::string id, int dim, errorCode& status);
         Item(std::vector<double>& components, errorCode& status);
         Item(std::string id, std::vector<double>& components, errorCode& status);
+        Item(const Item& x);
 
         ~Item();
 
@@ -31,6 +32,7 @@ class Item{
         /* Accessors */
         std::string getId(void);
         double getComponent(int index,errorCode&);
+        int getDim(void);
         int getCount(void);
         void print(void);
 

@@ -11,9 +11,10 @@ int main(void){
     neighborsProblem* model;
     errorCode status;
     Item* it;
+    Item* p;
     vector<double> vec(10);
     list<Item> l;
-
+    
     int i;
     for(i = 0; i < 10; i++)
         vec[i] = i + 1;
@@ -27,6 +28,7 @@ int main(void){
     model->fit(l,status);
     
     delete it;
-    //delete model;
+    delete model;
+    
     return 0;
 }

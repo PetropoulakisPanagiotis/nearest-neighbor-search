@@ -22,12 +22,14 @@ neighborsProblem::~neighborsProblem(){}
 /* Default constructor */
 lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4){
     /* Set size of hash functions */
-    this->hashFunctions.reserve(this->l);
-        
-    /* Set size of hash tables */
     int i;
+    this->hashFunctions.reserve(this->l);
     for(i = 0; i < this->l; i++)
-        this->tables.push_back(vector<list<entry> >());
+        this->hashFunctions[i] = NULL;
+
+    /* Set size of hash tables */
+    for(i = 0; i < this->l; i++)
+        this->tables.push_back(vector<list<entry> >(this->l));
 }
 
 lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& status):l(l),k(k),w(w),coefficient(coefficient){
@@ -40,12 +42,15 @@ lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& st
     else{
       
         /* Set size of hash functions */
-        this->hashFunctions.reserve(this->l);
-        
-        /* Set size of hash tables */
         int i;
+        this->hashFunctions.reserve(this->l);
         for(i = 0; i < this->l; i++)
-            this->tables.push_back(vector<list<entry> >());
+            this->hashFunctions[i] = NULL;
+
+        /* Set size of hash tables */
+        for(i = 0; i < this->l; i++)
+            this->tables.push_back(vector<list<entry> >(this->l));
+    
     }
 }
 
@@ -63,6 +68,12 @@ lshEuclidean::~lshEuclidean(){
     for(i = 0; i < this->l; i++)
         if(this->hashFunctions[i])
             delete this->hashFunctions[i];
+        else
+            break;
+
+    /* Empty tables */
+    if(this->tables.size() == 0)
+        return;
 
     /* Delete entries */
     for(i = 0; i < this->l; i++)
@@ -186,11 +197,6 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
             break;
     } // End for - Hash tables
   
-    for(i = 0; i < this->l; i++)
-        for(j = 0; j < this->tableSize; j++)
-            for(iterEntries = this->tables[i][j].begin(); iterEntries != this->tables[i][j].end(); iterEntries++)
-                iterEntries->point->print();
-
     //////////////////////////////////////
     /* Error occured - Clear structures */
     //////////////////////////////////////

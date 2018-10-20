@@ -13,7 +13,7 @@ using namespace std;
 /* Note: No default dehaviors - behave like inrerface  */
 /////////////////////////////////////////////////////////
 
-neighborsProblem::~neighborsProblem(){}
+models::~models(){}
 
 ///////////////////////////////////////////
 /* Implementation of lsh euclidean class */

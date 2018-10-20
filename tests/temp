@@ -1,0 +1,22 @@
+ ///////////////////////////////////////////
+    /* Error occured - Delete all structures */
+    //////////////////////////////////////////
+    if(flag == 0){
+        
+        /* Scan tables */
+        for(j = 0; j < i; j++){
+            
+            /* Scan lines */
+            for(k = 0; k < this->tableSize; k++){
+    
+                /* Scan list */
+                for(iterEntries = this->tables[j][k].begin(); iterEntries != this->tables[j][k].end(); iterEntries++){
+                
+
+                    iterEntries->point->print();
+                } // End for - Iterate through list 
+            } // End for - Line of current table
+        } // End for - Hash tables
+
+    } // End if error occured 
+

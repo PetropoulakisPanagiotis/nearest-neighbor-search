@@ -35,9 +35,13 @@ class lshEuclidean: public neighborsProblem{
         typedef struct entry{
             Item* point;
             int valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
+        
+            ~entry(){
+                delete point;
+            }
         }entry;
 
-        std::vector<std::vector<std::list<entry> > > tables; // Each table is a hash table(vector of lists)
+        std::vector<std::vector<std::list<entry>  > > tables; // Each table is a hash table(vector of lists)
         int tableSize;
         float coefficient; // Table size == n * coefficient, (coefficient <= 1)
         int n; // Number of items 
@@ -45,7 +49,7 @@ class lshEuclidean: public neighborsProblem{
         int k; // Number of sub hash functions
         int w; // Window size
         int dim; // Dimension
-        std::vector<hashFunctionEuclidean*> hashFunctions; // Each table has one hash function
+        std::vector<hashFunction*> hashFunctions; // Each table has one hash function
 
     public:
 

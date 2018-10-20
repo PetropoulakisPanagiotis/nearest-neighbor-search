@@ -23,11 +23,10 @@ int main(void){
     model = new lshEuclidean(3,3,3,1,status);
    
     l.push_back(*it);
-    
-
+   
     model->fit(l,status);
     
     delete it;
-    delete model;
+    //delete model;
     return 0;
 }

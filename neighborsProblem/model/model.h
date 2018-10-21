@@ -8,7 +8,7 @@
 /* Abstract class for neighbors problem */
 class model{
     public:
-        virtual ~model() = 0;
+        virtual ~model() {};
 
         /* Fit the model with data */
         virtual void fit(std::list<Item>& points, errorCode& status) = 0;
@@ -38,14 +38,14 @@ class lshEuclidean: public model{
         }entry;
 
         std::vector<std::vector<std::list<entry> > > tables; // Each table is a hash table(vector of lists)
+        std::vector<hashFunction*> hashFunctions; // Each table has one hash function
         int tableSize;
         float coefficient; // Table size == n * coefficient, (coefficient <= 1)
         int n; // Number of items 
         int l; // Total tables, hash functions
         int k; // Number of sub hash functions
-        int w; // Window size
         int dim; // Dimension
-        std::vector<hashFunction*> hashFunctions; // Each table has one hash function
+        int w; // Window size
         int fitted; // Method is fitted with data
     
     public:
@@ -70,34 +70,32 @@ class lshEuclidean: public model{
 /* Neighbors problem using lsh cosin */
 class lshCosin: public model{
     private:
-        std::vector<Item*> points; 
-        std::vector<std::vector<std::list<Item*>>> tables; // Each table is a hash table(vector of lists)
-        int n; // Number of items 
+        std::vector<std::vector<std::list<Item> > > tables; // Each table is a hash table(vector of lists)
+        std::vector<hashFunction*> hashFunctions; // Each table has one hash function       
         int tableSize;
-        float coefficient; // Table size == n * coefficient, (coefficient <= 1)
+        int n; // Number of items 
         int l; // Total tables 
         int k; // Number of sub hash functions
         int dim; // Dimension
-        std::vector<hashFunctionCosin*> hashFunctions; // Each table has one hash function       
-
+        int fitted;
+    
     public:
 
         lshCosin();
-        lshCosin(int l, int k, float coefficient, errorCode& status);
+        lshCosin(int l, int k, errorCode& status);
 
         ~lshCosin();
 
-        void fit(std::list<Item>& points, errorCode& status){};
+        void fit(std::list<Item>& points, errorCode& status);
 
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsDistances, errorCode& status){}; 
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsDistances, errorCode& status);
         void nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status);
         
-        int getNumberOfPoints(errorCode& status){};
-        int getDim(errorCode& status){};
-        
+        int getNumberOfPoints(errorCode& status);
+        int getDim(errorCode& status);
+
         void print(void);
         void printHashFunctions(void);
-
 };
 
 // Petropoulakis Panagiotis

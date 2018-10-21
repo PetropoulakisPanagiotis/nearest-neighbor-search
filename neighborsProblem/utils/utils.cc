@@ -231,7 +231,15 @@ void printError(errorCode& status){
         case(ALLOCATION_FAILED):
             cout << "Allocation error occured. Check that you have enough memory or change your given parameters\n";
             break;
-        
+       
+        case(INVALID_METHOD):
+            cout << "Method is broken\n";
+            break;
+
+        case(INVALID_PARAMETERS):
+            cout << "Invalid parameters given\n";
+            break;
+
         case(INVALID_POINTS):
             cout << "Please give an apropriate number of items[" + to_string(MIN_POINTS) + "," + to_string(MAX_POINTS) +"]\n";
             break;

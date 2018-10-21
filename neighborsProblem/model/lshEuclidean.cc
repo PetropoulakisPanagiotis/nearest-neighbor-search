@@ -8,21 +8,15 @@
 
 using namespace std;
 
-/////////////////////////////////////////////////////////
-/* Implementation of abstract neighbors Problem        */
-/* Note: No default dehaviors - behave like inrerface  */
-/////////////////////////////////////////////////////////
-
-model::~model(){}
-
 ///////////////////////////////////////////
 /* Implementation of lsh euclidean class */
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4),fitted(0){
-    /* Set size of hash functions */
+lshEuclidean::lshEuclidean():tableSize(0),coefficient(1/4),n(0),l(0),k(4),dim(0),w(200),fitted(0){
     int i;
+
+    /* Set size of hash functions */
     this->hashFunctions.reserve(this->l);
     for(i = 0; i < this->l; i++)
         this->hashFunctions[i] = NULL;
@@ -32,7 +26,7 @@ lshEuclidean::lshEuclidean():l(5),k(4),w(200),coefficient(1/4),fitted(0){
         this->tables.push_back(vector<list<entry> >(this->l));
 }
 
-lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& status):l(l),k(k),w(w),coefficient(coefficient),fitted(0){
+lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& status):tableSize(0),coefficient(coefficient),n(0),l(l),k(k),w(w),fitted(0){
 
     /* Check parameters */
     if(l < MIN_L || l > MAX_L || k < MIN_K || k > MAX_K || w < MIN_W || w > MAX_W || coefficient < MIN_C || coefficient > MAX_C){
@@ -41,8 +35,9 @@ lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& st
     }
     else{
       
-        /* Set size of hash functions */
         int i;
+    
+        /* Set size of hash functions */
         this->hashFunctions.reserve(this->l);
         for(i = 0; i < this->l; i++)
             this->hashFunctions[i] = NULL;
@@ -71,7 +66,7 @@ lshEuclidean::~lshEuclidean(){
 
 /* Fix hash table, members of lsh euclidean and add given points in the hash tables */
 void lshEuclidean::fit(list<Item>& points, errorCode& status){
-    int i, j, k;
+    int i, j;
     int flag = 0; // Invalid points
     int pos; // Pos(line) in current hash table
     entry newEntry;
@@ -417,13 +412,11 @@ void lshEuclidean::printHashFunctions(void){
     else{
 
         int i;
+        
+        cout << "Hash functions of lsh euclidean\n";
         for(i = 0; i < this->l; i++)
             this->hashFunctions[i]->print();
     }
 }
 
-
-///////////////////////////////////////
-/* Implementation of lsh cosin class */
-///////////////////////////////////////
 

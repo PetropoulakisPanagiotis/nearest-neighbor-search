@@ -67,7 +67,6 @@ lshEuclidean::~lshEuclidean(){
 /* Fix hash table, members of lsh euclidean and add given points in the hash tables */
 void lshEuclidean::fit(list<Item>& points, errorCode& status){
     int i, j;
-    int flag = 0; // Invalid points
     int pos; // Pos(line) in current hash table
     entry newEntry;
 
@@ -126,21 +125,42 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     
     for(i = 0; i < this->l; i++){
         newFunc = new hashFunctionEuclidean(this->dim, this->k, this->w, this->tableSize);
-        
+        if(newFunc == NULL){
+            status = ALLOCATION_FAILED;
+            this->k = -1;
+            break;
+        }
+
         /* Truncate same hash functions */
         for(j = 0; j < i; j++){
             if(this->hashFunctions[j]->compare(*newFunc,status) == 0){
                 delete newFunc;
                 break;
             }
+
+            if(status != SUCCESS){
+                delete newFunc;
+                this->k = -1;
+                break;
+            }
         } // End for
         
+        if(status != SUCCESS)
+            break;
+
         if(i == j){
             this->hashFunctions[i] = newFunc; // Add hash function
         }
         else
             i -= 1;
     } // End for - Hash functions
+
+    /* Delete remaining hash functions */
+    if(status == ALLOCATION_FAILED){
+        for(j = 0; j < i; j++)
+            delete this->hashFunctions[j];
+        return;
+    }
 
     /////////////////////
     /* Set hash tables */
@@ -150,37 +170,44 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     for(i = 0; i < this->l; i++){
     
         /* Scan given points */
-        for(iterPoints = points.begin(); iterPoints != points.end() ; iterPoints++){
+        for(iterPoints = points.begin(); iterPoints != points.end(); iterPoints++){
             /* Check consistency of dim */
             if(this->dim != iterPoints->getDim()){
                 status = INVALID_DIM;
-                flag = 1;
                 break;
             }
             
             /* Find position in hash table */
-            pos = this->hashFunctions[i]->hash(*iterPoints,status);
+            pos = this->hashFunctions[i]->hash(*iterPoints, status);
             if(pos < 0 || pos >= tableSize){
                 status = INVALID_HASH_FUNCTION;
-                flag = 1;
                 break;
             }
-           
+
+            if(status != SUCCESS){
+                this->k = -1;
+                break;
+            }
+ 
             /* Set new entry */
             newEntry.point = *(iterPoints);
-            newEntry.valueG = this->hashFunctions[i]->hashLevel2(*iterPoints,status);
-            
+            newEntry.valueG = this->hashFunctions[i]->hashLevel2(*iterPoints, status);
+            if(status != SUCCESS){
+                this->k = -1;
+                break;
+            }
+
             /* Add point */
             this->tables[i][pos].push_back(newEntry);
 
         } // End for - Points
 
-        if(flag == 1)
+        if(status != SUCCESS)
             break;
     } // End for - Hash tables
   
     /* Error occured - Clear structures */
-    if(flag == 1){
+    if(status != SUCCESS){
        
         /* Clear points */
         for(i = 0; i < this->l; i++)
@@ -236,8 +263,8 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
     for(i = 0; i < this->l; i++){
     
         /* Find position in table */
-        pos = this->hashFunctions[i]->hash(query,status);
-        if(status != 0)
+        pos = this->hashFunctions[i]->hash(query, status);
+        if(status != SUCCESS)
             return;
 
         /* Empty list */
@@ -245,8 +272,8 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
             continue;
 
         /* Find value g for query */
-        valueG = this->hashFunctions[i]->hashLevel2(query,status);
-        if(status != 0)
+        valueG = this->hashFunctions[i]->hashLevel2(query, status);
+        if(status != SUCCESS)
             return;
 
         /* Scan list of specific bucket */
@@ -257,8 +284,8 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
                 continue;
 
             /* Find current distance */
-            currDist = iter->point.euclideanDist(query,status);
-            if(status != 0)
+            currDist = iter->point.euclideanDist(query, status);
+            if(status != SUCCESS)
                 return;
             
             /* Keep neighbor */
@@ -303,8 +330,8 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
     for(i = 0; i < this->l; i++){
     
         /* Find position in table */
-        pos = this->hashFunctions[i]->hash(query,status);
-        if(status != 0)
+        pos = this->hashFunctions[i]->hash(query, status);
+        if(status != SUCCESS)
             return;
 
         /* Empty list */
@@ -312,8 +339,8 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
             continue;
 
         /* Find value g for query */
-        valueG = this->hashFunctions[i]->hashLevel2(query,status);
-        if(status != 0)
+        valueG = this->hashFunctions[i]->hashLevel2(query, status);
+        if(status != SUCCESS)
             return;
 
         /* Scan list of specific bucket */
@@ -324,8 +351,8 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
                 continue;
 
             /* Find current distance */
-            currDist = iter->point.euclideanDist(query,status);
-            if(status != 0)
+            currDist = iter->point.euclideanDist(query, status);
+            if(status != SUCCESS)
                 return;
             
             /* First neighbor */
@@ -369,7 +396,11 @@ int lshEuclidean::getNumberOfPoints(errorCode& status){
 
     if(fitted == 0){
         status = METHOD_UNFITTED;
-        return 0;
+        return -1;
+    }
+    else if(this->k == -1){
+        status = INVALID_METHOD;
+        return -1;
     }
     else
         return this->n;
@@ -380,7 +411,11 @@ int lshEuclidean::getDim(errorCode& status){
 
     if(fitted == 0){
         status = METHOD_UNFITTED;
-        return 0;
+        return -1;
+    }
+    else if(this->k == -1){
+        status = INVALID_METHOD;
+        return -1;
     }
     else
         return this->dim;

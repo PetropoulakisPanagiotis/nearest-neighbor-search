@@ -133,6 +133,7 @@ void Item::concatenateComponents(vector<double>& newComponents, errorCode& statu
     /* Check size of components */
     if(this->dim + newComponents.size() >= MAX_DIM)
         status = INVALID_DIM;
+
     else if(newComponents.size() != 0){
         this->components.insert(this->components.end(), newComponents.begin(), newComponents.end());
         this->dim = this->components.size();
@@ -146,6 +147,7 @@ void Item::resetComponents(vector<double>& newComponents, errorCode& status){
     /* Check parameters */
     if(newComponents.size() >= MAX_DIM)
         status =  INVALID_DIM;
+    
     else if(newComponents.size() != 0){
         this->components.assign(newComponents.begin(), newComponents.end());
         this->dim = this->components.size();
@@ -167,7 +169,7 @@ double Item::getComponent(int index, errorCode& status){
     /* Check parameters */
     if(index < 0 || index >= this->dim){
         status =  INVALID_INDEX;
-        return 0;
+        return -1;
     }
     else
         return this->components[index];
@@ -213,11 +215,11 @@ int Item::compare(Item& x, errorCode& status){
     /* Check dimensions */
     if(this->dim == 0){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
     
     if(this->dim != x.dim)
-        return 1;
+        return -1;
 
     if(equal(this->components.begin(), this->components.end(), x.components.begin()))
         return 0;
@@ -235,7 +237,7 @@ double Item::innerProduct(Item& x, errorCode& status){
     /* Check dimensions */
     if(this->dim == 0 || x.dim == 0){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     if(this->dim != x.dim){
@@ -267,18 +269,18 @@ double Item::norm(errorCode& status){
     /* Check dimensions */
     if(this->dim == 0){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     /* Calculate norm */
     for(i = 0; i < this->dim; i++){
         tempMult= myMultDouble(this->components[i], this->components[i],status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
 
         norm = mySumDouble(tempMult, norm, status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
     } // End for
 
     norm = sqrt(norm);
@@ -299,27 +301,27 @@ double Item::euclideanDist(Item& x, errorCode& status){
     /* Check dimensions */
     if(this->dim == 0 || x.dim == 0){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     if(this->dim != x.dim){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     /* Calculate distance */
     for(i = 0; i < this->dim; i++){
         newComponent = mySubDouble(this->components[i], x.components[i], status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
 
         tempMult= myMultDouble(newComponent, newComponent, status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
 
         dist = mySumDouble(dist, tempMult, status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
     } // End for
     
     dist = sqrt(dist);
@@ -337,33 +339,33 @@ double Item::cosinDist(Item& x, errorCode& status){
     /* Check dimensions */
     if(this->dim <= 0 || x.dim <= 0){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     if(this->dim != x.dim){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     dist = this->innerProduct(x, status);
     if(status != SUCCESS)
-        return 0;
+        return -1;
 
     normX = this->norm(status);
     if(status != SUCCESS)
-        return 0;
+        return -1;
 
     normY = x.norm(status);
     if(status != SUCCESS)
-        return 0;
+        return -1;
 
     mult = myMultDouble(normX, normY, status);
     if(status != SUCCESS)
-        return 0;
+        return -1;
 
     dist = myDivDouble(dist, mult, status);
     if(status != SUCCESS)
-        return 0;
+        return -1;
 
     dist = 1 - dist;
 

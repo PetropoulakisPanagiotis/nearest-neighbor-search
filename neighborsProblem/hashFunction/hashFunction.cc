@@ -27,8 +27,8 @@ hEuclidean::hEuclidean(int dim, int w):w(w){
     }
     else{ 
         /* Temporary vector for item v */
-        vector<double> components(dim);
         int i = 0;
+        vector<double> components(dim);
         errorCode status;
 
         /* Fix id */
@@ -47,7 +47,10 @@ hEuclidean::hEuclidean(int dim, int w):w(w){
         if(status != 0){
             delete this->v;
             this->v = NULL;
-        } 
+        }
+
+        if(this->v == NULL)
+            status = ALLOCATION_FAILED;
     }
 }
 
@@ -160,7 +163,11 @@ hCosin::hCosin(int dim){
         if(status != 0){
             delete this->r;
             this->r = NULL;
-        } 
+        }
+
+        if(this->r == NULL)
+            status = ALLOCATION_FAILED;
+
     }
 }
 
@@ -275,6 +282,12 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
         /* Pick k hash(h) functions */
         for(i = 0; i < this->k; i++){
             newFunc = new hEuclidean(dim,w);
+            if(newFunc == NULL){
+                status = ALLOCATION_FAILED;
+                this->k = -1;
+                break;
+            }
+
 
             for(j = 0; j < i; j++){
             
@@ -283,14 +296,32 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
                     delete newFunc;
                     break;
                 }
+
+                if(status != SUCCESS){
+                    delete newFunc;
+                    this->k = -1;
+                    break;
+                }
+
             } // End for
-             
+            
+            if(status != SUCCESS)
+                break;
+
             /* Add function */
             if(j == i)
                 this->H[i] = newFunc;
             else
                 i -= 1;
         } // End for
+
+        /* Delete remaining h functions */
+        if(status != SUCCESS){
+            for(j = 0; j < i; j++)
+                delete this->H[j];
+            
+            return;
+        }
 
         /* Pick random R values */
         for(i = 0; i < this->k; i++)
@@ -385,6 +416,9 @@ int hashFunctionEuclidean::compare(hashFunctionEuclidean& x, errorCode& status){
         if(this->H[i]->compare(*(x.H[i]), status) != 0)
             return 1;
     
+    if(status != SUCCESS)
+        return -1;
+
     /* Compare r values */
     for(i = 0; i < this->k; i++)
         if(this->R[i] != x.R[i])
@@ -453,6 +487,12 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
 
         for(i = 0; i < this->k; i++){
             newFunc = new hCosin(dim);
+            if(newFunc == NULL){
+                status = ALLOCATION_FAILED;
+                this->k = -1;
+                break;  
+            }
+
             for(j = 0; j < i; j++){
             
                 /* Truncate same sub hash functions */
@@ -460,7 +500,17 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
                     delete newFunc;
                     break;
                 }
+            
+                if(status != SUCCESS){
+                    delete newFunc;
+                    this->k = -1;
+                    break;
+                }
+            
             } // End for
+
+            if(status != SUCCESS)
+                break;
 
             /* Add function */
             if(j == i)
@@ -468,6 +518,11 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             else 
                 i -= 1;
         } // End for
+
+        /* Delete remaining h functions */
+        if(status != SUCCESS)
+            for(j = 0; j < i; j++)
+                delete this->H[j];
     }
 }
 
@@ -530,7 +585,7 @@ int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
     }
 
     if(this->k != x.k)
-        return 1;
+        return -1;
 
     /* Compare h functions */
     for(i = 0; i < this->k; i++)

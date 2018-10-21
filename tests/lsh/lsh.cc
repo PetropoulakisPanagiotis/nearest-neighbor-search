@@ -2,12 +2,31 @@
 #include <vector>
 #include <list>
 #include "../../neighborsProblem/utils/utils.h"
-#include "../../neighborsProblem/model/model.h"
+#include "../../neighborsProblem/fileHandler/fileHandler.h"
 #include "../../neighborsProblem/item/item.h"
+#include "../../neighborsProblem/model/model.h"
 
 using namespace std;
 
 int main(void){
+    vector<Item> x;
+    list<string> y;
+    errorCode error;
+
+    readDataSet("../dataSets//input_small",x,y,error,1);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     model* myModel;
     errorCode status;
     Item* it;
@@ -38,6 +57,9 @@ int main(void){
     
     delete it;
     delete myModel;
-    
+    */
+
     return 0;
 }
+
+// Petropoulakis Panagiotis

@@ -34,7 +34,8 @@ typedef enum errorCode{
     INVALID_POINTS,
     METHOD_ALREADY_USED,
     METHOD_UNFITTED,
-    INVALID_RADIUS
+    INVALID_RADIUS,
+    INVALID_DATA_SET
 }errorCode;
 
 ///////////////////////

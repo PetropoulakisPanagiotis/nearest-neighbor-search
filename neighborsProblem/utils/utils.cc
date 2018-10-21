@@ -255,6 +255,10 @@ void printError(errorCode& status){
         case(INVALID_RADIUS):
             cout << "Please give an apropriate radius[" + to_string(MIN_RADIUS) + "," + to_string(MAX_RADIUS) +"]\n";
             break;
+        
+        case(INVALID_DATA_SET):
+            cout << "Please give a valid data set\n";
+            break;
     } // End switch
 }
 

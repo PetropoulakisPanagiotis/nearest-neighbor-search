@@ -4,7 +4,7 @@
 #include "../hashFunction/hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
-#include "models.h"
+#include "model.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ using namespace std;
 /* Note: No default dehaviors - behave like inrerface  */
 /////////////////////////////////////////////////////////
 
-models::~models(){}
+model::~model(){}
 
 ///////////////////////////////////////////
 /* Implementation of lsh euclidean class */
@@ -200,6 +200,182 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
         /* Method fitted */
         this->fitted = 1;
 }
+
+/* Find the radius neighbors of a given point */
+void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
+    int queryDim = query.getDim();
+    int i, pos, valueG, found = 0, flag = 0;
+    double minDist = -1; // Current minimum distance 
+    double currDist; // Distance of a point in list
+    list<entry>::iterator iter;
+    list<entry>::iterator iterNearestNeighbor;
+
+    status = SUCCESS;
+
+    /* Check parameters */
+    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
+        status = INVALID_DIM;
+        return;
+    }
+
+    /* Check model */
+    if(this->fitted == 0){
+        status = METHOD_UNFITTED;
+        return;
+    }
+
+    if(this->k == -1){
+        status = INVALID_METHOD;
+        return;
+    }
+
+    /* Scan all tables */
+    for(i = 0; i < this->l; i++){
+    
+        /* Find position in table */
+        pos = this->hashFunctions[i]->hash(query,status);
+        if(status != 0)
+            return;
+
+        /* Empty list */
+        if(this->tables[i][pos].size() == 0)
+            continue;
+
+        /* Find value g for query */
+        valueG = this->hashFunctions[i]->hashLevel2(query,status);
+        if(status != 0)
+            return;
+
+        /* Scan list of specific bucket */
+        for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
+
+            /* Compare values g of query and current point */
+            if(valueG != iter->valueG)
+                continue;
+
+            /* Find current distance */
+            currDist = iter->point.euclideanDist(query,status);
+            if(status != 0)
+                return;
+            
+            /* First neighbor */
+            if(flag == 0){
+                minDist = currDist;
+                iterNearestNeighbor = iter;
+                
+                found = 1;
+                flag = 1;
+            }
+
+            /* Change min distance */
+            else if(minDist > currDist){
+                minDist = currDist;
+                iterNearestNeighbor = iter;
+            }
+
+        } // End for - Scan list
+    } // End for - Tables
+
+    /* Nearest neighbor found */
+    if(found == 1){
+        nNeighbor = iterNearestNeighbor->point;
+        if(neighborDistance != NULL)
+            *neighborDistance = minDist;
+    }
+    else{
+        nNeighbor.setId("Nearest neighbor not found");
+        if(neighborDistance != NULL)
+            *neighborDistance = minDist;
+    }
+}
+/* Find the nearest neighbor of a given point */
+void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
+    int queryDim = query.getDim();
+    int i, pos, valueG, found = 0, flag = 0;
+    double minDist = -1; // Current minimum distance 
+    double currDist; // Distance of a point in list
+    list<entry>::iterator iter;
+    list<entry>::iterator iterNearestNeighbor;
+
+    status = SUCCESS;
+
+    /* Check parameters */
+    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
+        status = INVALID_DIM;
+        return;
+    }
+
+    /* Check model */
+    if(this->fitted == 0){
+        status = METHOD_UNFITTED;
+        return;
+    }
+
+    if(this->k == -1){
+        status = INVALID_METHOD;
+        return;
+    }
+
+    /* Scan all tables */
+    for(i = 0; i < this->l; i++){
+    
+        /* Find position in table */
+        pos = this->hashFunctions[i]->hash(query,status);
+        if(status != 0)
+            return;
+
+        /* Empty list */
+        if(this->tables[i][pos].size() == 0)
+            continue;
+
+        /* Find value g for query */
+        valueG = this->hashFunctions[i]->hashLevel2(query,status);
+        if(status != 0)
+            return;
+
+        /* Scan list of specific bucket */
+        for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
+
+            /* Compare values g of query and current point */
+            if(valueG != iter->valueG)
+                continue;
+
+            /* Find current distance */
+            currDist = iter->point.euclideanDist(query,status);
+            if(status != 0)
+                return;
+            
+            /* First neighbor */
+            if(flag == 0){
+                minDist = currDist;
+                iterNearestNeighbor = iter;
+                
+                found = 1;
+                flag = 1;
+            }
+
+            /* Change min distance */
+            else if(minDist > currDist){
+                minDist = currDist;
+                iterNearestNeighbor = iter;
+            }
+
+        } // End for - Scan list
+    } // End for - Tables
+
+    /* Nearest neighbor found */
+    if(found == 1){
+        nNeighbor = iterNearestNeighbor->point;
+        if(neighborDistance != NULL)
+            *neighborDistance = minDist;
+    }
+    else{
+        nNeighbor.setId("Nearest neighbor not found");
+        if(neighborDistance != NULL)
+            *neighborDistance = minDist;
+    }
+}
+
 
 ///////////////
 /* Accessors */

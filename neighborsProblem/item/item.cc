@@ -84,8 +84,7 @@ Item::Item(vector<double>& components, errorCode& status){
 Item::Item(const Item& x){
 
     /* Set members */
-    this->id = "item_" + to_string(count);
-    this->count +=  1;
+    this->id = x.id;
     this->components = x.components;   
     this->dim = x.dim;
 }

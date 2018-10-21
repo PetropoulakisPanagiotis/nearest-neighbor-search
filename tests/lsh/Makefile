@@ -16,8 +16,8 @@ hashFunction.o: ../../neighborsProblem/hashFunction/hashFunction.cc
 item.o: ../../neighborsProblem/item/item.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/item/item.cc -std=c++11
 
-models.o: ../../neighborsProblem/models/models.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/models/models.cc -std=c++11
+models.o: ../../neighborsProblem/model/model.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/model.cc -std=c++11
 
 .PHONY:
 	clean
@@ -28,4 +28,4 @@ clean:
 	rm -rf lsh lsh.o utils.o hashFunction.o item.o models.o
 
 check:
-	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/models/models.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 
+	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/model/model.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 

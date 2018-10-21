@@ -2,13 +2,13 @@
 #include <vector>
 #include <list>
 #include "../../neighborsProblem/utils/utils.h"
-#include "../../neighborsProblem/models/models.h"
+#include "../../neighborsProblem/model/model.h"
 #include "../../neighborsProblem/item/item.h"
 
 using namespace std;
 
 int main(void){
-    neighborsProblem* model;
+    model* myModel;
     errorCode status;
     Item* it;
     Item* p;
@@ -23,7 +23,7 @@ int main(void){
     l.push_back(*it);
     delete it;
 
-    model = new lshEuclidean(3,3,3,1,status);
+    myModel = new lshEuclidean(3,3,3,1,status);
  
     for(i = 0; i < 10; i++)
         vec[i] = i + 2;
@@ -31,13 +31,13 @@ int main(void){
     it = new Item(vec,status);
     
     l.push_back(*it);
-    model->fit(l,status);
+    myModel->fit(l,status);
    
-    model->print();
+    myModel->print();
 
     
     delete it;
-    delete model;
+    delete myModel;
     
     return 0;
 }

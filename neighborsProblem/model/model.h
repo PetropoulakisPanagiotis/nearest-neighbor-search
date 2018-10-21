@@ -6,18 +6,18 @@
 #include "../hashFunction/hashFunction.h"
 
 /* Abstract class for neighbors problem */
-class models{
+class model{
     public:
-        virtual ~neighborsProblem() = 0;
+        virtual ~model() = 0;
 
         /* Fit the model with data */
         virtual void fit(std::list<Item>& points, errorCode& status) = 0;
 
         /* Finds the neighbors within a given radius of an item */
-        virtual void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status) = 0;
+        virtual void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsDistances, errorCode& status) = 0;
         
         /* Find the nearest neighbor of an item */
-        virtual void nNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status) =  0;
+        virtual void nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status) =  0;
 
         /* Accessors */
         virtual int getNumberOfPoints(errorCode& status) = 0;
@@ -29,7 +29,7 @@ class models{
 };
 
 /* Neighbors problem using lsh euclidean */
-class lshEuclidean: public models{
+class lshEuclidean: public model{
     private:
         /* Entries in hash tables */
         typedef struct entry{
@@ -57,8 +57,8 @@ class lshEuclidean: public models{
 
         void fit(std::list<Item>& points, errorCode& status);
 
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
-        void nNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsDistances, errorCode& status);
+        void nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status);
         
         int getNumberOfPoints(errorCode& status);
         int getDim(errorCode& status);
@@ -68,7 +68,7 @@ class lshEuclidean: public models{
 };
 
 /* Neighbors problem using lsh cosin */
-class lshCosin: public models{
+class lshCosin: public model{
     private:
         std::vector<Item*> points; 
         std::vector<std::vector<std::list<Item*>>> tables; // Each table is a hash table(vector of lists)
@@ -89,8 +89,8 @@ class lshCosin: public models{
 
         void fit(std::list<Item>& points, errorCode& status){};
 
-        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){}; 
-        void nNeighbors(Item& query, int k, std::list<Item>& neighbors, std::list<double>* neighborsRadius, errorCode& status){};
+        void radiusNeighbors(Item& query, int radius, std::list<Item>& neighbors, std::list<double>* neighborsDistances, errorCode& status){}; 
+        void nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status);
         
         int getNumberOfPoints(errorCode& status){};
         int getDim(errorCode& status){};

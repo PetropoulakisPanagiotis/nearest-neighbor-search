@@ -243,6 +243,10 @@ void printError(errorCode& status){
         case(METHOD_UNFITTED):
             cout << "Method isn't fitted\n";
             break;
+        
+        case(INVALID_RADIUS):
+            cout << "Please give an apropriate radius[" + to_string(MIN_RADIUS) + "," + to_string(MAX_RADIUS) +"]\n";
+            break;
     } // End switch
 }
 

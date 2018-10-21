@@ -12,6 +12,8 @@
 #define MIN_C 0.03125 // 1/32
 #define MAX_POINTS 1500000 // Max points that models can handle
 #define MIN_POINTS 0
+#define MAX_RADIUS 1500
+#define MIN_RADIUS 0
 #define MY_MAX_RANDOM 5
 #define MY_MIN_RANDOM -5
 
@@ -31,7 +33,8 @@ typedef enum errorCode{
     INVALID_PARAMETERS,
     INVALID_POINTS,
     METHOD_ALREADY_USED,
-    METHOD_UNFITTED
+    METHOD_UNFITTED,
+    INVALID_RADIUS
 }errorCode;
 
 ///////////////////////

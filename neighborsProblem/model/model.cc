@@ -204,11 +204,9 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
 /* Find the radius neighbors of a given point */
 void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
     int queryDim = query.getDim();
-    int i, pos, valueG, found = 0, flag = 0;
-    double minDist = -1; // Current minimum distance 
+    int i, pos, valueG;
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
-    list<entry>::iterator iterNearestNeighbor;
 
     status = SUCCESS;
 
@@ -216,6 +214,11 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
     if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
         status = INVALID_DIM;
         return;
+    }
+
+    if(radius < MIN_RADIUS || radius > MAX_RADIUS){
+        status = INVALID_RADIUS;
+        return; 
     }
 
     /* Check model */
@@ -228,6 +231,11 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
         status = INVALID_METHOD;
         return;
     }
+
+    /* Clear given lists */
+    neighbors.clear();
+    if(neighborsDistances != NULL)
+        neighborsDistances->clear();
 
     /* Scan all tables */
     for(i = 0; i < this->l; i++){
@@ -258,36 +266,16 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
             if(status != 0)
                 return;
             
-            /* First neighbor */
-            if(flag == 0){
-                minDist = currDist;
-                iterNearestNeighbor = iter;
-                
-                found = 1;
-                flag = 1;
+            /* Keep neighbor */
+            if(currDist < radius){
+                neighbors.push_back(iter->point);
+                if(neighborsDistances != NULL)
+                    neighborsDistances->push_back(currDist);
             }
-
-            /* Change min distance */
-            else if(minDist > currDist){
-                minDist = currDist;
-                iterNearestNeighbor = iter;
-            }
-
         } // End for - Scan list
     } // End for - Tables
-
-    /* Nearest neighbor found */
-    if(found == 1){
-        nNeighbor = iterNearestNeighbor->point;
-        if(neighborDistance != NULL)
-            *neighborDistance = minDist;
-    }
-    else{
-        nNeighbor.setId("Nearest neighbor not found");
-        if(neighborDistance != NULL)
-            *neighborDistance = minDist;
-    }
 }
+
 /* Find the nearest neighbor of a given point */
 void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int queryDim = query.getDim();

@@ -12,18 +12,30 @@ int main(void){
     vector<Item> x;
     list<string> y;
     errorCode error;
+    char delim = ' ';
+    vector<double> p;
 
-    readDataSet("../dataSets//input_small",x,y,error,1);
+    int i;
+
+    for(i = 0; i < 5; i++)
+        p.push_back(i);
+
+    for(i = 0; i < 1000; i++)
+        x.push_back(Item(p,error));
+
+    x[3].print();
+
+    /*
+    readDataSet("../dataSets/input_small",0,delim,x,y,error);
     
+    cout << error;
     
+    printError(error); 
     
+   
+    x[5].print();
     
-    
-    
-    
-    
-    
-    
+    */
     
     
     /*

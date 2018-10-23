@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <string>
 #include <cmath>
 #include "item.h"
@@ -62,6 +63,7 @@ Item::Item(string id, vector<double>& components, errorCode& status){
         this->dim = components.size();
         
         this->count += 1;
+
     }
 }
 
@@ -78,6 +80,7 @@ Item::Item(vector<double>& components, errorCode& status){
         this->dim = components.size();
         
         this->count += 1;
+        
     }
 }
 
@@ -87,6 +90,7 @@ Item::Item(const Item& x){
     this->id = x.id;
     this->components = x.components;   
     this->dim = x.dim;
+
 }
 
 Item::~Item(){

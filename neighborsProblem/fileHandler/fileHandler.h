@@ -8,6 +8,6 @@
 /* writing results in files                          */
 
 /* Read given file, extract items and read possible metrices(euclidean, cosin, etc) */
-void readDataSet(std::string fileName, int withId, char delim, std::vector<Item>& points, std::list<std::string> types, errorCode& status); 
+void readDataSet(std::string fileName, int withId, char delim, std::list<Item>& points, std::list<std::string>& types, errorCode& status); 
 
 // Petropoulakis Panagiotis

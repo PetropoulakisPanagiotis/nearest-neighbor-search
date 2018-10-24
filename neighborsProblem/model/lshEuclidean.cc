@@ -13,7 +13,20 @@ using namespace std;
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():tableSize(0),coefficient(1/4),n(0),l(0),k(4),dim(0),w(200),fitted(0){
+lshEuclidean::lshEuclidean():tableSize(0),coefficient(1/4),n(0),l(5),k(4),dim(0),w(200),fitted(0){
+    int i;
+
+    /* Set size of hash functions */
+    this->hashFunctions.reserve(this->l);
+    for(i = 0; i < this->l; i++)
+        this->hashFunctions[i] = NULL;
+
+    /* Set size of hash tables */
+    for(i = 0; i < this->l; i++)
+        this->tables.push_back(vector<list<entry> >(this->l));
+}
+
+lshEuclidean::lshEuclidean(int k, int l):tableSize(0),coefficient(1/4),n(0),l(l),k(k),dim(0),w(200),fitted(0){
     int i;
 
     /* Set size of hash functions */

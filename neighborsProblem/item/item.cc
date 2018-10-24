@@ -8,7 +8,7 @@
 using namespace std;
 
 /* Initialize static fields */
-int Item:: count = 0;
+int Item::count = 0;
 
 ////////////////////////////////
 /* Constructors - destructors */
@@ -63,24 +63,22 @@ Item::Item(string id, vector<double>& components, errorCode& status){
         this->dim = components.size();
         
         this->count += 1;
-
     }
 }
 
-/* Set all members */
+/* Set only components */
 Item::Item(vector<double>& components, errorCode& status){
     status = SUCCESS;
 
     if(components.size() <= 0 || components.size() > MAX_DIM)
         status = INVALID_DIM;
     else{
-        
+       
         this->id = "item_" + to_string(count);
         this->components = components;
         this->dim = components.size();
         
         this->count += 1;
-        
     }
 }
 
@@ -90,11 +88,20 @@ Item::Item(const Item& x){
     this->id = x.id;
     this->components = x.components;   
     this->dim = x.dim;
-
 }
 
-Item::~Item(){
-    this->count -= 1;
+Item::~Item(){}
+
+/* Assignment operator */
+Item& Item::operator=(const Item& x){
+
+    if(this == &x)
+        return *this;
+
+    this->id = x.id;
+
+    copy(x.components.begin(), x.components.end(), this->components.begin());
+    this->dim = x.dim;
 }
 
 //////////////

@@ -11,7 +11,7 @@
 #define MAX_C 1 // Max coefficient
 #define MIN_C 0.03125 // 1/32
 #define MAX_POINTS 1500000 // Max points that models can handle
-#define MIN_POINTS 9000
+#define MIN_POINTS 1
 #define MAX_RADIUS 1500
 #define MIN_RADIUS 0
 #define MY_MAX_RANDOM 5

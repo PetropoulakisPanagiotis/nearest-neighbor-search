@@ -22,6 +22,9 @@ class Item{
 
         ~Item();
 
+        /* Operatos */
+        Item& operator=(const Item& x);
+
         /* Mutators */
         void setId(std::string id);
         void setComponent(double newComponent, int index, errorCode& status);

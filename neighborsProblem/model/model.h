@@ -51,6 +51,7 @@ class lshEuclidean: public model{
     public:
 
         lshEuclidean();
+        lshEuclidean(int k, int l);
         lshEuclidean(int l, int k, int w, float coefficient, errorCode& status);
         
         ~lshEuclidean();
@@ -82,6 +83,7 @@ class lshCosin: public model{
     public:
 
         lshCosin();
+        lshCosin(int k, int l);
         lshCosin(int l, int k, errorCode& status);
 
         ~lshCosin();

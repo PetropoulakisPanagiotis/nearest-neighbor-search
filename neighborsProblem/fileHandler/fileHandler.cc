@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -15,7 +16,7 @@ using namespace std;
 /* Read given file, extract points and read possible metrices(euclidean, cosin, etc) */
 /* WithId == 0, points have id's                                                     */
 /* WithId == 1, points havn't id's                                                   */
-void readDataSet(string fileName, int withId, char delim, vector<Item>& points, list<string> types, errorCode& status){
+void readDataSet(string fileName, int withId, char delim, list<Item>& points, list<string>& types, errorCode& status){
     ifstream file; 
     string line, word; // Line is splitted in words
     int flag = 0; // Check only once for metrices
@@ -75,6 +76,10 @@ void readDataSet(string fileName, int withId, char delim, vector<Item>& points, 
                 /* Add word */
                 words.push_back(word);
             } // End while - split
+            
+            /* Only one possible metrice */
+            if(words.size() == 0)
+                words.push_back(line);
 
             /* Check if metrices are valid */
             if(words.size() <= 2){
@@ -82,13 +87,13 @@ void readDataSet(string fileName, int withId, char delim, vector<Item>& points, 
                     
                     /* Two metrices */
                     if(words.size() == 2 && words[0] != words[1] && (words[1] == metrices[0] || words[1] == metrices[1])){
-                        types.push_back(words[0]);
-                        types.push_back(words[1]);
+                        types.push_back(metrices[0]);
+                        types.push_back(metrices[1]);
                         continue;
                     }
                     /* One metrice */
-                    else if(words.size() == 2 && words[0] == words[1]){
-                        types.push_back(words[0]);
+                    else{
+                        types.push_back(metrices[0]);
                         continue;
                     }
                 }
@@ -96,6 +101,7 @@ void readDataSet(string fileName, int withId, char delim, vector<Item>& points, 
 
             /* No metrices found - Reset words */
             words.clear();
+            types.push_back("euclidean"); // Default metrice
             flag = 1;
         }  // End if metrices
 
@@ -186,17 +192,21 @@ void readDataSet(string fileName, int withId, char delim, vector<Item>& points, 
             return;
         }
 
-        /* Create new item and add it */
-        if(withId == 1){
+        /* Create new item */
+        if(withId == 1){      
             points.push_back(Item(id,components,status));
-            if(status != SUCCESS)
-                return; 
+            if(status != SUCCESS){
+                return;
+            }
         }
         else{
             points.push_back(Item(components,status));
-            if(status != SUCCESS)
-                return; 
+            if(status != SUCCESS){
+                return;
+            }
         }
+        
+        /* Save new item */
     } // End while - Read line
 
     /* Small number of points */

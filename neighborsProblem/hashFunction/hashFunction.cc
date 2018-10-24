@@ -270,6 +270,8 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
         errorCode status;
         hEuclidean* newFunc;
         
+        status = SUCCESS;
+
         this->id = "EuclideanHash_" + to_string(this->count); 
         this->count += 1;
 
@@ -442,7 +444,7 @@ int hashFunctionEuclidean::getCount(void){
 void hashFunctionEuclidean::print(void){
 
     if(this->k == -1)
-        cout << "Invalid cosin hash function\n";
+        cout << "Invalid euclidean hash function\n";
     else{
         int i;
         
@@ -476,8 +478,10 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
     else{ 
         int i,j;
         errorCode status;
-        hCosin* newFunc;
-       
+        hCosin* newFunc = NULL;
+      
+        status = SUCCESS;
+
         /* Set name */
         this->id = "CosinHash_" + to_string(this->count);
         this->count += 1;

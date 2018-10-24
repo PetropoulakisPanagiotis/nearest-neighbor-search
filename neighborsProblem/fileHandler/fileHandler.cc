@@ -16,7 +16,7 @@ using namespace std;
 /* Read given file, extract points and read possible metrices(euclidean, cosin, etc) */
 /* WithId == 0, points have id's                                                     */
 /* WithId == 1, points havn't id's                                                   */
-void readDataSet(string fileName, int withId, char delim, list<Item>& points, list<string>& types, errorCode& status){
+void readDataSet(string fileName, int withId, char delim, list<Item>& points, string& types, errorCode& status){
     ifstream file; 
     string line, word; // Line is splitted in words
     int flag = 0; // Check only once for metrices
@@ -28,7 +28,6 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, li
     set<string> ids; // Keep all ids - Check if all ids are unique
     set<string>::iterator iterSet; // Iterate through ids
     string::iterator iterStr; // Iteratre through word
-
 
     /* Note: words in file == points/id/metrices */
     status = SUCCESS;
@@ -53,7 +52,6 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, li
 
     /* Read lines in file */
     while(getline(file, line)){
-        
         /* Discard empty lines */
         if(line.length() == 0)
             continue;
@@ -64,44 +62,20 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, li
 
         /* Check for metrices */
         if(flag == 0){
-            
-            /* Split line */
-            std::istringstream wordStream(line);
-            vector<string> words; 
-            
-            while(getline(wordStream, word, ',')){
-                /* Remove spaces */
-                word.erase(remove(word.begin(), word.end(), ' '), word.end());
-
-                /* Add word */
-                words.push_back(word);
-            } // End while - split
-            
-            /* Only one possible metrice */
-            if(words.size() == 0)
-                words.push_back(line);
-
-            /* Check if metrices are valid */
-            if(words.size() <= 2){
-                if(words[0] == metrices[0] || words[0] == metrices[1]){
-                    
-                    /* Two metrices */
-                    if(words.size() == 2 && words[0] != words[1] && (words[1] == metrices[0] || words[1] == metrices[1])){
-                        types.push_back(metrices[0]);
-                        types.push_back(metrices[1]);
-                        continue;
-                    }
-                    /* One metrice */
-                    else{
-                        types.push_back(metrices[0]);
-                        continue;
-                    }
-                }
-            } // End if available metrices
+             
+            if(line == metrices[0]){
+                types = metrices[0];
+                flag = 1;
+                continue;
+            }
+            else if(line == metrices[1]){
+                types = metrices[1];
+                flag = 1;
+                continue;
+            }
 
             /* No metrices found - Reset words */
-            words.clear();
-            types.push_back("euclidean"); // Default metrice
+            types = "euclidean"; // Default metrice
             flag = 1;
         }  // End if metrices
 

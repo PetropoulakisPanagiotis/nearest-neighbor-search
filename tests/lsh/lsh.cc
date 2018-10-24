@@ -16,11 +16,10 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
 
 int main(int argc, char **argv){
     list<Item> dataSetPoints; // Points in data set
-    list<string> metrices; // Metrices
+    string metrice; // Metrices
     list<string>::iterator iterMetrices;
     char delim = ' ';
     int argumentsProvided; 
-    int i, j;
     errorCode status;
     
     /* Arguments */
@@ -47,45 +46,39 @@ int main(int argc, char **argv){
     }
 
     /* Read data set */
-    readDataSet(inputFile, 0, delim, dataSetPoints, metrices, status);
+    readDataSet(inputFile, 0, delim, dataSetPoints, metrice, status);
     if(status != SUCCESS){
         printError(status);
         return 0;
     }
 
-    vector<model*> models;
-    int modelsSize;
+    model* myModel;
 
-    /* Create models */
-    for(iterMetrices = metrices.begin(); iterMetrices != metrices.end(); iterMetrices++){
+    /* Create model */
+    if(metrice == "euclidean"){
+        if(k != -1)
+            myModel = new lshEuclidean(k,l);
+        else
+            myModel = new lshEuclidean();
+    }
+    else if(metrice == "cosin"){
+        if(k != -1)
+            myModel = new lshCosin(k,l);
+        else
+            myModel = new lshCosin();
+    }
+    
+    /* Fit data set */
+    myModel->fit(dataSetPoints,status);
+    if(status != SUCCESS){
+        delete myModel;
+        printError(status);
+        return 0;
+    }
+    myModel->print();
 
-        if(*iterMetrices == "euclidean"){
-            if(k != -1)
-                models.push_back(new lshEuclidean(k,l));
-            else
-                models.push_back(new lshEuclidean());
-        }
-    } // End for
-
-    modelsSize = models.size();
-
-    /* Fit models with data set */
-    for(i = 0; i < modelsSize; i++){
-        models[i]->fit(dataSetPoints,status);
-
-        if(status != SUCCESS){
-            for(j = 0; j < modelsSize; j++)
-                delete models[j];
-
-            printError(status);
-            return 0;
-        }
-
-    } // End for
-
-    /* Delete models */
-    for(i = 0; i < modelsSize; i++)
-        delete models[i];
+    /* Delete model */
+    delete myModel;
 
     return 0;
 }

@@ -13,7 +13,7 @@ using namespace std;
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():tableSize(0),coefficient(1/4),n(0),l(5),k(4),dim(0),w(200),fitted(0){
+lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0),w(200),fitted(0){
     int i;
 
     /* Set size of hash functions */
@@ -26,7 +26,7 @@ lshEuclidean::lshEuclidean():tableSize(0),coefficient(1/4),n(0),l(5),k(4),dim(0)
         this->tables.push_back(vector<list<entry> >(this->l));
 }
 
-lshEuclidean::lshEuclidean(int k, int l):tableSize(0),coefficient(1/4),n(0),l(l),k(k),dim(0),w(200),fitted(0){
+lshEuclidean::lshEuclidean(int k, int l):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(200),fitted(0){
     int i;
 
     /* Set size of hash functions */
@@ -113,10 +113,12 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
         status = INVALID_POINTS;
         return;
     }
-
+    
     /* Set table size */
     this->tableSize = (int)(this->n * this->coefficient);
-  
+    if(this->tableSize == 0)
+        this->tableSize = 1;
+
     /* Fix each table - Each table contains lists of entries */
     for(i = 0; i < this->l; i++)
         for(j = 0; j < this->tableSize; j++)
@@ -134,10 +136,10 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     ////////////////////////
 
     /* Function that will be inserted in hash functions table */
-    hashFunctionEuclidean* newFunc;  
+    hashFunctionEuclidean* newFunc = NULL;  
     
     for(i = 0; i < this->l; i++){
-        newFunc = new hashFunctionEuclidean(this->dim, this->k, this->w, this->tableSize);
+        newFunc = new hashFunctionEuclidean(this->dim, this->k, this->w, this->tableSize); 
         if(newFunc == NULL){
             status = ALLOCATION_FAILED;
             this->k = -1;
@@ -178,7 +180,7 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     /////////////////////
     /* Set hash tables */
     /////////////////////
-
+    
     /* Scan each table */
     for(i = 0; i < this->l; i++){
     

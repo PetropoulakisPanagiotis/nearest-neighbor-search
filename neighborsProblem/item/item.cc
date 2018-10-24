@@ -92,18 +92,6 @@ Item::Item(const Item& x){
 
 Item::~Item(){}
 
-/* Assignment operator */
-Item& Item::operator=(const Item& x){
-
-    if(this == &x)
-        return *this;
-
-    this->id = x.id;
-
-    copy(x.components.begin(), x.components.end(), this->components.begin());
-    this->dim = x.dim;
-}
-
 //////////////
 /* Mutators */
 //////////////

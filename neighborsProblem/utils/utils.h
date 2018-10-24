@@ -36,6 +36,7 @@ typedef enum errorCode{
     METHOD_UNFITTED,
     INVALID_RADIUS,
     INVALID_DATA_SET,
+    METHOD_NOT_IMPLEMENTED
 }errorCode;
 
 ///////////////////////

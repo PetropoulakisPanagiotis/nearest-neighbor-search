@@ -369,32 +369,30 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     return result;
 }
-
-/* Calculate hash value of given p item         */
-/* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-int hashFunctionEuclidean::hashLevel2(Item& p, errorCode& status){
-    int result = 0, i, tempMult;
-
+/* Calculate hash value of sub hash function of given p item */
+/* hi(p)                                                     */
+int hashFunctionEuclidean::hashSubFunction(Item&p, int index, errorCode& status){
+    int result;
+    
     status = SUCCESS;    
     if(this->k == -1){
         status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
-    /* Calculate G(p) */
-    for(i = 0; i < k; i++){
-
-        tempMult = myMultInt(result, 10, status);
-        if(status != SUCCESS)
-            return -1;
-
-        result = mySumInt(tempMult, this->H[i]->hash(p, status), status);
-        if(status != SUCCESS)
-            return -1;
+    /* Check index */
+    if(index < 0 || index >= this->k){
+        status = INVALID_INDEX;
+        return -1;
     }
 
+    result = this->H[index]->hash(p,status);
+    if(status != SUCCESS)
+            return -1;
+    
     return result;
-}
+};
+
 
 /* Compare given hash functions */
 /* Discard id                   */
@@ -546,6 +544,7 @@ hashFunctionCosin::~hashFunctionCosin(){
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
 int hashFunctionCosin::hash(Item& p, errorCode& status){
     int result = 0, i, tempMult;
+    int j;
 
     status = SUCCESS;    
     if(this->k == -1){
@@ -555,12 +554,26 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
 
     /* Calculate G(p) */
     for(i = 0; i < k; i++){
+    
+        if(this->H[i]->hash(p, status) == 1){
+            if(status != SUCCESS)
+                return -1;
+            
+            tempMult = 0;
+            
+            if(i == k - 1)
+                tempMult = 1;
 
-        tempMult = myMultInt(result, 10, status);
-        if(status != SUCCESS)
-            return -1;
+            for(j = i; j > i; j--){
+                tempMult += myMultInt(2, i, status);
+                if(status != SUCCESS)
+                    return -1;
+            } // End for
+        }
+        else
+            continue;
 
-        result = mySumInt(tempMult, this->H[i]->hash(p, status), status);
+        result = mySumInt(result, tempMult, status);
         if(status != SUCCESS)
             return -1;
     }
@@ -568,11 +581,12 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     return result;
 }
 
-/* There isn't level 2 hashing in cosin */
-int hashFunctionCosin::hashLevel2(Item& p, errorCode& status){
-    status = INVALID_COMPARE;
-    return -1;
-}
+/* Default behavior for cosin */
+int hashFunctionCosin::hashSubFunction(Item&p, int index, errorCode& status){
+    
+    status = METHOD_NOT_IMPLEMENTED;
+    return 0;
+};
 
 /* Compare given hash functions */
 /* Discard id                   */

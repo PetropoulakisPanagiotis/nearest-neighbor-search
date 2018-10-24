@@ -15,13 +15,14 @@ int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, stri
 int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile);
 
 int main(int argc, char **argv){
-    list<Item> dataSetPoints; // Points in data set
+    list<Item> dataSetPoints, querySetPoints; // Points in data set
     string metrice; // Metrices
     list<string>::iterator iterMetrices;
     char delim = ' ';
     int argumentsProvided; 
     errorCode status;
-    
+    double radius;
+
     /* Arguments */
     int k = -1, l;
     string inputFile, queryFile, outputFile;
@@ -75,10 +76,48 @@ int main(int argc, char **argv){
         printError(status);
         return 0;
     }
-    myModel->print();
+
+    
+    /* Read query set */
+    readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
+    if(status != SUCCESS){
+        printError(status);
+        return 0;
+    }
+
+    /*
+
+    Item* tmp; vector<double> comp;
+    list<Item> radiusNeighbors;
+    list<double> neighborsDistances;
+
+    int i;
+
+    for(i = 0; i < 128; i++){
+     
+        if(i < 50)
+            comp.push_back(i);
+        else
+            comp.push_back(i - 40);
+    }
+
+    tmp = new Item(comp,status);
+
+    myModel->radiusNeighbors(*tmp,10000,radiusNeighbors, NULL, status);
+
+
+    list<Item>::iterator iter;
+    for(iter= radiusNeighbors.begin(); iter != radiusNeighbors.end(); iter++)
+        iter->print();
+        
+    delete tmp;
+   */ 
+
+    /* Find nearest neighbor */
 
     /* Delete model */
-    delete myModel;
+    //delete myModel;
+
 
     return 0;
 }

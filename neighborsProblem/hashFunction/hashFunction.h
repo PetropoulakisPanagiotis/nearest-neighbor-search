@@ -81,8 +81,9 @@ class hashFunction{
         virtual ~hashFunction() = 0;
 
         /* Hash a given item and return a value */
-        virtual int hash(Item& p,errorCode& status) = 0;
-        virtual int hashLevel2(Item& p, errorCode& status) = 0;
+        virtual int hash(Item& p, errorCode& status) = 0;
+        virtual int hashSubFunction(Item&p, int index, errorCode& status) = 0;
+
 
         /* Compare two has functions */
         virtual int compare(hashFunctionEuclidean& x, errorCode& status) = 0;
@@ -114,8 +115,8 @@ class hashFunctionEuclidean: public hashFunction{
 
         /* Overide function */
         int hash(Item& p, errorCode& status);
-        int hashLevel2(Item& p, errorCode& status);
- 
+        int hashSubFunction(Item&p, int index, errorCode& status);
+        
         int compare(hashFunctionEuclidean& x, errorCode& status);
         int compare(hashFunctionCosin& x, errorCode& status);       
         
@@ -139,7 +140,7 @@ class hashFunctionCosin: public hashFunction{
 
         /* Overide function */
         int hash(Item& p, errorCode& status);
-        int hashLevel2(Item& p, errorCode& status);
+        int hashSubFunction(Item&p, int index, errorCode& status);
 
         int compare(hashFunctionEuclidean& x, errorCode& status);
         int compare(hashFunctionCosin& x, errorCode& status);

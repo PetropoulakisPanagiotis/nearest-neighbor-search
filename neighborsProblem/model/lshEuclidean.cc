@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <algorithm>
 #include "../hashFunction/hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
@@ -13,7 +14,7 @@ using namespace std;
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0),w(200),fitted(0){
+lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0),w(800),fitted(0){
     int i;
 
     /* Set size of hash functions */
@@ -26,7 +27,7 @@ lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0
         this->tables.push_back(vector<list<entry> >(this->l));
 }
 
-lshEuclidean::lshEuclidean(int k, int l):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(200),fitted(0){
+lshEuclidean::lshEuclidean(int k, int l):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(800),fitted(0){
     int i;
 
     /* Set size of hash functions */
@@ -137,7 +138,7 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
 
     /* Function that will be inserted in hash functions table */
     hashFunctionEuclidean* newFunc = NULL;  
-    
+
     for(i = 0; i < this->l; i++){
         newFunc = new hashFunctionEuclidean(this->dim, this->k, this->w, this->tableSize); 
         if(newFunc == NULL){
@@ -204,13 +205,19 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
                 break;
             }
  
+            /* Set value g */
+            vector<int> newValueG; 
+            for(j = 0; j < k; j++){
+                newValueG.push_back(this->hashFunctions[i]->hashSubFunction(*iterPoints, j, status));
+                if(status != SUCCESS){
+                    this->k = -1;
+                    break;
+                }
+            } // End for
+
             /* Set new entry */
             newEntry.point = *(iterPoints);
-            newEntry.valueG = this->hashFunctions[i]->hashLevel2(*iterPoints, status);
-            if(status != SUCCESS){
-                this->k = -1;
-                break;
-            }
+            newEntry.valueG = newValueG;
 
             /* Add point */
             this->tables[i][pos].push_back(newEntry);
@@ -241,7 +248,7 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
 /* Find the radius neighbors of a given point */
 void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
     int queryDim = query.getDim();
-    int i, pos, valueG;
+    int i, pos, j;
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
 
@@ -287,15 +294,20 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
             continue;
 
         /* Find value g for query */
-        valueG = this->hashFunctions[i]->hashLevel2(query, status);
-        if(status != SUCCESS)
-            return;
+        vector<int> valueG;
+        for(j = 0; j < k; j++){
+            valueG.push_back(this->hashFunctions[i]->hashSubFunction(query, j, status));
+            if(status != SUCCESS){        
+                this->k = -1;
+                break;
+            }
+        } // End for
 
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
             /* Compare values g of query and current point */
-            if(valueG != iter->valueG)
+            if(!equal(valueG.begin(), valueG.end(), iter->valueG.begin()))
                 continue;
 
             /* Find current distance */
@@ -316,7 +328,7 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
 /* Find the nearest neighbor of a given point */
 void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int queryDim = query.getDim();
-    int i, pos, valueG, found = 0, flag = 0;
+    int i, pos, j, found = 0, flag = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
@@ -354,16 +366,21 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
             continue;
 
         /* Find value g for query */
-        valueG = this->hashFunctions[i]->hashLevel2(query, status);
-        if(status != SUCCESS)
-            return;
-
+        vector<int> valueG;
+        for(j = 0; j < k; j++){
+            valueG.push_back(this->hashFunctions[i]->hashSubFunction(query, j, status));
+            if(status != SUCCESS){        
+                this->k = -1;
+                break;
+            }
+        } // End for
+        
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
             /* Compare values g of query and current point */
-            if(valueG != iter->valueG)
-                continue;
+            if(!equal(valueG.begin(), valueG.end(), iter->valueG.begin()))
+                continue;            
 
             /* Find current distance */
             currDist = iter->point.euclideanDist(query, status);

@@ -115,7 +115,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     }
 
     /* Set table size */
-    this->tableSize = pow(2,this->n);
+    this->tableSize = pow(2,this->k);
 
     /* Fix each table - Each table contains lists of entries */
     for(i = 0; i < this->l; i++)
@@ -188,8 +188,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
             
             /* Find position in hash table */
             pos = this->hashFunctions[i]->hash(*iterPoints, status);
-            
-            cout << pos << "\n";
+           
             if(pos < 0 || pos >= tableSize){
                 status = INVALID_HASH_FUNCTION;
                 break;
@@ -202,7 +201,6 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
 
             /* Add point */
             this->tables[i][pos].push_back(*(iterPoints));
-
         } // End for - Points
 
         if(status != SUCCESS)

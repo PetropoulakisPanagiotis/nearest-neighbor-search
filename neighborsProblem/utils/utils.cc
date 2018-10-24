@@ -259,6 +259,10 @@ void printError(errorCode& status){
         case(INVALID_DATA_SET):
             cout << "Please give a valid data set\n";
             break;
+        
+        case(METHOD_NOT_IMPLEMENTED):
+            cout << "Method not implemented for current class\n";
+            break;
     } // End switch
 }
 

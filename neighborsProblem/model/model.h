@@ -34,7 +34,7 @@ class lshEuclidean: public model{
         /* Entries in hash tables */
         typedef struct entry{
             Item point;
-            int valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
+            std::vector<int> valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
         }entry;
 
         std::vector<std::vector<std::list<entry> > > tables; // Each table is a hash table(vector of lists)

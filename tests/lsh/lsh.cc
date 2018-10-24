@@ -46,6 +46,8 @@ int main(int argc, char **argv){
         }
     }
 
+    cout << "lsh: Reading data set\n";
+
     /* Read data set */
     readDataSet(inputFile, 0, delim, dataSetPoints, metrice, status);
     if(status != SUCCESS){
@@ -54,6 +56,8 @@ int main(int argc, char **argv){
     }
 
     model* myModel;
+
+    cout << "lsh: Fitting model\n";
 
     /* Create model */
     if(metrice == "euclidean"){
@@ -77,47 +81,53 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    
+    cout << "lsh: Reading query set\n";
+
     /* Read query set */
     readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
     if(status != SUCCESS){
-        printError(status);
+        printError(status);   
+        delete myModel;
         return 0;
     }
 
-    /*
-
-    Item* tmp; vector<double> comp;
+    /* Find neighbors */
+    Item nearestNeighbor;
     list<Item> radiusNeighbors;
-    list<double> neighborsDistances;
-
-    int i;
-
-    for(i = 0; i < 128; i++){
-     
-        if(i < 50)
-            comp.push_back(i);
-        else
-            comp.push_back(i - 40);
-    }
-
-    tmp = new Item(comp,status);
-
-    myModel->radiusNeighbors(*tmp,10000,radiusNeighbors, NULL, status);
-
-
     list<Item>::iterator iter;
-    for(iter= radiusNeighbors.begin(); iter != radiusNeighbors.end(); iter++)
-        iter->print();
+    list<double> neighborsDistances;
+    double nearestDistance;
+ 
+    /* Find radius neighbors */
+    if(radius != 0){
+    
+        cout << "lsh: Searching for radius neighbors with given radius: " << radius << "\n";
         
-    delete tmp;
-   */ 
-
+        for(iter = querySetPoints.begin(); iter != querySetPoints.end(); iter++){
+    
+            myModel->radiusNeighbors(*iter, radius, radiusNeighbors, NULL, status);
+            if(status != SUCCESS){
+                printError(status);
+                delete myModel;
+                return 0;
+            }
+        } // End for - nearest
+    }
+ 
+    cout << "lsh: Searching for nearest neighbor\n";
+    
     /* Find nearest neighbor */
+    for(iter = querySetPoints.begin(); iter != querySetPoints.end(); iter++){
 
-    /* Delete model */
-    //delete myModel;
+        myModel->nNeighbor(*iter, nearestNeighbor, &nearestDistance, status);
+        if(status != SUCCESS){
+            printError(status);
+            delete myModel;
+            return 0;
+        }
+    } // End for - nearest
 
+    delete myModel;
 
     return 0;
 }
@@ -167,22 +177,22 @@ int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, stri
 int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile){
     string inputStr;
 
-    cout << "Give input file name:\n";
+    cout << "Give input file name:";
     cin >> inputStr;
 
     inputFile = inputStr;
 
-    cout << "Give query file name:\n";
+    cout << "Give query file name:";
     cin >> inputStr;
 
     queryFile = inputStr;
 
-    cout << "Give output file name:\n";
+    cout << "Give output file name:";
     cin >> inputStr;
 
     outputFile = inputStr;
 
-    cout << "Do you want to provide hyperparameters for lsh(y/n):\n";
+    cout << "Do you want to provide hyperparameters for lsh(y/n):";
     while(1){
         cin >> inputStr;
 
@@ -190,13 +200,15 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
         if(inputStr == "y" || inputStr == "n")
             break;
         else
-            cout << "Please pres y or n:\n";
+            cout << "Please pres y or n:";
     } // End while
 
-    if(inputStr == "n")
+    if(inputStr == "n"){
+        cout << "\n";
         return 1;
+    }
 
-    cout << "Give k hyperparameter\n";
+    cout << "Give k hyperparameter:";
     
     cin >> inputStr;
 
@@ -207,7 +219,7 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
         return -1;
     }
 
-    cout << "Give l hyperparameter\n";
+    cout << "Give l hyperparameter:";
     
     cin >> inputStr;
 
@@ -218,6 +230,8 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
         return -1;
     }
 
+    cout << "\n";
+    
     return 1;
 }
 

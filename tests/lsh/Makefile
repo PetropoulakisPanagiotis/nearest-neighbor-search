@@ -1,8 +1,8 @@
 CC = g++
 FLAGS = -g -Wall
 
-lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o
-	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o -std=c++11
+lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o
+	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o -std=c++11
 
 lsh.o: lsh.cc
 	$(CC) -c  $(FLAGS) lsh.cc -std=c++11
@@ -27,6 +27,9 @@ lshCosin.o: ../../neighborsProblem/model/lshCosin.cc
 
 hypercubeEuclidean.o: ../../neighborsProblem/model/hypercubeEuclidean.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercubeEuclidean.cc -std=c++11
+
+hypercubeCosin.o: ../../neighborsProblem/model/hypercubeCosin.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercubeCosin.cc -std=c++11
 
 .PHONY:
 	clean

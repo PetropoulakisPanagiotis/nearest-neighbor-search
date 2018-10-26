@@ -2,10 +2,10 @@
 #include <vector>
 #include <list>
 #include <cmath>
-#include "../hashFunction/hashFunction.h"
-#include "../item/item.h"
-#include "../utils/utils.h"
-#include "model.h"
+#include "lsh.h"
+#include "../../hashFunction/hashFunction.h"
+#include "../../item/item.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 

@@ -2,21 +2,21 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-#include "../hashFunction/hashFunction.h"
-#include "../item/item.h"
-#include "../utils/utils.h"
-#include "model.h"
+#include "hypercube.h"
+#include "../../hashFunction/hashFunction.h"
+#include "../../item/item.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 
-/////////////////////////////////////////////////
-/* Implementation of hypercube euclidean class */
-/////////////////////////////////////////////////
+/////////////////////////////////////////////
+/* Implementation of hypercube cosin class */
+/////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeEuclidean::hypercubeEuclidean():tableSize(0),n(0),k(10),dim(0),w(800),m(50),probes(2),fitted(0){}
+hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(10),dim(0),m(50),probes(2),fitted(0){}
 
-hypercubeEuclidean::hypercubeEuclidean(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),w(800),m(m),probes(probes),fitted(0){
+hypercubeCosin::hypercubeCosin(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),m(m),probes(probes),fitted(0){
     /* Check parameters */
     if(k < MIN_K || k > MAX_K || m < MIN_M || m > MAX_M){
         status = INVALID_PARAMETERS;
@@ -30,22 +30,7 @@ hypercubeEuclidean::hypercubeEuclidean(int k, int m, int probes, errorCode& stat
     }
 }
 
-hypercubeEuclidean::hypercubeEuclidean(int k, int m, int probes, int w, errorCode& status):tableSize(0),n(0),k(k),dim(0),w(w),m(m),probes(probes),fitted(0){
-    /* Check parameters */
-    if(k < MIN_K || k > MAX_K || w < MIN_W || w > MAX_W || m < MIN_M || m > MAX_M){
-        status = INVALID_PARAMETERS;
-        this->k = -1;
-    }
-
-    /* Ckeck probes */
-    if(probes < MIN_PROBES || probes > pow(2, k)){
-        status = INVALID_PARAMETERS;
-        this->k = -1;
-    }
-}
-
-hypercubeEuclidean::~hypercubeEuclidean(){
- 
+hypercubeCosin::~hypercubeCosin(){ 
     /* Check method */
     if(this->k == -1){
         return;
@@ -56,8 +41,8 @@ hypercubeEuclidean::~hypercubeEuclidean(){
         delete this->hashFunctions;
 }
 
-/* Fix hash function, members of hypercube euclidean and add given points in the cube */
-void hypercubeEuclidean::fit(list<Item>& points, errorCode& status){
+/* Fix hash function, members of hypercube cosin and add given points in the cube */
+void hypercubeCosin::fit(list<Item>& points, errorCode& status){
     int i;
     int pos; // Pos in cube
 
@@ -109,9 +94,9 @@ void hypercubeEuclidean::fit(list<Item>& points, errorCode& status){
     /* Set hash function */
     ///////////////////////
 
-    hashFunctionEuclideanHypercube* newFunc = NULL;  
+    hashFunctionCosin* newFunc = NULL;  
 
-    newFunc = new hashFunctionEuclideanHypercube(this->dim, this->k, this->w); 
+    newFunc = new hashFunctionCosin(this->dim, this->k); 
     if(newFunc == NULL){
         status = ALLOCATION_FAILED;
         this->k = -1;
@@ -164,7 +149,7 @@ void hypercubeEuclidean::fit(list<Item>& points, errorCode& status){
 }
 
 /* Find the radius neighbors of a given point */
-void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
+void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
     int queryDim = query.getDim();
     int i, initialPos, pos;
     double currDist; // Distance of a point in list
@@ -236,7 +221,7 @@ void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& ne
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
             /* Find current distance */
-            currDist = iter->euclideanDist(query, status);
+            currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -260,7 +245,7 @@ void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& ne
 }
 
 /* Find the nearest neighbor of a given point */
-void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
+void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int queryDim = query.getDim();
     int i, initialPos, pos, found = 0, flag = 0;
     double currDist; // Distance of a point in list
@@ -324,7 +309,7 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
             /* Find current distance */
-            currDist = iter->euclideanDist(query, status);
+            currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -373,7 +358,7 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
 /* Accessors */
 ///////////////
 
-int hypercubeEuclidean::getNumberOfPoints(errorCode& status){
+int hypercubeCosin::getNumberOfPoints(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -388,7 +373,7 @@ int hypercubeEuclidean::getNumberOfPoints(errorCode& status){
         return this->n;
 }
 
-int hypercubeEuclidean::getDim(errorCode& status){
+int hypercubeCosin::getDim(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -405,22 +390,21 @@ int hypercubeEuclidean::getDim(errorCode& status){
 
 
 /* Print statistics */
-void hypercubeEuclidean::print(void){
+void hypercubeCosin::print(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
     else{
 
-        cout << "Hypercube euclidean statistics\n";
+        cout << "Hypercube cosin statistics\n";
         cout << "Size per table: " << this->tableSize << "\n";
-        cout << "Window size(w): " << this->w << "\n";
         cout << "Number of sub hash functions(k): " << this->k << "\n";
         cout << "M: " << this->m << "\n";
         cout << "Probes: " << this->probes << "\n";
     }
 }
 
-void hypercubeEuclidean::printHashFunctions(void){
+void hypercubeCosin::printHashFunctions(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
@@ -428,7 +412,7 @@ void hypercubeEuclidean::printHashFunctions(void){
         cout << "Method not fitted\n";
     else{
 
-        cout << "Hash functions hypercube euclidean\n";
+        cout << "Hash functions hypercube cosin\n";
         this->hashFunctions->print();
     }
 }

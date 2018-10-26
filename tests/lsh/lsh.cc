@@ -6,7 +6,7 @@
 #include "../../neighborsProblem/utils/utils.h"
 #include "../../neighborsProblem/fileHandler/fileHandler.h"
 #include "../../neighborsProblem/item/item.h"
-#include "../../neighborsProblem/model/model.h"
+#include "../../neighborsProblem/model/lsh/lsh.h"
 
 using namespace std;
 

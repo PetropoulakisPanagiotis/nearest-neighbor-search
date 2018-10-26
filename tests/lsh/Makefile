@@ -19,17 +19,17 @@ item.o: ../../neighborsProblem/item/item.cc
 fileHandler.o: ../../neighborsProblem/fileHandler/fileHandler.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/fileHandler/fileHandler.cc -std=c++11
 
-lshEuclidean.o: ../../neighborsProblem/model/lshEuclidean.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lshEuclidean.cc -std=c++11
+lshEuclidean.o: ../../neighborsProblem/model/lsh/lshEuclidean.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lsh/lshEuclidean.cc -std=c++11
 
-lshCosin.o: ../../neighborsProblem/model/lshCosin.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lshCosin.cc -std=c++11
+lshCosin.o: ../../neighborsProblem/model/lsh/lshCosin.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lsh/lshCosin.cc -std=c++11
 
-hypercubeEuclidean.o: ../../neighborsProblem/model/hypercubeEuclidean.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercubeEuclidean.cc -std=c++11
+hypercubeEuclidean.o: ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc -std=c++11
 
-hypercubeCosin.o: ../../neighborsProblem/model/hypercubeCosin.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercubeCosin.cc -std=c++11
+hypercubeCosin.o: ../../neighborsProblem/model/hypercube/hypercubeCosin.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeCosin.cc -std=c++11
 
 .PHONY:
 	clean

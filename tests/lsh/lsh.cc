@@ -71,7 +71,7 @@ int main(int argc, char **argv){
             myModel = new lshCosin(k,l);
         else
             myModel = new lshCosin();
-    }
+    } 
     
     /* Fit data set */
     myModel->fit(dataSetPoints,status);
@@ -125,6 +125,8 @@ int main(int argc, char **argv){
             delete myModel;
             return 0;
         }
+    
+        cout << nearestDistance << "\n";
     } // End for - nearest
 
     delete myModel;

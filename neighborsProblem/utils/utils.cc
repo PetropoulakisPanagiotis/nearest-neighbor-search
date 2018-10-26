@@ -3,6 +3,8 @@
 #include <chrono>
 #include <limits>
 #include <cmath>
+#include <time.h>
+#include <stdlib.h>
 #include "utils.h"
 
 using namespace std;
@@ -11,6 +13,7 @@ using namespace std;
 /* Type 0: uniform float   */
 /* Type 1: standard float  */
 /* Type 2: uniform float   */
+/* Type 3: random 0 or 1   */
 float getRandom(int type, int w){
     /* Set random engine */
     static unsigned seed = chrono::system_clock::now().time_since_epoch().count();    
@@ -25,8 +28,10 @@ float getRandom(int type, int w){
         return uniformDist1(generator);
     else if(type == 1)
         return normalDist(generator);
-    else
+    else if(type == 2)
         return (float)uniformDist2(generator);
+    else
+        return (float)(rand() % 2);
 }
 
 /* Get mod of given number */

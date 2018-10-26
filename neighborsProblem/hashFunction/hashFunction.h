@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "../item/item.h"
 #include "../utils/utils.h"
 
@@ -8,6 +9,7 @@ class hEuclidean;
 class hCosin;
 class hashFunctionEuclidean;
 class hashFunctionCosin;
+class hashFunctionEuclideanHypercube;
 
 /* Abstract class for sub has functions */
 class h{
@@ -88,7 +90,8 @@ class hashFunction{
         /* Compare two has functions */
         virtual int compare(hashFunctionEuclidean& x, errorCode& status) = 0;
         virtual int compare(hashFunctionCosin& x ,errorCode& status) = 0;
-
+        virtual int compare(hashFunctionEuclideanHypercube& x, errorCode& status) = 0;
+       
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
         
@@ -119,6 +122,7 @@ class hashFunctionEuclidean: public hashFunction{
         
         int compare(hashFunctionEuclidean& x, errorCode& status);
         int compare(hashFunctionCosin& x, errorCode& status);       
+        int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
         int getCount(void);
 
@@ -144,6 +148,36 @@ class hashFunctionCosin: public hashFunction{
 
         int compare(hashFunctionEuclidean& x, errorCode& status);
         int compare(hashFunctionCosin& x, errorCode& status);
+        int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
+        
+        int getCount(void);
+
+        void print(void);
+};
+
+/* Euclidean hash function for hypercube class  */
+/* G(p) = f1(h1(p)).f2(h2(p))...fk(hk(p)) -> Concatenation  */
+class hashFunctionEuclideanHypercube: public hashFunction{
+    private:
+        std::string id;
+        std::vector<hEuclidean*> H; // H contains sub-hash functions        
+        std::unordered_map<int, int> hMap; // Keep map f unique values
+        int k; // Number of sub hash functions
+        int w; // Window size
+        int tableSize;
+        static int count;
+
+    public:
+        hashFunctionEuclideanHypercube(int dim, int k, int w, int tableSize);
+        ~hashFunctionEuclideanHypercube();
+
+        /* Overide function */
+        int hash(Item& p, errorCode& status);
+        int hashSubFunction(Item&p, int index, errorCode& status);
+
+        int compare(hashFunctionEuclidean& x, errorCode& status);
+        int compare(hashFunctionCosin& x, errorCode& status);
+        int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
         int getCount(void);
 

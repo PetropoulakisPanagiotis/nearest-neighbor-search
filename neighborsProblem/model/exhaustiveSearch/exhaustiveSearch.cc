@@ -38,6 +38,10 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
         return;
     }
 
+    this->dim = 128;
+
+    this->points.reserve(points.size());
+
     /* Set members */
     this->n = points.size();
     if(this->n < MIN_POINTS || this->n > MAX_POINTS){
@@ -45,6 +49,7 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
         return;
     }
  
+    this->tableSize = this->n;
     /* Copy points */
     for(iterPoints = points.begin(); iterPoints != points.end(); iterPoints++)
         this->points.push_back(*iterPoints);
@@ -101,7 +106,7 @@ void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neig
 /* Find the nearest neighbor of a given point */
 void exhaustiveSearch::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int queryDim = query.getDim();
-    int i, posMin;
+    int i, posMin = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list
 

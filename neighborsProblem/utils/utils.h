@@ -6,6 +6,9 @@
 #define MIN_K 1
 #define MAX_W 1000 // Max window size
 #define MIN_W 2
+#define MIN_M 10 // Min searched items in hypercube
+#define MAX_M 100
+#define MIN_PROBES 1// Min vertices probed  
 #define MAX_L 80 // Max  number of hash tables
 #define MIN_L 1
 #define MAX_C 1 // Max coefficient
@@ -59,6 +62,9 @@ int mySumInt(int x, int y, errorCode& status);
 int mySubInt(int x, int y, errorCode& status);
 int myMultInt(int x, int y, errorCode& status);
 int myDivInt(int x, int y, errorCode& status);
+
+/* Hamming distance of two integers */
+int hammingDistance(int x, int y);
 
 /* Print type of error */
 void printError(errorCode& status);

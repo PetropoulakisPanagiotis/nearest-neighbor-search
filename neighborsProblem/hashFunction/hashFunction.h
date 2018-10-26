@@ -164,11 +164,10 @@ class hashFunctionEuclideanHypercube: public hashFunction{
         std::unordered_map<int, int> hMap; // Keep map f unique values
         int k; // Number of sub hash functions
         int w; // Window size
-        int tableSize;
         static int count;
 
     public:
-        hashFunctionEuclideanHypercube(int dim, int k, int w, int tableSize);
+        hashFunctionEuclideanHypercube(int dim, int k, int w);
         ~hashFunctionEuclideanHypercube();
 
         /* Overide function */

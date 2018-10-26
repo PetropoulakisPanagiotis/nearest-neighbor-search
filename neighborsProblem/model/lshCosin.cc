@@ -27,30 +27,16 @@ lshCosin::lshCosin():tableSize(0),n(0),l(5),k(5),dim(0),fitted(0){
         this->tables.push_back(vector<list<Item> >(this->l));
 }
 
-lshCosin::lshCosin(int k, int l):tableSize(0),n(0),l(l),k(k),dim(0),fitted(0){
+lshCosin::lshCosin(int k, int l, errorCode& status):tableSize(0),n(0),l(l),k(k),dim(0),fitted(0){
     int i;
     
-    /* Set size of hash functions */
-    this->hashFunctions.reserve(this->l);
-    for(i = 0; i < this->l; i++)
-        this->hashFunctions[i] = NULL;
-
-    /* Set size of hash tables */
-    for(i = 0; i < this->l; i++)
-        this->tables.push_back(vector<list<Item> >(this->l));
-}
-
-lshCosin::lshCosin(int l, int k, errorCode& status):tableSize(0),n(0),l(l),k(k),dim(0),fitted(0){
-
     /* Check parameters */
     if(l < MIN_L || l > MAX_L || k < MIN_K || k > MAX_K){
         status = INVALID_PARAMETERS;
         this->k = -1;
     }
     else{
-      
-        int i;
-        
+
         /* Set size of hash functions */
         this->hashFunctions.reserve(this->l);
         for(i = 0; i < this->l; i++)
@@ -59,7 +45,6 @@ lshCosin::lshCosin(int l, int k, errorCode& status):tableSize(0),n(0),l(l),k(k),
         /* Set size of hash tables */
         for(i = 0; i < this->l; i++)
             this->tables.push_back(vector<list<Item> >(this->l));
-    
     }
 }
 
@@ -78,7 +63,7 @@ lshCosin::~lshCosin(){
             delete this->hashFunctions[i];
 }
 
-/* Fix hash table, members of lsh euclidean and add given points in the hash tables */
+/* Fix hash table, members of lsh cosin and add given points in the hash tables */
 void lshCosin::fit(list<Item>& points, errorCode& status){
     int i, j;
     int pos; // Pos(line) in current hash table

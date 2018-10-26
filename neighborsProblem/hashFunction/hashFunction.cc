@@ -656,9 +656,9 @@ void hashFunctionCosin::print(void){
 
 int hashFunctionEuclideanHypercube::count = 0;
 
-hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, int w, int tableSize):k(k),w(w),tableSize(tableSize){
+hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, int w):k(k),w(w){
     /* Check parameters */
-    if(dim <= 0 || dim > MAX_DIM || k < MIN_K || k > MAX_K || tableSize <= 0 || w < MIN_W || w > MAX_W){
+    if(dim <= 0 || dim > MAX_DIM || k < MIN_K || k > MAX_K || w < MIN_W || w > MAX_W){
         this->k = -1;
     }
     else{ 
@@ -834,7 +834,6 @@ void hashFunctionEuclideanHypercube::print(void){
         
         cout << "Euclidean hypercube hash function id: " << this->id << "\n";
         cout << "Value of k: " << this->k << "\n";
-        cout << "Value of table size: " << this->tableSize << "\n"; 
         
         cout << "Statistics of sub hash functions: \n\n";
         

@@ -62,16 +62,22 @@ int main(int argc, char **argv){
     /* Create model */
     if(metrice == "euclidean"){
         if(k != -1)
-            myModel = new lshEuclidean(k,l);
+            myModel = new lshEuclidean(k,l, status);
         else
             myModel = new lshEuclidean();
     }
     else if(metrice == "cosin"){
         if(k != -1)
-            myModel = new lshCosin(k,l);
+            myModel = new lshCosin(k,l, status);
         else
             myModel = new lshCosin();
-    } 
+    }
+
+    if(status != SUCCESS){
+        printError(status);
+        return -1;
+    }
+
     
     /* Fit data set */
     myModel->fit(dataSetPoints,status);

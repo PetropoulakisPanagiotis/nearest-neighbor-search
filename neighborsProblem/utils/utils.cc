@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <bitset>
 #include <chrono>
 #include <limits>
 #include <cmath>
@@ -189,6 +190,11 @@ int myDivInt(int x, int y, errorCode& status){
     status = SUCCESS;
     
     return x / y;
+}
+
+/* Hamming distance of two integers */
+int hammingDistance(int x, int y){
+    return bitset<32>(x^y).count();
 }
 
 /* Print type of error */

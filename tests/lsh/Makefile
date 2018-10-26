@@ -1,8 +1,8 @@
 CC = g++
 FLAGS = -g -Wall
 
-lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o
-	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o -std=c++11
+lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o
+	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o -std=c++11
 
 lsh.o: lsh.cc
 	$(CC) -c  $(FLAGS) lsh.cc -std=c++11
@@ -25,13 +25,15 @@ lshEuclidean.o: ../../neighborsProblem/model/lshEuclidean.cc
 lshCosin.o: ../../neighborsProblem/model/lshCosin.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lshCosin.cc -std=c++11
 
+hypercubeEuclidean.o: ../../neighborsProblem/model/hypercubeEuclidean.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercubeEuclidean.cc -std=c++11
+
 .PHONY:
 	clean
 	check
 
-
 clean:
-	rm -rf lsh lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o
+	rm -rf lsh lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o
 
 check:
 	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/lshEuclidean.cc -../../neighborsProblem/model/lshCosin.cc std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 

@@ -14,7 +14,7 @@ using namespace std;
 ///////////////////////////////////////
 
 /* Default constructor */
-lshCosin::lshCosin():tableSize(0),n(0),l(5),k(5),dim(0),fitted(0){
+lshCosin::lshCosin():tableSize(0),n(0),l(5),k(4),dim(0),fitted(0){
     int i;
     
     /* Set size of hash functions */

@@ -1,0 +1,1465 @@
+Query: item_10023
+R-near neighbors:
+item_1030
+Nearest neighbor: item_1030
+distanceCube: 474.216
+distanceTrue: 276.782
+
+Query: item_10024
+R-near neighbors:
+item_3782
+item_739
+item_2492
+item_3651
+item_2234
+item_2613
+item_7631
+item_8453
+item_123
+item_3100
+item_3419
+item_3476
+item_6977
+Nearest neighbor: item_2492
+distanceCube: 262.895
+distanceTrue: 256.852
+
+Query: item_10025
+R-near neighbors:
+item_4004
+item_5882
+item_7147
+item_1681
+item_3732
+item_4621
+item_5303
+item_5719
+item_7123
+item_7849
+item_201
+item_290
+item_5378
+item_6932
+item_8711
+Nearest neighbor: item_5882
+distanceCube: 264.543
+distanceTrue: 206.737
+
+Query: item_10026
+R-near neighbors:
+item_6961
+item_2801
+item_9278
+Nearest neighbor: item_6961
+distanceCube: 466.269
+distanceTrue: 215.177
+
+Query: item_10027
+R-near neighbors:
+item_205
+item_6872
+item_9397
+item_1828
+item_7015
+item_8087
+item_4751
+item_4996
+Nearest neighbor: item_4996
+distanceCube: 373.687
+distanceTrue: 250.509
+
+Query: item_10028
+R-near neighbors:
+item_4851
+item_6781
+item_8807
+item_7406
+item_9970
+Nearest neighbor: item_9970
+distanceCube: 441.188
+distanceTrue: 275.151
+
+Query: item_10029
+R-near neighbors:
+item_2040
+item_2313
+item_8297
+item_8748
+item_631
+item_1150
+item_2648
+item_3125
+item_7104
+item_9460
+item_9665
+Nearest neighbor: item_1150
+distanceCube: 302.983
+distanceTrue: 246.609
+
+Query: item_10030
+R-near neighbors:
+item_3308
+item_7258
+item_1096
+item_1130
+item_5497
+item_559
+item_4815
+item_4920
+item_9249
+item_1684
+item_5391
+item_6079
+item_7366
+item_9969
+Nearest neighbor: item_9249
+distanceCube: 242.235
+distanceTrue: 173.948
+
+Query: item_10031
+R-near neighbors:
+item_5846
+item_9884
+item_8379
+item_783
+item_3600
+item_8049
+Nearest neighbor: item_3600
+distanceCube: 272.646
+distanceTrue: 248.473
+
+Query: item_10032
+R-near neighbors:
+item_3435
+item_5396
+item_5782
+item_6501
+item_7802
+item_8174
+item_8694
+item_9158
+item_9328
+item_4835
+item_5146
+item_8576
+item_874
+item_514
+item_688
+item_744
+item_1300
+item_2322
+item_3270
+item_4393
+item_4440
+item_5246
+item_6230
+item_8550
+item_9868
+item_4926
+Nearest neighbor: item_688
+distanceCube: 265.4
+distanceTrue: 250.014
+
+Query: item_10033
+R-near neighbors:
+item_2086
+item_9438
+item_448
+item_2508
+item_3841
+item_5444
+item_9571
+item_3530
+Nearest neighbor: item_3530
+distanceCube: 387.201
+distanceTrue: 293.883
+
+Query: item_10034
+R-near neighbors:
+item_918
+item_1635
+item_2389
+item_2657
+item_5206
+item_6335
+item_607
+item_5596
+item_8180
+item_9209
+item_9355
+Nearest neighbor: item_9355
+distanceCube: 255.016
+distanceTrue: 172.163
+
+Query: item_10035
+R-near neighbors:
+item_3814
+item_684
+item_3648
+item_4001
+item_1486
+item_3792
+item_7219
+item_8231
+item_9456
+item_5479
+item_8847
+Nearest neighbor: item_3648
+distanceCube: 294.769
+distanceTrue: 238.55
+
+Query: item_10036
+R-near neighbors:
+item_4331
+item_9673
+item_760
+item_2759
+item_3709
+item_821
+item_1467
+item_2764
+item_6174
+item_9533
+Nearest neighbor: item_1467
+distanceCube: 302.939
+distanceTrue: 244.677
+
+Query: item_10037
+R-near neighbors:
+item_391
+item_7695
+item_9264
+item_4500
+item_4509
+item_6655
+item_7059
+item_9216
+item_9972
+item_3877
+item_3899
+item_7916
+Nearest neighbor: item_3899
+distanceCube: 331.193
+distanceTrue: 273.317
+
+Query: item_10038
+R-near neighbors:
+item_543
+item_4483
+item_4741
+item_4909
+item_5423
+item_5820
+item_9383
+item_153
+item_473
+item_4990
+item_8048
+item_9463
+item_4091
+item_5103
+item_1653
+item_7943
+Nearest neighbor: item_1653
+distanceCube: 304.588
+distanceTrue: 253.683
+
+Query: item_10039
+R-near neighbors:
+item_895
+item_3365
+item_5421
+item_3453
+item_2649
+item_3187
+item_6395
+item_863
+item_3302
+item_4028
+item_9595
+Nearest neighbor: item_9595
+distanceCube: 250.667
+distanceTrue: 248.2
+
+Query: item_10040
+R-near neighbors:
+item_698
+item_3057
+item_3935
+item_3535
+item_3691
+item_600
+item_2378
+item_7230
+item_629
+item_667
+item_3896
+item_7796
+item_8836
+Nearest neighbor: item_3691
+distanceCube: 301.339
+distanceTrue: 254.635
+
+Query: item_10041
+R-near neighbors:
+item_2066
+item_4182
+item_7958
+item_86
+item_1313
+item_4589
+item_4828
+item_5060
+item_6258
+item_6489
+item_8450
+item_8900
+item_9415
+item_142
+item_2050
+item_4765
+Nearest neighbor: item_142
+distanceCube: 278.239
+distanceTrue: 266.889
+
+Query: item_10042
+R-near neighbors:
+item_9513
+item_6093
+item_1031
+item_2307
+item_7250
+item_1775
+item_4087
+item_7655
+Nearest neighbor: item_1031
+distanceCube: 298.268
+distanceTrue: 224.751
+
+Query: item_10043
+R-near neighbors:
+item_69
+item_9086
+item_514
+item_744
+item_751
+item_2070
+item_2657
+item_4229
+item_5256
+item_6412
+item_3504
+item_1144
+item_6107
+item_2521
+Nearest neighbor: item_3504
+distanceCube: 211.606
+distanceTrue: 192.984
+
+Query: item_10044
+R-near neighbors:
+item_1196
+item_4490
+item_2140
+item_4948
+item_7905
+item_8214
+item_8335
+item_9524
+item_3325
+item_4490
+item_7327
+item_8721
+item_355
+item_1657
+item_1675
+item_8699
+item_383
+item_1399
+item_1741
+item_3728
+item_8502
+Nearest neighbor: item_4490
+distanceCube: 80.8455
+distanceTrue: 80.8455
+
+Query: item_10045
+R-near neighbors:
+item_901
+item_3662
+item_5715
+item_1658
+item_5543
+item_7749
+item_991
+item_6490
+item_8747
+item_3337
+item_4673
+item_365
+item_2297
+item_4569
+item_5111
+item_7045
+Nearest neighbor: item_6490
+distanceCube: 214.93
+distanceTrue: 173.052
+
+Query: item_10046
+R-near neighbors:
+item_475
+item_3106
+item_3402
+item_5431
+item_9559
+item_110
+item_2014
+item_4092
+item_4951
+item_5643
+item_9336
+item_8451
+Nearest neighbor: item_3402
+distanceCube: 311.482
+distanceTrue: 253.941
+
+Query: item_10047
+R-near neighbors:
+item_395
+item_1561
+item_1722
+item_3718
+item_3780
+item_4573
+item_4639
+item_4861
+item_5476
+item_7597
+item_7944
+item_4326
+item_7028
+item_7167
+item_7269
+Nearest neighbor: item_1722
+distanceCube: 310.369
+distanceTrue: 154.227
+
+Query: item_10048
+R-near neighbors:
+item_8566
+item_56
+item_3164
+item_7050
+item_8442
+item_16
+item_1404
+item_2325
+item_5865
+item_6406
+Nearest neighbor: item_56
+distanceCube: 318.854
+distanceTrue: 271.61
+
+Query: item_10049
+R-near neighbors:
+item_21
+item_1477
+item_4714
+item_5861
+item_6956
+item_7842
+item_250
+item_359
+item_515
+item_3334
+item_3403
+item_3748
+item_4114
+item_6408
+item_1870
+item_5139
+item_9003
+Nearest neighbor: item_5861
+distanceCube: 267.442
+distanceTrue: 183.442
+
+Query: item_10050
+R-near neighbors:
+item_9384
+item_1152
+item_4693
+item_5138
+item_6683
+item_3290
+item_3339
+item_4892
+item_8118
+item_9057
+item_4432
+item_8810
+item_5095
+item_6596
+Nearest neighbor: item_4693
+distanceCube: 328.956
+distanceTrue: 175.516
+
+Query: item_10051
+R-near neighbors:
+item_714
+item_775
+item_3034
+item_4703
+item_5341
+item_7267
+item_8224
+item_903
+item_1425
+item_6363
+item_6908
+item_7788
+item_1870
+item_5139
+item_9003
+Nearest neighbor: item_4703
+distanceCube: 258.739
+distanceTrue: 224.86
+
+Query: item_10052
+R-near neighbors:
+item_4825
+item_5236
+item_5453
+Nearest neighbor: item_5453
+distanceCube: 125.379
+distanceTrue: 125.379
+
+Query: item_10053
+R-near neighbors:
+item_4813
+item_6202
+item_880
+item_5419
+Nearest neighbor: item_880
+distanceCube: 308.592
+distanceTrue: 265.377
+
+Query: item_10054
+R-near neighbors:
+item_9318
+item_4735
+Nearest neighbor: item_4735
+distanceCube: 428.487
+distanceTrue: 109.192
+
+Query: item_10055
+R-near neighbors:
+item_2978
+item_7052
+item_1526
+item_3541
+item_4568
+item_5236
+item_6096
+item_6214
+item_7733
+item_8852
+Nearest neighbor: item_1526
+distanceCube: 326.481
+distanceTrue: 187.563
+
+Query: item_10056
+R-near neighbors:
+Nearest neighbor: item_722
+distanceCube: 615.585
+distanceTrue: 328.279
+
+Query: item_10057
+R-near neighbors:
+item_1482
+item_4470
+Nearest neighbor: item_1482
+distanceCube: 313.477
+distanceTrue: 248.554
+
+Query: item_10058
+R-near neighbors:
+item_171
+item_1431
+item_2599
+item_3514
+item_3566
+item_3609
+item_5181
+item_6668
+item_7292
+item_7470
+item_2604
+item_1362
+item_4412
+item_7734
+Nearest neighbor: item_4412
+distanceCube: 314.361
+distanceTrue: 120.975
+
+Query: item_10059
+R-near neighbors:
+item_3720
+item_1186
+item_2041
+item_3064
+item_2172
+item_1242
+item_1332
+item_832
+Nearest neighbor: item_2172
+distanceCube: 416.751
+distanceTrue: 111.459
+
+Query: item_10060
+R-near neighbors:
+item_2229
+item_6224
+item_3589
+item_6165
+item_2841
+Nearest neighbor: item_2841
+distanceCube: 304.752
+distanceTrue: 166.856
+
+Query: item_10061
+R-near neighbors:
+item_1610
+item_2234
+item_5228
+item_7536
+item_7576
+item_8528
+item_8827
+Nearest neighbor: item_5228
+distanceCube: 458.252
+distanceTrue: 156.359
+
+Query: item_10062
+R-near neighbors:
+item_6355
+item_2708
+item_2832
+item_2919
+item_3600
+item_8392
+item_8414
+item_8681
+item_9819
+item_9997
+item_2338
+item_4107
+item_7597
+Nearest neighbor: item_4107
+distanceCube: 215.26
+distanceTrue: 193.977
+
+Query: item_10063
+R-near neighbors:
+item_5191
+item_1979
+item_6520
+item_6838
+item_8839
+item_357
+item_590
+item_6448
+item_690
+item_8817
+item_9517
+item_1054
+Nearest neighbor: item_590
+distanceCube: 341.428
+distanceTrue: 153.564
+
+Query: item_10064
+R-near neighbors:
+item_9935
+item_1514
+item_3804
+item_3858
+item_342
+item_1454
+item_2406
+item_8296
+Nearest neighbor: item_9935
+distanceCube: 270.394
+distanceTrue: 200.494
+
+Query: item_10065
+R-near neighbors:
+item_2326
+item_5895
+item_9054
+item_429
+item_1601
+item_7765
+Nearest neighbor: item_9054
+distanceCube: 402.767
+distanceTrue: 236.772
+
+Query: item_10066
+R-near neighbors:
+item_4510
+item_7126
+item_9017
+item_3822
+item_9315
+item_9687
+item_2071
+item_3403
+item_3479
+item_3591
+item_4156
+item_4990
+item_6456
+item_6561
+item_8501
+item_9042
+item_9319
+item_4901
+item_5223
+item_6302
+item_6987
+item_5500
+item_7327
+item_8327
+item_8723
+item_8900
+Nearest neighbor: item_6302
+distanceCube: 165.339
+distanceTrue: 165.339
+
+Query: item_10067
+R-near neighbors:
+item_6900
+Nearest neighbor: item_6900
+distanceCube: 438.551
+distanceTrue: 256.353
+
+Query: item_10068
+R-near neighbors:
+item_5534
+item_8189
+item_7361
+Nearest neighbor: item_8189
+distanceCube: 356.54
+distanceTrue: 261.362
+
+Query: item_10069
+R-near neighbors:
+item_6037
+item_6152
+Nearest neighbor: item_6037
+distanceCube: 364.535
+distanceTrue: 99.6293
+
+Query: item_10070
+R-near neighbors:
+item_730
+item_937
+item_1406
+item_4361
+item_5400
+item_6728
+item_8103
+item_9441
+item_8736
+Nearest neighbor: item_9441
+distanceCube: 405.871
+distanceTrue: 294.394
+
+Query: item_10071
+R-near neighbors:
+item_5213
+item_5870
+item_7476
+Nearest neighbor: item_5213
+distanceCube: 155.763
+distanceTrue: 155.763
+
+Query: item_10072
+R-near neighbors:
+item_291
+item_7032
+item_7528
+item_3235
+item_5596
+item_4981
+Nearest neighbor: item_5596
+distanceCube: 231.504
+distanceTrue: 128.783
+
+Query: item_10073
+R-near neighbors:
+item_5717
+item_7040
+item_8480
+Nearest neighbor: item_5717
+distanceCube: 376.004
+distanceTrue: 181.141
+
+Query: item_10074
+R-near neighbors:
+item_8963
+item_911
+item_4775
+item_5082
+item_1233
+item_5863
+item_9328
+item_2243
+item_9240
+Nearest neighbor: item_5863
+distanceCube: 309.503
+distanceTrue: 130.813
+
+Query: item_10075
+R-near neighbors:
+item_4724
+item_5232
+item_7071
+item_9245
+item_9881
+item_2926
+item_4629
+item_7804
+item_8609
+Nearest neighbor: item_4724
+distanceCube: 269.498
+distanceTrue: 198.776
+
+Query: item_10076
+R-near neighbors:
+item_1144
+item_1666
+item_2466
+item_4678
+item_4853
+item_8567
+item_6657
+Nearest neighbor: item_2466
+distanceCube: 290.293
+distanceTrue: 194.178
+
+Query: item_10077
+R-near neighbors:
+item_2922
+item_7119
+item_8425
+item_4588
+item_6054
+item_7692
+Nearest neighbor: item_7692
+distanceCube: 237.238
+distanceTrue: 159.308
+
+Query: item_10078
+R-near neighbors:
+item_3119
+Nearest neighbor: item_3119
+distanceCube: 552.531
+distanceTrue: 184.043
+
+Query: item_10079
+R-near neighbors:
+item_1945
+item_8919
+item_4903
+item_4999
+item_5860
+item_6122
+item_775
+item_1296
+item_6484
+item_9918
+item_2443
+item_2536
+item_4347
+item_7475
+item_9230
+item_4697
+Nearest neighbor: item_4903
+distanceCube: 190.735
+distanceTrue: 190.735
+
+Query: item_10080
+R-near neighbors:
+item_122
+item_144
+item_503
+item_630
+item_4099
+item_6567
+item_7379
+item_9552
+item_1092
+item_2649
+item_3424
+item_6454
+item_6078
+item_4055
+item_8486
+item_9339
+item_9593
+item_1517
+item_9574
+Nearest neighbor: item_144
+distanceCube: 276.06
+distanceTrue: 167.147
+
+Query: item_10081
+R-near neighbors:
+item_3018
+item_7767
+item_3010
+item_5333
+item_7513
+item_7745
+item_8930
+item_3213
+item_6425
+Nearest neighbor: item_3213
+distanceCube: 432.778
+distanceTrue: 65.7419
+
+Query: item_10082
+R-near neighbors:
+item_6459
+item_7237
+item_7952
+Nearest neighbor: item_6459
+distanceCube: 221.822
+distanceTrue: 114.416
+
+Query: item_10083
+R-near neighbors:
+item_4461
+item_8520
+item_2992
+item_8471
+item_9882
+Nearest neighbor: item_4461
+distanceCube: 273.659
+distanceTrue: 170.309
+
+Query: item_10084
+R-near neighbors:
+item_6689
+item_6135
+Nearest neighbor: item_6135
+distanceCube: 295.197
+distanceTrue: 140.357
+
+Query: item_10085
+R-near neighbors:
+item_6492
+item_7152
+item_7167
+item_7997
+item_9527
+Nearest neighbor: item_7167
+distanceCube: 362.891
+distanceTrue: 131.651
+
+Query: item_10086
+R-near neighbors:
+item_3622
+item_6461
+item_3089
+item_5989
+item_13
+item_498
+item_4329
+item_6781
+Nearest neighbor: item_5989
+distanceCube: 133.503
+distanceTrue: 94.9158
+
+Query: item_10087
+R-near neighbors:
+item_8520
+item_460
+item_594
+item_722
+item_1304
+item_5386
+item_6456
+item_6508
+item_9336
+item_9561
+Nearest neighbor: item_5386
+distanceCube: 410.918
+distanceTrue: 138.275
+
+Query: item_10088
+R-near neighbors:
+item_2022
+item_662
+item_2476
+item_4397
+item_7654
+Nearest neighbor: item_2022
+distanceCube: 306.77
+distanceTrue: 173.381
+
+Query: item_10089
+R-near neighbors:
+item_5
+item_2857
+Nearest neighbor: item_5
+distanceCube: 429.214
+distanceTrue: 200.866
+
+Query: item_10090
+R-near neighbors:
+item_3245
+item_7274
+item_8193
+item_2439
+item_3993
+item_5637
+Nearest neighbor: item_7274
+distanceCube: 406.037
+distanceTrue: 224.225
+
+Query: item_10091
+R-near neighbors:
+item_4
+item_8756
+item_4870
+Nearest neighbor: item_4
+distanceCube: 269.225
+distanceTrue: 201.311
+
+Query: item_10092
+R-near neighbors:
+item_4331
+item_4842
+item_9673
+item_649
+item_6718
+item_9943
+Nearest neighbor: item_649
+distanceCube: 322.396
+distanceTrue: 266.813
+
+Query: item_10093
+R-near neighbors:
+item_8400
+item_5434
+item_6124
+item_6288
+item_6380
+item_6430
+item_7006
+item_6124
+item_6804
+item_8052
+item_8518
+item_5615
+item_7222
+item_7820
+item_8126
+Nearest neighbor: item_6124
+distanceCube: 46.8188
+distanceTrue: 46.8188
+
+Query: item_10094
+R-near neighbors:
+item_4512
+item_4613
+item_8199
+item_8629
+item_9114
+item_2731
+item_7516
+item_9034
+item_8217
+item_9002
+Nearest neighbor: item_9034
+distanceCube: 359.664
+distanceTrue: 193.675
+
+Query: item_10095
+R-near neighbors:
+item_19
+item_6882
+item_7093
+item_7972
+item_8362
+item_7910
+Nearest neighbor: item_8362
+distanceCube: 414.394
+distanceTrue: 303.211
+
+Query: item_10096
+R-near neighbors:
+item_4705
+item_4708
+item_1952
+item_5613
+item_1410
+item_4365
+item_5855
+item_6163
+item_6407
+item_7165
+item_8109
+item_8777
+item_1827
+Nearest neighbor: item_1410
+distanceCube: 382.443
+distanceTrue: 230.458
+
+Query: item_10097
+R-near neighbors:
+item_5345
+item_5783
+item_5541
+item_7938
+item_9707
+item_2132
+item_2387
+item_4877
+item_5344
+item_7906
+item_6447
+item_5503
+item_5790
+item_8190
+Nearest neighbor: item_5541
+distanceCube: 220.02
+distanceTrue: 131.095
+
+Query: item_10098
+R-near neighbors:
+item_7996
+item_403
+item_4475
+item_1390
+item_6333
+item_8290
+item_540
+item_1811
+item_3733
+item_9076
+Nearest neighbor: item_7996
+distanceCube: 402.522
+distanceTrue: 212.061
+
+Query: item_10099
+R-near neighbors:
+Nearest neighbor: item_593
+distanceCube: 638.438
+distanceTrue: 251.257
+
+Query: item_10100
+R-near neighbors:
+item_9043
+item_1969
+item_1809
+Nearest neighbor: item_1809
+distanceCube: 402.288
+distanceTrue: 293.716
+
+Query: item_10101
+R-near neighbors:
+item_518
+item_1642
+item_3188
+item_5154
+item_6303
+item_7309
+item_1836
+item_8973
+item_9414
+item_9879
+Nearest neighbor: item_7309
+distanceCube: 351.347
+distanceTrue: 226.868
+
+Query: item_10102
+R-near neighbors:
+item_2168
+item_8493
+item_5575
+item_6445
+item_48
+item_98
+item_5447
+item_6720
+item_7178
+item_87
+Nearest neighbor: item_7178
+distanceCube: 231.528
+distanceTrue: 148.165
+
+Query: item_10103
+R-near neighbors:
+item_3784
+item_4262
+item_9467
+item_6936
+Nearest neighbor: item_4262
+distanceCube: 389.411
+distanceTrue: 146.311
+
+Query: item_10104
+R-near neighbors:
+item_5826
+item_1828
+Nearest neighbor: item_1828
+distanceCube: 389.396
+distanceTrue: 276.819
+
+Query: item_10105
+R-near neighbors:
+item_2226
+item_5708
+item_8622
+item_414
+item_1393
+item_456
+item_3680
+item_6683
+item_6717
+item_591
+item_9507
+item_8291
+Nearest neighbor: item_2226
+distanceCube: 354.591
+distanceTrue: 271.982
+
+Query: item_10106
+R-near neighbors:
+item_6197
+item_7926
+item_3215
+item_4333
+item_140
+item_2141
+Nearest neighbor: item_140
+distanceCube: 339.055
+distanceTrue: 181.607
+
+Query: item_10107
+R-near neighbors:
+item_410
+item_3485
+item_4899
+item_9400
+item_6703
+item_6823
+item_652
+item_5434
+item_7338
+item_7510
+item_7762
+Nearest neighbor: item_4899
+distanceCube: 274.885
+distanceTrue: 192.678
+
+Query: item_10108
+R-near neighbors:
+item_1807
+item_1982
+item_2998
+item_3752
+item_6987
+item_1207
+item_2598
+item_5769
+item_6377
+item_6735
+item_8397
+item_314
+item_974
+Nearest neighbor: item_2998
+distanceCube: 463.738
+distanceTrue: 285.107
+
+Query: item_10109
+R-near neighbors:
+item_687
+item_1156
+item_1193
+item_4006
+item_8378
+Nearest neighbor: item_8378
+distanceCube: 380.688
+distanceTrue: 224.907
+
+Query: item_10110
+R-near neighbors:
+item_8962
+item_1897
+item_3925
+item_7722
+Nearest neighbor: item_7722
+distanceCube: 123.56
+distanceTrue: 123.56
+
+Query: item_10111
+R-near neighbors:
+item_1984
+item_8251
+item_9421
+item_3092
+item_7098
+Nearest neighbor: item_7098
+distanceCube: 75.08
+distanceTrue: 75.08
+
+Query: item_10112
+R-near neighbors:
+item_8585
+item_4454
+item_2168
+item_7369
+item_614
+item_2819
+item_3595
+item_6573
+item_8478
+item_3256
+Nearest neighbor: item_2168
+distanceCube: 298.386
+distanceTrue: 114.534
+
+Query: item_10113
+R-near neighbors:
+item_3215
+item_4561
+item_7023
+item_7630
+item_8417
+item_8927
+item_9417
+item_1054
+item_1508
+item_5028
+item_5301
+item_1262
+item_4656
+item_7290
+item_9417
+item_9559
+Nearest neighbor: item_9417
+distanceCube: 60.663
+distanceTrue: 50.4579
+
+Query: item_10114
+R-near neighbors:
+Nearest neighbor: Nearest neighbor not found
+distanceCube: -1
+distanceTrue: 298.027
+
+Query: item_10115
+R-near neighbors:
+item_1573
+item_6504
+item_1376
+item_7494
+Nearest neighbor: item_1376
+distanceCube: 394.458
+distanceTrue: 141.464
+
+Query: item_10116
+R-near neighbors:
+item_1231
+item_4767
+item_4899
+item_5339
+item_7517
+item_9854
+item_8592
+item_8920
+item_518
+item_7744
+item_8963
+Nearest neighbor: item_4899
+distanceCube: 330.048
+distanceTrue: 234.774
+
+Query: item_10117
+R-near neighbors:
+item_7555
+item_1601
+item_7765
+item_5589
+Nearest neighbor: item_7765
+distanceCube: 295.797
+distanceTrue: 160.571
+
+Query: item_10118
+R-near neighbors:
+item_7271
+item_3314
+item_3917
+item_9549
+item_9255
+item_8850
+Nearest neighbor: item_7271
+distanceCube: 318.987
+distanceTrue: 305.392
+
+Query: item_10119
+R-near neighbors:
+item_4040
+item_5629
+item_7868
+item_7512
+item_3765
+item_5555
+item_8761
+Nearest neighbor: item_7512
+distanceCube: 285.79
+distanceTrue: 285.79
+
+Query: item_10120
+R-near neighbors:
+item_3924
+item_5675
+item_8062
+item_2697
+item_9579
+Nearest neighbor: item_5675
+distanceCube: 406.006
+distanceTrue: 233.532
+
+Query: item_10121
+R-near neighbors:
+item_7613
+item_8957
+item_71
+item_5232
+item_5924
+item_4160
+item_4537
+item_4713
+item_5760
+item_6076
+Nearest neighbor: item_5924
+distanceCube: 148.391
+distanceTrue: 137.43
+
+Query: item_10122
+R-near neighbors:
+item_3836
+item_7513
+item_8028
+item_9240
+item_167
+item_854
+item_5758
+item_6261
+item_6493
+Nearest neighbor: item_9240
+distanceCube: 332.133
+distanceTrue: 184.613
+

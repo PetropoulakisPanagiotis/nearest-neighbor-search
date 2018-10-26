@@ -14,7 +14,7 @@ using namespace std;
 /////////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeEuclidean::hypercubeEuclidean():tableSize(0),n(0),k(10),dim(0),w(800),m(50),probes(2),fitted(0){}
+hypercubeEuclidean::hypercubeEuclidean():tableSize(0),n(0),k(10),dim(0),w(500),m(50),probes(6),fitted(0){}
 
 hypercubeEuclidean::hypercubeEuclidean(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),w(800),m(m),probes(probes),fitted(0){
     /* Check parameters */

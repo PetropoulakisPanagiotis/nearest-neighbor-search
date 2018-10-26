@@ -7,14 +7,14 @@
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 
 #include "../../neighborsProblem/item/item.h" // Items in sets
-#include "../../neighborsProblem/model/lsh/lsh.h" // Models
+#include "../../neighborsProblem/model/hypercube/hypercube.h" // Models
 #include "../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.h" // Models
 
 using namespace std;
 
 /* Read arguments from the user */
-int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, string& queryFile, string& outputFile);
-int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile);
+int readArguments(int argc, char **argv, int& k, int& m, int& probes, string& inputFile, string& queryFile, string& outputFile);
+int scanArguments(int& k, int& m, int& probes, string& inputFile, string& queryFile, string& outputFile);
 
 int main(int argc, char **argv){
     char delim = ' '; // For data set
@@ -25,23 +25,23 @@ int main(int argc, char **argv){
     errorCode status; // Errors
 
     /* Arguments */
-    int k = -1, l;
+    int k = -1, m, probes;
     string inputFile, queryFile, outputFile;
     ofstream resultsFile; 
-    
+
     /* Read possible arugments from the user */
-    argumentsProvided = readArguments(argc, argv, k, l, inputFile, queryFile, outputFile);
+    argumentsProvided = readArguments(argc, argv, k, m, probes, inputFile, queryFile, outputFile);
     if(argumentsProvided == -1){
         cout << "Please give valid arguments. Try again later\n";
         return 0;
     }
    
-    cout << "Welcome to lsh search\n";
+    cout << "Welcome to cube search\n";
     cout << "-----------------------\n\n";
     
     /* Scan arguments from the stdin */
     if(argumentsProvided == 0){
-        argumentsProvided = scanArguments(k, l, inputFile, queryFile, outputFile);
+        argumentsProvided = scanArguments(k, k, m, inputFile, queryFile, outputFile);
         if(argumentsProvided == -1){
             cout << "Please give valid arguments. Try again later\n";
             return 0;
@@ -52,7 +52,7 @@ int main(int argc, char **argv){
     model* myModel; // Euclidean or cosin lsh 
     model* optimalModel; // For exhaustive search
 
-    cout << "lsh: Reading data set\n";
+    cout << "cube: Reading data set\n";
 
     /* Read data set */
     readDataSet(inputFile, 0, delim, dataSetPoints, metrice, status);
@@ -64,15 +64,15 @@ int main(int argc, char **argv){
     /* Create model */
     if(metrice == "euclidean"){
         if(k != -1)
-            myModel = new lshEuclidean(k,l, status);
+            myModel = new hypercubeEuclidean(k, m, probes, status);
         else
-            myModel = new lshEuclidean();
+            myModel = new hypercubeEuclidean();
     }
     else if(metrice == "cosin"){
         if(k != -1)
-            myModel = new lshCosin(k,l, status);
+            myModel = new hypercubeCosin(k, m, probes, status);
         else
-            myModel = new lshCosin();
+            myModel = new hypercubeCosin();
     }
 
     if(status != SUCCESS){
@@ -84,7 +84,7 @@ int main(int argc, char **argv){
     /* Create optimal model */
     optimalModel = new exhaustiveSearch();
     
-    cout << "lsh: Fitting sub-opt model\n";
+    cout << "cube: Fitting sub-opt model\n";
     
     /* Fit data set */
     myModel->fit(dataSetPoints,status);
@@ -95,9 +95,9 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << sizeof(myModel) << "\n";
+    cout << "cube: Sub-opt model is fitted correctly. Memory consumption is: " << sizeof(myModel) << "\n";
     
-    cout << "lsh: Fitting opt model\n";
+    cout << "cube: Fitting opt model\n";
 
     /* Fit optimal model */
     optimalModel->fit(dataSetPoints,status);
@@ -108,7 +108,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << sizeof(optimalModel) << "\n";
+    cout << "cube: Opt model is fitted correctly. Memory consumption is: " << sizeof(optimalModel) << "\n";
 
     double nearestDistanceSubOpt, nearestDistanceOpt;
     list<Item>::iterator iterQueries; // Iterate through queries 
@@ -122,7 +122,7 @@ int main(int argc, char **argv){
     /* Read queries sets, find neighbors and print statistics */
     while(1){
 
-        cout << "lsh: Reading query set\n";
+        cout << "cube: Reading query set\n";
 
         /* Read query set */
         readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
@@ -133,7 +133,7 @@ int main(int argc, char **argv){
             return 0;
         }
 
-        cout << "lsh: Opening output file\n";
+        cout << "cube: Opening output file\n";
 
         /* Truncate if file exists */
         resultsFile.open(outputFile, ios::trunc);
@@ -145,7 +145,7 @@ int main(int argc, char **argv){
         }
 
             
-        cout << "lsh: Searching for neighbors with given radius: " << radius << "\n";
+        cout << "cube: Searching for neighbors with given radius: " << radius << "\n";
 
         /* Find neighbors */
         for(iterQueries = querySetPoints.begin(); iterQueries != querySetPoints.end(); iterQueries++){
@@ -159,7 +159,9 @@ int main(int argc, char **argv){
                     delete optimalModel;
                     return 0;
                 }
+           
             }
+
             myModel->nNeighbor(*iterQueries, nearestNeighborSubOpt, &nearestDistanceSubOpt, status);
             if(status != SUCCESS){
                 printError(status);
@@ -186,15 +188,16 @@ int main(int argc, char **argv){
 
             /* Print id */
             resultsFile << "Query: " << iterQueries->getId() << "\n";
-            
-            /* Radius exists */
+
+            /* Print radius */
             if(radius != 0){
                 resultsFile << "R-near neighbors:\n";
 
                 /* R-neighbors */
                 for(iterNeighbors = radiusNeighbors.begin(); iterNeighbors != radiusNeighbors.end(); iterNeighbors++)
-                   resultsFile << iterNeighbors->getId() << "\n";     
+                    resultsFile << iterNeighbors->getId() << "\n";     
             }
+
             /* Nearest */ 
             resultsFile << "Nearest neighbor: " << nearestNeighborSubOpt.getId() << "\n";
             resultsFile << "distanceCube: " << nearestDistanceSubOpt << "\n";
@@ -202,8 +205,8 @@ int main(int argc, char **argv){
         
             resultsFile << "\n";
         } // End for - query points 
-    
-        cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
+     
+        cout << "cube: Max approximation fraction: " << mApproximation << "\n";
 
         cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
         while(1){
@@ -217,7 +220,7 @@ int main(int argc, char **argv){
         } // End while
 
         if(inputStr == "n"){
-            cout << "lsh: Terminating\n";
+            cout << "cube: Terminating\n";
             break;
         }
         else{
@@ -241,17 +244,17 @@ int main(int argc, char **argv){
 /* No arguments: 0              */
 /* Arguments provided: 1        */
 /* Invalid arguments: -1        */
-int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, string& queryFile, string& outputFile){
+int readArguments(int argc, char **argv, int& k, int& m, int& probes, string& inputFile, string& queryFile, string& outputFile){
 
     /* No argumets */
     if(argc == 1)
         return 0;
 
     /* Invalid arguments */
-    if(argc != 11)
+    if(argc != 13)
         return -1;
 
-    if(strcmp(argv[1], "-d") || strcmp(argv[3], "-q") || strcmp(argv[5], "-k") || strcmp(argv[7], "-L") || strcmp(argv[9], "-o"))
+    if(strcmp(argv[1], "-d") || strcmp(argv[3], "-q") || strcmp(argv[5], "-k") || strcmp(argv[7], "-M") || strcmp(argv[9], "-probes") || strcmp(argv[11], "-o"))
         return -1;
 
     /* Copy arguments */
@@ -263,15 +266,23 @@ int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, stri
     }
 
     try{
-        l = stoi(argv[8]);
+        m = stoi(argv[8]);
     }
     catch(...){
         return -1;
+    
+    }
+    try{
+        probes = stoi(argv[10]);
+    }
+    catch(...){
+        return -1;
+    
     }
 
     inputFile = argv[2];
     queryFile = argv[4];
-    outputFile = argv[10];
+    outputFile = argv[12];
 
     return 1;
 }
@@ -279,7 +290,7 @@ int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, stri
 /* Read arguments from stdin */
 /* Arguments provided: 1     */
 /* Invalid arguments: -1     */
-int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile){
+int scanArguments(int& k, int &m, int& probes, string& inputFile, string& queryFile, string& outputFile){
     string inputStr;
 
     cout << "Give input file name:";
@@ -297,7 +308,7 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
 
     outputFile = inputStr;
 
-    cout << "Do you want to provide hyperparameters for lsh(y/n)?:";
+    cout << "Do you want to provide hyperparameters for cube(y/n)?:";
     while(1){
         cin >> inputStr;
 
@@ -324,12 +335,23 @@ int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& 
         return -1;
     }
 
-    cout << "Give l hyperparameter:";
+    cout << "Give m hyperparameter:";
     
     cin >> inputStr;
 
     try{
-        l = stoi(inputStr);
+        m = stoi(inputStr);
+    }
+    catch(...){
+        return -1;
+    }
+
+    cout << "Give probes hyperparameter:";
+    
+    cin >> inputStr;
+
+    try{
+        probes = stoi(inputStr);
     }
     catch(...){
         return -1;

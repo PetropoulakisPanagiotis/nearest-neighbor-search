@@ -14,7 +14,7 @@ using namespace std;
 ///////////////////////////////////////////
 
 /* Default constructor */
-lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0),w(800),fitted(0){
+lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0),w(500),fitted(0){
     int i;
 
     /* Set size of hash functions */
@@ -27,7 +27,7 @@ lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0
         this->tables.push_back(vector<list<entry> >(this->l));
 }
 
-lshEuclidean::lshEuclidean(int k, int l, errorCode& status):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(800),fitted(0){
+lshEuclidean::lshEuclidean(int k, int l, errorCode& status):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(500),fitted(0){
     int i;
 
     /* Check parameters */

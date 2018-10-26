@@ -14,7 +14,7 @@ using namespace std;
 /////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(10),dim(0),m(50),probes(2),fitted(0){}
+hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(10),dim(0),m(50),probes(6),fitted(0){}
 
 hypercubeCosin::hypercubeCosin(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),m(m),probes(probes),fitted(0){
     /* Check parameters */

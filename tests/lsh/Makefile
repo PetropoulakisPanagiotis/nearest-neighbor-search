@@ -1,8 +1,8 @@
 CC = g++
 FLAGS = -g -Wall
 
-lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o
-	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o -std=c++11
+lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o
+	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o -std=c++11
 
 lsh.o: lsh.cc
 	$(CC) -c  $(FLAGS) lsh.cc -std=c++11
@@ -30,6 +30,9 @@ hypercubeEuclidean.o: ../../neighborsProblem/model/hypercube/hypercubeEuclidean.
 
 hypercubeCosin.o: ../../neighborsProblem/model/hypercube/hypercubeCosin.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeCosin.cc -std=c++11
+
+exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11
 
 .PHONY:
 	clean

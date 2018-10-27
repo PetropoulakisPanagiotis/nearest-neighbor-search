@@ -54,6 +54,7 @@ class hypercubeEuclidean: public model{
         
         int getNumberOfPoints(errorCode& status);
         int getDim(errorCode& status);
+        unsigned size();
 
         void print(void);
         void printHashFunctions(void);
@@ -105,7 +106,8 @@ class hypercubeCosin: public model{
         
         int getNumberOfPoints(errorCode& status);
         int getDim(errorCode& status);
-
+        unsigned size(void);
+        
         void print(void);
         void printHashFunctions(void);
 };

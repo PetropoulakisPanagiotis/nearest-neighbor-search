@@ -33,13 +33,6 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
     }
 
     /* Check parameters */
-    if(points.size() > MAX_DIM || points.size() <= 0){
-        status = INVALID_DIM;
-        return;
-    }
-
-    this->dim = 128;
-
     this->points.reserve(points.size());
 
     /* Set members */
@@ -66,11 +59,6 @@ void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neig
     status = SUCCESS;
 
     /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
-
     if(radius < MIN_RADIUS || radius > MAX_RADIUS){
         status = INVALID_RADIUS;
         return; 
@@ -111,12 +99,6 @@ void exhaustiveSearch::nNeighbor(Item& query, Item& nNeighbor, double* neighborD
     double currDist; // Distance of a point in list
 
     status = SUCCESS;
-
-    /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
 
     /* Check model */
     if(this->fitted == 0){
@@ -176,6 +158,9 @@ int exhaustiveSearch::getDim(errorCode& status){
         return this->dim;
 }
 
+unsigned exhaustiveSearch::size(void){
+    return sizeof(*this);
+}
 
 /* Print statistics */
 void exhaustiveSearch::print(void){

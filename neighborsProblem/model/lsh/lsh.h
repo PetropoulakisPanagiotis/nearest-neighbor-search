@@ -41,7 +41,8 @@ class lshEuclidean: public model{
         
         int getNumberOfPoints(errorCode& status);
         int getDim(errorCode& status);
-
+        unsigned size(void);
+        
         void print(void);
         void printHashFunctions(void);
 };
@@ -72,6 +73,7 @@ class lshCosin: public model{
         
         int getNumberOfPoints(errorCode& status);
         int getDim(errorCode& status);
+        unsigned size(void);
 
         void print(void);
         void printHashFunctions(void);

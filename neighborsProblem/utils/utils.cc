@@ -37,15 +37,7 @@ float getRandom(int type, int w){
 
 /* Get mod of given number */
 int myMod(int x, int y){
-    
-    if(x >= 0)
-        return (x % y);
-    else{
-        if(abs(x) >= y)   
-            return ((((-1) * x) % y) % y);
-        else 
-            return (x + y);
-    }
+    return ((x % y) + y) % y;
 }
 
 /* Sum given numbers - check for overflow */

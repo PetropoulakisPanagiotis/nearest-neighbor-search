@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <string.h>
+#include <chrono>
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 
 #include "../../neighborsProblem/item/item.h" // Items in sets
@@ -55,7 +56,7 @@ int main(int argc, char **argv){
     cout << "lsh: Reading data set\n";
 
     /* Read data set */
-    readDataSet(inputFile, 0, delim, dataSetPoints, metrice, status);
+    readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
     if(status != SUCCESS){
         printError(status);
         return 0;
@@ -95,7 +96,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << sizeof(myModel) << "\n";
+    cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
     
     cout << "lsh: Fitting opt model\n";
 
@@ -108,7 +109,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << sizeof(optimalModel) << "\n";
+    cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
 
     double nearestDistanceSubOpt, nearestDistanceOpt;
     list<Item>::iterator iterQueries; // Iterate through queries 
@@ -116,6 +117,12 @@ int main(int argc, char **argv){
     Item nearestNeighborSubOpt, nearestNeighborOpt;
     list<Item> radiusNeighbors;
     double mApproximation = -1; // Maximum approximation fraction (dist nearest sub opt / dist nearest opt)
+
+    /* Measure time */
+    chrono::steady_clock::time_point beginOpt, endOpt;
+    chrono::steady_clock::time_point beginSubOpt, endSubOpt;
+    double avgTimeNearest = 0; 
+    int flag = 0;
 
     string inputStr; // Repeat procedure with different query set
 
@@ -160,6 +167,8 @@ int main(int argc, char **argv){
                     return 0;
                 }
             }
+
+            beginSubOpt = chrono::steady_clock::now();
             myModel->nNeighbor(*iterQueries, nearestNeighborSubOpt, &nearestDistanceSubOpt, status);
             if(status != SUCCESS){
                 printError(status);
@@ -167,7 +176,9 @@ int main(int argc, char **argv){
                 delete optimalModel;
                 return 0;
             }
-        
+            endSubOpt = chrono::steady_clock::now();
+           
+            beginOpt = chrono::steady_clock::now();
             optimalModel->nNeighbor(*iterQueries, nearestNeighborOpt, &nearestDistanceOpt, status);
             if(status != SUCCESS){
                 printError(status);
@@ -175,9 +186,10 @@ int main(int argc, char **argv){
                 delete optimalModel;
                 return 0;
             }
-        
+            endOpt = chrono::steady_clock::now();
+            
             /* Fix fraction */
-            if(mApproximation < nearestDistanceSubOpt / nearestDistanceOpt)
+            if(nearestDistanceSubOpt != -1 && mApproximation < nearestDistanceSubOpt / nearestDistanceOpt)
                 mApproximation = nearestDistanceSubOpt / nearestDistanceOpt;
 
             ///////////////////////////
@@ -197,13 +209,30 @@ int main(int argc, char **argv){
             }
             /* Nearest */ 
             resultsFile << "Nearest neighbor: " << nearestNeighborSubOpt.getId() << "\n";
-            resultsFile << "distanceCube: " << nearestDistanceSubOpt << "\n";
+            resultsFile << "distanceLSH: " << nearestDistanceSubOpt << "\n";
             resultsFile << "distanceTrue: " << nearestDistanceOpt << "\n"; 
-        
+            resultsFile << "tLSH: " << chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0 << " sec\n";
+            resultsFile << "tTrue: " << chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0 << " sec\n"; 
+
+            if(flag == 0 && nearestDistanceSubOpt != -1)
+                avgTimeNearest = chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+            else if(nearestDistanceSubOpt != -1){
+                avgTimeNearest += chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+                avgTimeNearest /= 2;
+            }
+
             resultsFile << "\n";
+
+            flag = 1;
         } // End for - query points 
-    
-        cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
+   
+
+        if(mApproximation == -1)
+            cout << "lsh: Can't find nearest neighbors for given data set\n";
+        else
+            cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
+
+        cout << "lsh: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
 
         cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
         while(1){

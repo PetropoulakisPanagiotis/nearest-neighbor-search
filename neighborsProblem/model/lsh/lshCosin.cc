@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 #include <list>
 #include <cmath>
 #include "lsh.h"
@@ -83,12 +84,6 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     /* Already fitted */
     if(this->fitted == 1){
         status = METHOD_ALREADY_USED;
-        return;
-    }
-
-    /* Check parameters */
-    if(points.size() > MAX_DIM || points.size() <= 0){
-        status = INVALID_DIM;
         return;
     }
 
@@ -215,15 +210,12 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
     int i, pos;
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
+    unordered_set<string> visited; // Visited points
+    string currId;
 
     status = SUCCESS;
 
     /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
-
     if(radius < MIN_RADIUS || radius > MAX_RADIUS){
         status = INVALID_RADIUS;
         return; 
@@ -260,6 +252,17 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
+            /* Check if current points is checked */
+            currId = iter->getId();
+
+            /* Not found - add it */
+            if(visited.find(currId) == visited.end()){
+                visited.insert(currId);
+            }
+            /* Vidited - Discard it */
+            else
+                continue;
+            
             /* Find current distance */
             currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
@@ -283,16 +286,12 @@ void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance,
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
     list<Item>::iterator iterNearestNeighbor;
+    unordered_set<string> visited; // Visited points
+    string currId;
 
     status = SUCCESS;
 
     /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
-
-    /* Check model */
     if(this->fitted == 0){
         status = METHOD_UNFITTED;
         return;
@@ -318,6 +317,17 @@ void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance,
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
+            /* Check if current points is checked */
+            currId = iter->getId();
+
+            /* Not found - add it */
+            if(visited.find(currId) == visited.end()){
+                visited.insert(currId);
+            }
+            /* Vidited - Discard it */
+            else
+                continue;
+            
             /* Find current distance */
             currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
@@ -388,6 +398,9 @@ int lshCosin::getDim(errorCode& status){
         return this->dim;
 }
 
+unsigned lshCosin::size(void){
+    return sizeof(*this);
+}
 
 /* Print statistics */
 void lshCosin::print(void){

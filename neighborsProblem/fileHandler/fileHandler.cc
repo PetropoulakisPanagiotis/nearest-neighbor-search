@@ -20,7 +20,7 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, st
     ifstream file; 
     string line, word; // Line is splitted in words
     int flag = 0; // Check only once for metrices
-    int i, wordsSize, specialChar;
+    int i, j, wordsSize, specialChar;
     double currComponent;
     
     /* Structures */
@@ -55,24 +55,28 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, st
         /* Discard empty lines */
         if(line.length() == 0)
             continue;
-
+    
         /* For current points in line */
         vector<double> components;
         string id; 
 
         /* Check for metrices */
         if(flag == 0){
-             
-            if(line == metrices[0]){
-                types = metrices[0];
-                flag = 1;
+            for(i = 0; i < (int)metrices.size(); i++){
+                for(j = 0; j < (int)metrices[i].length(); j++){
+                    if(line[j] != metrices[i][j])
+                        break;
+                }
+
+                if(j == (int)metrices[i].length()){
+                    types = metrices[i];
+                    flag = 1;
+                    break;
+                }
+            } // End for
+            
+            if(flag == 1)
                 continue;
-            }
-            else if(line == metrices[1]){
-                types = metrices[1];
-                flag = 1;
-                continue;
-            }
 
             /* No metrices found - Reset words */
             types = "euclidean"; // Default metrice

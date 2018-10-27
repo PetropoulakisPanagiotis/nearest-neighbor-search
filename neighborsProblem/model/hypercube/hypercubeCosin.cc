@@ -63,12 +63,6 @@ void hypercubeCosin::fit(list<Item>& points, errorCode& status){
         return;
     }
 
-    /* Check parameters */
-    if(points.size() > MAX_DIM || points.size() <= 0){
-        status = INVALID_DIM;
-        return;
-    }
-
     /* Set members */
     this->n = points.size();
     if(this->n < MIN_POINTS || this->n > MAX_POINTS){
@@ -158,12 +152,8 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
     int numNeighbors = 0; // Number of neighbors
 
     status = SUCCESS;
+    
     /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
-
     if(radius < MIN_RADIUS || radius > MAX_RADIUS){
         status = INVALID_RADIUS;
         return; 
@@ -256,11 +246,6 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
     int numNeighbors = 0; // Number of neighbors
 
     status = SUCCESS;
-    /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
 
     /* Check model */
     if(this->fitted == 0){
@@ -388,6 +373,9 @@ int hypercubeCosin::getDim(errorCode& status){
         return this->dim;
 }
 
+unsigned hypercubeCosin::size(void){
+    return sizeof(*this);
+}
 
 /* Print statistics */
 void hypercubeCosin::print(void){

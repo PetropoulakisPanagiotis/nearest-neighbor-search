@@ -2,6 +2,7 @@
 #include <vector>
 #include <list>
 #include <cmath>
+#include <unordered_set>
 #include "lsh.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -106,12 +107,6 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     /* Already fitted */
     if(this->fitted == 1){
         status = METHOD_ALREADY_USED;
-        return;
-    }
-
-    /* Check parameters */
-    if(points.size() > MAX_DIM || points.size() <= 0){
-        status = INVALID_DIM;
         return;
     }
 
@@ -258,15 +253,12 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
     int i, pos, j;
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
+    unordered_set<string> visited; // Visited points
+    string currId;
 
     status = SUCCESS;
 
     /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
-
     if(radius < MIN_RADIUS || radius > MAX_RADIUS){
         status = INVALID_RADIUS;
         return; 
@@ -312,6 +304,17 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
 
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
+            
+            /* Check if current points is checked */
+            currId = iter->point.getId();
+
+            /* Not found - add it */
+            if(visited.find(currId) == visited.end()){
+                visited.insert(currId);
+            }
+            /* Vidited - Discard it */
+            else
+                continue;
 
             /* Compare values g of query and current point */
             if(!equal(valueG.begin(), valueG.end(), iter->valueG.begin()))
@@ -340,14 +343,10 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
     list<entry>::iterator iterNearestNeighbor;
+    unordered_set<string> visited; // Visited points
+    string currId;
 
     status = SUCCESS;
-
-    /* Check parameters */
-    if(queryDim <= 0 || queryDim > MAX_DIM || queryDim != this->dim){
-        status = INVALID_DIM;
-        return;
-    }
 
     /* Check model */
     if(this->fitted == 0){
@@ -385,6 +384,17 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
+            /* Check if current points is checked */
+            currId = iter->point.getId();
+
+            /* Not found - add it */
+            if(visited.find(currId) == visited.end()){
+                visited.insert(currId);
+            }
+            /* Vidited - Discard it */
+            else
+                continue;
+            
             /* Compare values g of query and current point */
             if(!equal(valueG.begin(), valueG.end(), iter->valueG.begin()))
                 continue;            
@@ -460,6 +470,9 @@ int lshEuclidean::getDim(errorCode& status){
         return this->dim;
 }
 
+unsigned lshEuclidean::size(void){
+    return sizeof(*this);
+}
 
 /* Print statistics */
 void lshEuclidean::print(void){

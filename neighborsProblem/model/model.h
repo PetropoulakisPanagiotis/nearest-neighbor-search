@@ -22,6 +22,7 @@ class model{
         /* Accessors */
         virtual int getNumberOfPoints(errorCode& status) = 0;
         virtual int getDim(errorCode& status) = 0;
+        virtual unsigned size(void) = 0;
 
         /* Print some statistics */
         virtual void print(void) = 0;

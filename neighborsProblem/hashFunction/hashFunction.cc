@@ -482,7 +482,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
         int i,j;
         errorCode status;
         hCosin* newFunc = NULL;
-      
+        
         status = SUCCESS;
 
         /* Set name */
@@ -531,6 +531,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
             for(j = 0; j < i; j++)
                 delete this->H[j];
     }
+
 }
 
 /* Destructor */

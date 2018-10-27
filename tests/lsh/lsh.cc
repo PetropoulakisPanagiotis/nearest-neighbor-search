@@ -53,64 +53,6 @@ int main(int argc, char **argv){
     model* myModel; // Euclidean or cosin lsh 
     model* optimalModel; // For exhaustive search
 
-    cout << "lsh: Reading data set\n";
-
-    /* Read data set */
-    readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
-    if(status != SUCCESS){
-        printError(status);
-        return 0;
-    }
-
-    /* Create model */
-    if(metrice == "euclidean"){
-        if(k != -1)
-            myModel = new lshEuclidean(k,l, status);
-        else
-            myModel = new lshEuclidean();
-    }
-    else if(metrice == "cosin"){
-        if(k != -1)
-            myModel = new lshCosin(k,l, status);
-        else
-            myModel = new lshCosin();
-    }
-
-    if(status != SUCCESS){
-        printError(status);
-        delete myModel;
-        return -1;
-    }
-
-    /* Create optimal model */
-    optimalModel = new exhaustiveSearch();
-    
-    cout << "lsh: Fitting sub-opt model\n";
-    
-    /* Fit data set */
-    myModel->fit(dataSetPoints,status);
-    if(status != SUCCESS){
-        delete myModel;
-        delete optimalModel;
-        printError(status);
-        return 0;
-    }
-
-    cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
-    
-    cout << "lsh: Fitting opt model\n";
-
-    /* Fit optimal model */
-    optimalModel->fit(dataSetPoints,status);
-    if(status != SUCCESS){
-        delete myModel;
-        delete optimalModel;
-        printError(status);
-        return 0;
-    }
-
-    cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
-
     double nearestDistanceSubOpt, nearestDistanceOpt;
     list<Item>::iterator iterQueries; // Iterate through queries 
     list<Item>::iterator iterNeighbors; // Iterate through neighbors 
@@ -128,6 +70,65 @@ int main(int argc, char **argv){
 
     /* Read queries sets, find neighbors and print statistics */
     while(1){
+
+        cout << "lsh: Reading data set\n";
+
+        /* Read data set */
+        readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
+        if(status != SUCCESS){
+            printError(status);
+            return 0;
+        }
+
+        /* Create model */
+        if(metrice == "euclidean"){
+            if(k != -1)
+                myModel = new lshEuclidean(k,l, status);
+            else
+                myModel = new lshEuclidean();
+        }
+        else if(metrice == "cosin"){
+            if(k != -1)
+                myModel = new lshCosin(k,l, status);
+            else
+                myModel = new lshCosin();
+        }
+
+        if(status != SUCCESS){
+            printError(status);
+            delete myModel;
+            return -1;
+        }
+
+        /* Create optimal model */
+        optimalModel = new exhaustiveSearch();
+        
+        cout << "lsh: Fitting sub-opt model\n";
+        
+        /* Fit data set */
+        myModel->fit(dataSetPoints,status);
+        if(status != SUCCESS){
+            delete myModel;
+            delete optimalModel;
+            printError(status);
+            return 0;
+        }
+
+        cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
+        
+        cout << "lsh: Fitting opt model\n";
+
+        /* Fit optimal model */
+        optimalModel->fit(dataSetPoints,status);
+        if(status != SUCCESS){
+            delete myModel;
+            delete optimalModel;
+            printError(status);
+            return 0;
+        }
+
+        cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
+
 
         cout << "lsh: Reading query set\n";
 
@@ -233,7 +234,14 @@ int main(int argc, char **argv){
             cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
 
         cout << "lsh: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
-
+        
+        cout << "lsh: Deleting models\n";
+        /* Delete models */
+        delete optimalModel;    
+        delete myModel;
+            
+        cout << "lsh: Closing output file: " << outputFile << "\n";
+        
         cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
         while(1){
             cin >> inputStr;
@@ -249,19 +257,26 @@ int main(int argc, char **argv){
             cout << "lsh: Terminating\n";
             break;
         }
-        else{
+        else{       
+
+            resultsFile.close();
+            
+            cout << "Give input file name:";
+            cin >> inputStr;
+
+            inputFile = inputStr;
+
             cout << "Give query file name:";
-            cin >> queryFile;
+            cin >> inputStr;
+
+            queryFile = inputStr;
+
+            cout << "Give output file name:";
+            cin >> inputStr;
+
             cout << "\n";
         }
-
     } // End while
-
-    resultsFile.close();
-
-    /* Delete models */
-    delete optimalModel;    
-    delete myModel;
 
     return 0;
 }

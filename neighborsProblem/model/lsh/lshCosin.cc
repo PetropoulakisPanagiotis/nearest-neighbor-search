@@ -118,7 +118,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
    
     for(i = 0; i < this->l; i++){
         newFunc = new hashFunctionCosin(this->dim, this->k);
-    
+       
         /* Truncate same hash functions */
         for(j = 0; j < i; j++){
             if(this->hashFunctions[j]->compare(*newFunc, status) == 0){

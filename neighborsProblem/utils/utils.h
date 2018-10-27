@@ -2,7 +2,7 @@
 
 /* Set limits */
 #define MAX_DIM 20000 // Max dimension
-#define MAX_K 50 // Max number of sub hash functions
+#define MAX_K 55 // Max number of sub hash functions
 #define MIN_K 1
 #define MAX_W 1000 // Max window size
 #define MIN_W 2

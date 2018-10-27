@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <string.h>
-#include <ctime.h>
+#include <chrono>
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 
 #include "../../neighborsProblem/item/item.h" // Items in sets
@@ -53,64 +53,6 @@ int main(int argc, char **argv){
     model* myModel; // Euclidean or cosin lsh 
     model* optimalModel; // For exhaustive search
 
-    cout << "cube: Reading data set\n";
-
-    /* Read data set */
-    readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
-    if(status != SUCCESS){
-        printError(status);
-        return 0;
-    }
-
-    /* Create model */
-    if(metrice == "euclidean"){
-        if(k != -1)
-            myModel = new hypercubeEuclidean(k, m, probes, status);
-        else
-            myModel = new hypercubeEuclidean();
-    }
-    else if(metrice == "cosin"){
-        if(k != -1)
-            myModel = new hypercubeCosin(k, m, probes, status);
-        else
-            myModel = new hypercubeCosin();
-    }
-
-    if(status != SUCCESS){
-        printError(status);
-        delete myModel;
-        return -1;
-    }
-
-    /* Create optimal model */
-    optimalModel = new exhaustiveSearch();
-    
-    cout << "cube: Fitting sub-opt model\n";
-    
-    /* Fit data set */
-    myModel->fit(dataSetPoints,status);
-    if(status != SUCCESS){
-        delete myModel;
-        delete optimalModel;
-        printError(status);
-        return 0;
-    }
-
-    cout << "cube: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
-    
-    cout << "cube: Fitting opt model\n";
-
-    /* Fit optimal model */
-    optimalModel->fit(dataSetPoints,status);
-    if(status != SUCCESS){
-        delete myModel;
-        delete optimalModel;
-        printError(status);
-        return 0;
-    }
-
-    cout << "cube: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
-
     double nearestDistanceSubOpt, nearestDistanceOpt;
     list<Item>::iterator iterQueries; // Iterate through queries 
     list<Item>::iterator iterNeighbors; // Iterate through neighbors 
@@ -128,6 +70,65 @@ int main(int argc, char **argv){
 
     /* Read queries sets, find neighbors and print statistics */
     while(1){
+
+        cout << "cube: Reading data set\n";
+
+        /* Read data set */
+        readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
+        if(status != SUCCESS){
+            printError(status);
+            return 0;
+        }
+
+        /* Create model */
+        if(metrice == "euclidean"){
+            if(k != -1)
+                myModel = new hypercubeEuclidean(k, m, probes, status);
+            else
+                myModel = new hypercubeEuclidean();
+        }
+        else if(metrice == "cosin"){
+            if(k != -1)
+                myModel = new hypercubeCosin(k, m, probes, status);
+            else
+                myModel = new hypercubeCosin();
+        }
+
+        if(status != SUCCESS){
+            printError(status);
+            delete myModel;
+            return -1;
+        }
+
+        /* Create optimal model */
+        optimalModel = new exhaustiveSearch();
+        
+        cout << "cube: Fitting sub-opt model\n";
+        
+        /* Fit data set */
+        myModel->fit(dataSetPoints,status);
+        if(status != SUCCESS){
+            delete myModel;
+            delete optimalModel;
+            printError(status);
+            return 0;
+        }
+
+        cout << "cube: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
+        
+        cout << "cube: Fitting opt model\n";
+
+        /* Fit optimal model */
+        optimalModel->fit(dataSetPoints,status);
+        if(status != SUCCESS){
+            delete myModel;
+            delete optimalModel;
+            printError(status);
+            return 0;
+        }
+
+        cout << "cube: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
+
 
         cout << "cube: Reading query set\n";
 
@@ -232,6 +233,14 @@ int main(int argc, char **argv){
             cout << "cube: Max approximation fraction: " << mApproximation << "\n";
 
         cout << "cube: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
+       
+        cout << "cube: Deleting models\n";
+
+        /* Delete models */
+        delete optimalModel;    
+        delete myModel;
+            
+        cout << "cube: Closing output file: " << outputFile << "\n";
         
         cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
         while(1){
@@ -248,19 +257,26 @@ int main(int argc, char **argv){
             cout << "cube: Terminating\n";
             break;
         }
-        else{
+        else{       
+
+            resultsFile.close();
+            
+            cout << "Give input file name:";
+            cin >> inputStr;
+
+            inputFile = inputStr;
+
             cout << "Give query file name:";
-            cin >> queryFile;
+            cin >> inputStr;
+
+            queryFile = inputStr;
+
+            cout << "Give output file name:";
+            cin >> inputStr;
+
             cout << "\n";
         }
-
     } // End while
-
-    resultsFile.close();
-
-    /* Delete models */
-    delete optimalModel;    
-    delete myModel;
 
     return 0;
 }

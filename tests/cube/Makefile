@@ -33,7 +33,7 @@ exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSear
 	check
 
 clean:
-	rm -rf lsh lsh.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o
+	rm -rf cube cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o
 
 check:
-	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc ../../neighborsProblem/model/hypercube/hypercubeCosin.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 
+	g++ -o cube cube.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc ../../neighborsProblem/model/hypercube/hypercubeCosin.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 

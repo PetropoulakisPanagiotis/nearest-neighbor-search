@@ -249,7 +249,6 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
 
 /* Find the radius neighbors of a given point */
 void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
-    int queryDim = query.getDim();
     int i, pos, j;
     double currDist; // Distance of a point in list
     list<entry>::iterator iter;
@@ -337,7 +336,6 @@ void lshEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbor
 
 /* Find the nearest neighbor of a given point */
 void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
-    int queryDim = query.getDim();
     int i, pos, j, found = 0, flag = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list
@@ -471,7 +469,35 @@ int lshEuclidean::getDim(errorCode& status){
 }
 
 unsigned lshEuclidean::size(void){
-    return sizeof(*this);
+    unsigned result = 0;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return -1;
+    }
+    
+    result += sizeof(this->tableSize);
+    result += sizeof(this->coefficient);
+    result += sizeof(this->n);
+    result += sizeof(this->l);
+    result += sizeof(this->k);
+    result += sizeof(this->dim);
+    result += sizeof(this->w);
+    result += sizeof(this->fitted);
+    
+    int i;
+
+    for(i = 0; i < this->k; i++)
+        result = this->hashFunctions[i]->size();
+
+    result += this->hashFunctions.capacity() * sizeof(hashFunction*);
+
+    result += sizeof(hashFunctions);
+
+    result += sizeof(this->tables);
+    result += this->tables.capacity() * 
+
+    return result;
 }
 
 /* Print statistics */

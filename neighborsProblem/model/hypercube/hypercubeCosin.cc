@@ -210,6 +210,8 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
         /* Scan current vertice */
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
+            numNeighbors += 1;
+            
             /* Find current distance */
             currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
@@ -220,7 +222,6 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
                 neighbors.push_back(*iter);
                 if(neighborsDistances != NULL)
                     neighborsDistances->push_back(currDist);
-                numNeighbors += 1;
             }
 
             /* Found m neighbors */
@@ -293,6 +294,8 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
         /* Scan current vertice */
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
+            numNeighbors += 1;
+            
             /* Find current distance */
             currDist = iter->cosinDist(query, status);
             if(status != SUCCESS)
@@ -312,7 +315,6 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
                 iterNearestNeighbor = iter;
                 minDist = currDist;
 
-                numNeighbors += 1;
             }
 
             /* Found m neighbors */

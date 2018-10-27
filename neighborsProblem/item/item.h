@@ -34,6 +34,7 @@ class Item{
         double getComponent(int index,errorCode&);
         int getDim(void);
         int getCount(void);
+        unsigned size(void);
         void print(void);
 
         /* Usefull functions */

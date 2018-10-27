@@ -206,7 +206,6 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
 
 /* Find the radius neighbors of a given point */
 void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
-    int queryDim = query.getDim();
     int i, pos;
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
@@ -280,7 +279,6 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
 
 /* Find the nearest neighbor of a given point */
 void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
-    int queryDim = query.getDim();
     int i, pos, found = 0, flag = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list

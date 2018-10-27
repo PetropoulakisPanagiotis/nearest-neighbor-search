@@ -117,6 +117,24 @@ int hEuclidean::compare(hCosin& x, errorCode& status){
     return -1;
 }
 
+/* Get size */
+unsigned hEuclidean::size(void){
+    unsigned result = 0;
+
+    if(this->v == NULL){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->v);
+    result += this->v->size();
+    result += sizeof(this->t);
+    result += sizeof(this->w);
+
+    return result;
+}
+
 /* Get number of sub hash functions */
 int hEuclidean::getCount(void){
     return this->count;
@@ -229,6 +247,22 @@ int hCosin::compare(hCosin& x, errorCode& status){
 int hCosin::compare(hEuclidean& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
+}
+
+/* Get size */
+unsigned hCosin::size(void){
+    unsigned result = 0;
+
+    if(this->r == NULL){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->r);
+    result += this->r->size();
+
+    return result;
 }
 
 /* Get number of sub hash functions */
@@ -438,6 +472,35 @@ int hashFunctionEuclidean::compare(hashFunctionEuclideanHypercube& x, errorCode&
     return -1;
 }
 
+/* Get size */
+unsigned hashFunctionEuclidean::size(void){
+    unsigned result = 0;
+
+    if(this->k == -1){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    int i;
+
+    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->R);
+    result += sizeof(int) * this->R.capacity();
+
+    for(i = 0; i < this->k; i++)
+        result +=this->H[i]->size(); 
+
+    result += this->H.capacity() * sizeof(hEuclidean*);
+
+    result += sizeof(this->H);
+    result += sizeof(this->k);
+    result += sizeof(this->w);
+    result += sizeof(this->tableSize);
+
+
+    return result;
+}
+
 /* Get number of euclidean has functions */
 int hashFunctionEuclidean::getCount(void){
     return this->count;
@@ -629,6 +692,31 @@ int hashFunctionCosin::compare(hashFunctionEuclideanHypercube& x, errorCode& sta
     return -1;
 }
 
+/* Get size */
+unsigned hashFunctionCosin::size(void){
+    unsigned result = 0;
+
+    if(this->k == -1){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    int i;
+
+    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+
+    for(i = 0; i < this->k; i++)
+        result +=this->H[i]->size(); 
+
+    result += this->H.capacity() * sizeof(hCosin*);
+
+    result += sizeof(this->H);
+    result += sizeof(this->k);
+
+
+    return result;
+}
+
 /* Get total cosin functions */
 int hashFunctionCosin::getCount(void){
     return this->count;
@@ -717,6 +805,10 @@ hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, i
             
             return;
         }
+
+        /* Fix maps */
+        for(i = 0; i < this->k; i++)
+            this->hMaps.push_back(unordered_map<int, int>());
     }
 }
 
@@ -755,16 +847,16 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
                 return -1;
 
         /* Find if H[i] value exists */
-        iter = this->hMap.find(currValH);
+        iter = this->hMaps[i].find(currValH);
         
         /* Exists */
-        if(iter != this->hMap.end())
+        if(iter != this->hMaps[i].end())
             currValF = iter->second;
 
         /* Map current H[i] and add value in map */
         else{
             currValF = (int)getRandom(3);
-            this->hMap.insert(make_pair<int, int>(int(currValH), int(currValF)));
+            this->hMaps[i].insert(make_pair<int, int>(int(currValH), int(currValF)));
         }
       
         /* Calculate g(p) */
@@ -818,6 +910,40 @@ int hashFunctionEuclideanHypercube::compare(hashFunctionCosin& x, errorCode& sta
 int hashFunctionEuclideanHypercube::compare(hashFunctionEuclideanHypercube& x, errorCode& status){
     status = METHOD_NOT_IMPLEMENTED;
     return -1;
+}
+
+/* Get size */
+unsigned hashFunctionEuclideanHypercube::size(void){
+    unsigned result = 0;
+
+    if(this->k == -1){
+        status = INVALID_HASH_FUNCTION;
+        return -1;
+    }
+
+    int i;
+
+    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(int) * this->R.capacity();
+
+    for(i = 0; i < this->k; i++)
+        result +=this->H[i]->size(); 
+
+    result += this->H.capacity() * sizeof(hEuclidean*);
+
+    for(i = 0; i < this->k; i++)
+        result += this->hMaps[i].capacity() * 2 * sizeof(int);
+    
+    result += this->hMaps.capacity() * sizeof(unordered_map<int, int>);
+
+    result += sizeof(hMaps);
+
+    result += sizeof(this->H);
+    result += sizeof(this->k);
+    result += sizeof(this->w);
+
+
+    return result;
 }
 
 /* Get number of euclidean has functions */

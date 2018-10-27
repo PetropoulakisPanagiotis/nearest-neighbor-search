@@ -23,9 +23,12 @@ class h{
         virtual int compare(hEuclidean& x, errorCode& status) = 0;
         virtual int compare(hCosin& x, errorCode& status) = 0;
 
+        /* Get size of hash functions */
+        virtual unsigned size(void) = 0;
+
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
-
+            
         /* Print statistics of hash function */
         virtual void print(void) = 0;
 };
@@ -50,6 +53,7 @@ class hEuclidean: public h{
         int compare(hEuclidean& x, errorCode& status);
         int compare(hCosin& x, errorCode& status);
         
+        unsigned size(void);
         int getCount(void);
         void print(void);
 };
@@ -73,6 +77,7 @@ class hCosin: public h{
         int compare(hEuclidean& x, errorCode& status);
         int compare(hCosin& x,errorCode& status);
         
+        unsigned size(void);
         int getCount(void);
         void print(void);
 };
@@ -92,6 +97,9 @@ class hashFunction{
         virtual int compare(hashFunctionCosin& x ,errorCode& status) = 0;
         virtual int compare(hashFunctionEuclideanHypercube& x, errorCode& status) = 0;
        
+        /* Get size */
+        virtual unsigned size(void) = 0;
+        
         /* Get total sub hash function */
         virtual int getCount(void) = 0;
         
@@ -124,8 +132,8 @@ class hashFunctionEuclidean: public hashFunction{
         int compare(hashFunctionCosin& x, errorCode& status);       
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
+        unsigned size(void);
         int getCount(void);
-
         void print(void);
 };
 
@@ -150,8 +158,8 @@ class hashFunctionCosin: public hashFunction{
         int compare(hashFunctionCosin& x, errorCode& status);
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
+        unsigned size(void);
         int getCount(void);
-
         void print(void);
 };
 
@@ -161,7 +169,7 @@ class hashFunctionEuclideanHypercube: public hashFunction{
     private:
         std::string id;
         std::vector<hEuclidean*> H; // H contains sub-hash functions        
-        std::unordered_map<int, int> hMap; // Keep map f unique values
+        std::vector<std::unordered_map<int, int>  > hMaps; // Keep map f unique values
         int k; // Number of sub hash functions
         int w; // Window size
         static int count;
@@ -178,8 +186,8 @@ class hashFunctionEuclideanHypercube: public hashFunction{
         int compare(hashFunctionCosin& x, errorCode& status);
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
+        unsigned size(void);
         int getCount(void);
-
         void print(void);
 };
 

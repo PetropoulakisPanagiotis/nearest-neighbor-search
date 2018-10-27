@@ -225,6 +225,8 @@ void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& ne
         /* Scan current vertice */
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
+            numNeighbors += 1;
+            
             /* Find current distance */
             currDist = iter->euclideanDist(query, status);
             if(status != SUCCESS)
@@ -235,7 +237,6 @@ void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& ne
                 neighbors.push_back(*iter);
                 if(neighborsDistances != NULL)
                     neighborsDistances->push_back(currDist);
-                numNeighbors += 1;
             }
 
             /* Found m neighbors */
@@ -308,6 +309,8 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
         /* Scan current vertice */
         for(iter = this->cube[pos].begin(); iter != this->cube[pos].end(); iter++){  
 
+            numNeighbors += 1;
+            
             /* Find current distance */
             currDist = iter->euclideanDist(query, status);
             if(status != SUCCESS)
@@ -327,7 +330,6 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
                 iterNearestNeighbor = iter;
                 minDist = currDist;
 
-                numNeighbors += 1;
             }
 
             /* Found m neighbors */

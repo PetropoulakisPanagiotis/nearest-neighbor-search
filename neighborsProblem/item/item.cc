@@ -183,6 +183,17 @@ int Item::getCount(void){
     return this->count;
 }
 
+unsigned Item::size(void){
+    unsigned result = 0; 
+
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
+    result += sizeof(double) * this->components.capacity();  
+    result += sizeof(this->components);
+    result += sizeof(this->id);
+
+    return result;
+}
+
 /* Print Item */
 void Item::print(void){
     int i;

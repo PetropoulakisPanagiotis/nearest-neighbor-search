@@ -3,8 +3,8 @@
 #include <vector>
 #include "../utils/utils.h"
 
-/* Item class represents the points in data sets */
-/* Each point is a vector with a given name      */
+/* Item class represents a point in data sets */
+/* Each point is a vector with a given name   */
 class Item{
     private:
         std::string id;

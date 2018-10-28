@@ -7,7 +7,7 @@
 
 using namespace std;
 
-/* Initialize static fields */
+/* Initialize static field */
 int Item::count = 0;
 
 ////////////////////////////////
@@ -90,6 +90,7 @@ Item::Item(const Item& x){
     this->dim = x.dim;
 }
 
+/* No need to decrease count *//
 Item::~Item(){}
 
 //////////////
@@ -107,7 +108,7 @@ void Item::setComponent(double newComponent, int index, errorCode& status){
 
     /* Check parameters */
     if(index < 0 || index >= this->dim)
-        status =  INVALID_INDEX;
+        status = INVALID_INDEX;
     else
         this->components[index] = newComponent;
 }
@@ -130,7 +131,7 @@ void Item::concatenateComponents(vector<double>& newComponents, errorCode& statu
     status = SUCCESS;
 
     /* Check size of components */
-    if(this->dim + newComponents.size() >= MAX_DIM)
+    if(this->dim + newComponents.size() > MAX_DIM)
         status = INVALID_DIM;
 
     else if(newComponents.size() != 0){
@@ -147,7 +148,7 @@ void Item::resetComponents(vector<double>& newComponents, errorCode& status){
     if(newComponents.size() >= MAX_DIM)
         status =  INVALID_DIM;
     
-    else if(newComponents.size() != 0){
+    else{
         this->components.assign(newComponents.begin(), newComponents.end());
         this->dim = this->components.size();
     }
@@ -189,7 +190,6 @@ unsigned Item::size(void){
     result += sizeof(this->id) + this->id.capacity() * sizeof(char);
     result += sizeof(double) * this->components.capacity();  
     result += sizeof(this->components);
-    result += sizeof(this->id);
 
     return result;
 }
@@ -228,8 +228,10 @@ int Item::compare(Item& x, errorCode& status){
         return -1;
     }
     
-    if(this->dim != x.dim)
+    if(this->dim != x.dim{
+        status = INVALID_DIM;
         return -1;
+    }
 
     if(equal(this->components.begin(), this->components.end(), x.components.begin()))
         return 0;
@@ -252,18 +254,18 @@ double Item::innerProduct(Item& x, errorCode& status){
 
     if(this->dim != x.dim){
         status = INVALID_DIM;
-        return 0;
+        return -1;
     }
 
     /* Calculate product */
     for(i = 0; i < this->dim; i++){
         tempMult= myMultDouble(this->components[i], x.components[i],status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
 
         product = mySumDouble(tempMult, product, status);
         if(status != SUCCESS)
-            return 0;
+            return -1;
     } // End for
 
     return product;
@@ -339,7 +341,7 @@ double Item::euclideanDist(Item& x, errorCode& status){
     return dist;
 }
 
-/* dist(x,y) = 1 cos(x,y) = 1 - (x.y / norm(x) * norm(y)) */
+/* dist(x,y) = 1 - cos(x,y) = 1 - (x.y / norm(x) * norm(y)) */
 double Item::cosinDist(Item& x, errorCode& status){
     double dist = 0, mult;
     double normX, normY;
@@ -347,7 +349,7 @@ double Item::cosinDist(Item& x, errorCode& status){
     status = SUCCESS;
 
     /* Check dimensions */
-    if(this->dim <= 0 || x.dim <= 0){
+    if(this->dim == 0 || x.dim == 0){
         status = INVALID_DIM;
         return -1;
     }

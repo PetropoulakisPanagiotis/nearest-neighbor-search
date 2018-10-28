@@ -50,8 +50,7 @@ double mySumDouble(double x, double y, errorCode& status){
    
     if(y < 0 && x < numeric_limits<double>::lowest() - y)
         return 0;
-  
-    
+   
     status = SUCCESS;
     
     return x + y;
@@ -122,7 +121,6 @@ int mySumInt(int x, int y, errorCode& status){
    
     if(y < 0 && x < numeric_limits<int>::lowest() - y)
         return 0;
-  
     
     status = SUCCESS;
     

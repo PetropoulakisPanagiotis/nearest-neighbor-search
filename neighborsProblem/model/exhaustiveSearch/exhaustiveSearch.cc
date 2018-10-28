@@ -159,7 +159,26 @@ int exhaustiveSearch::getDim(errorCode& status){
 }
 
 unsigned exhaustiveSearch::size(void){
-    return sizeof(*this);
+    unsigned result = 0;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return -1;
+    }
+    
+    result += sizeof(this->tableSize);
+    result += sizeof(this->n);
+    result += sizeof(this->dim);
+    result += sizeof(this->fitted);
+    
+    int i;
+
+    for(i = 0; i < this->k; i++)
+        result += this->points.size();
+
+    result += this->points.capacity() * sizeof(Item);
+        
+    return result;
 }
 
 /* Print statistics */

@@ -8,7 +8,7 @@
 /* Neighbors problem using exhaustice search */
 class exhaustiveSearch: public model{
     private:
-        std::vector<Item> points; // All points are be kept in a single table
+        std::vector<Item> points; // All points are been kept in a single table
         int tableSize; // == n
         int n; // Number of items 
         int dim; // Dimension

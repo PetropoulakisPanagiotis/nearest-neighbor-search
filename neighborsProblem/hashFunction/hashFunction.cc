@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <cmath>
+#include <new>
 #include "hashFunction.h"
 #include "../item/item.h"
 #include "../utils/utils.h"
@@ -39,13 +40,13 @@ hEuclidean::hEuclidean(int dim, int w):w(w){
         /* Pick a random t - uniform distribution */
         this->t = getRandom(0,this->w);
 
-        /* Fix item - Pick random float in standard distribution */
+        /* Fix item - Pick random floats in standard distribution */
         for(i = 0; i < dim; i++)
             components[i] = getRandom(1);
 
         /* Create item v */
         this->v = new Item(components, status);
-        if(status != 0){
+        if(status != SUCCESS){
             delete this->v;
             this->v = NULL;
         }
@@ -57,16 +58,14 @@ hEuclidean::hEuclidean(int dim, int w):w(w){
 
 /* Destructor */
 hEuclidean::~hEuclidean(){
-    if(v != NULL){
-        this->count -= 1;
+    if(v != NULL)
         delete v;
-    }
 }
 
 /* Calculate hash value of given p item */
 /* h(p) = floor((p . v + t) / W)        */
 int hEuclidean::hash(Item& p, errorCode& status){
-    double innerProduct,tempSum,tempDiv;
+    double innerProduct, tempSum, tempDiv;
     int result;
 
     status = SUCCESS;
@@ -104,7 +103,7 @@ int hEuclidean::compare(hEuclidean& x, errorCode& status){
         return -1;
     }
     else{
-       if((this->v->compare(*(x.v),status) == 0) && this->t == x.t)
+       if((this->v->compare(*(x.v),status) == 0) && this->t == x.t && this->w == x.w)
            return 0;
        else 
            return 1;
@@ -126,7 +125,7 @@ unsigned hEuclidean::size(void){
         return -1;
     }
 
-    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
     result += sizeof(this->v);
     result += this->v->size();
     result += sizeof(this->t);
@@ -186,16 +185,13 @@ hCosin::hCosin(int dim){
 
         if(this->r == NULL)
             status = ALLOCATION_FAILED;
-
     }
 }
 
 /* Destructor */
 hCosin::~hCosin(){
-    if(r != NULL){
-        this->count -= 1;
+    if(r != NULL)
         delete r;
-    }
 }
 
 /* Calculate hash value of given p item */
@@ -258,7 +254,7 @@ unsigned hCosin::size(void){
         return -1;
     }
 
-    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
     result += sizeof(this->r);
     result += this->r->size();
 
@@ -325,10 +321,8 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
                 break;
             }
 
-
+            /* Truncate same sub hash functions */
             for(j = 0; j < i; j++){
-            
-                /* Truncate same sub hash functions */
                 if(this->H[j]->compare(*newFunc, status) == 0){
                     delete newFunc;
                     break;
@@ -339,7 +333,6 @@ hashFunctionEuclidean::hashFunctionEuclidean(int dim, int k, int w, int tableSiz
                     this->k = -1;
                     break;
                 }
-
             } // End for
             
             if(status != SUCCESS)
@@ -376,10 +369,11 @@ hashFunctionEuclidean::~hashFunctionEuclidean(){
     }
 }
 
-/* Calculate hash value of given p item                */
-/* F(p) = [(r1h1(p)+...+rkhk(p)) mod M] mod table size */ 
+/* Calculate hash value of given p item          */
+/* F(p) = [(r1h1(p)+...+rkhk(p))] mod table size */ 
 int hashFunctionEuclidean::hash(Item& p, errorCode& status){
-    int result = 0,i,tmpMult;
+    int result = 0, i, tmpMult;
+    int currentHashVal;
 
     status = SUCCESS;    
     if(this->k == -1){
@@ -389,7 +383,12 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     /* Calculate F(p) */
     for(i = 0; i < k; i++){
-        tmpMult = myMultInt(this->H[i]->hash(p, status), this->R[i], status);
+
+        currentHashVal = this->H[i]->hash(p, status);
+        if(status != SUCCESS)
+            return -1;
+
+        tmpMult = myMultInt(currentHashVal, this->R[i], status);
         if(status != SUCCESS)
             return -1;
 
@@ -402,6 +401,7 @@ int hashFunctionEuclidean::hash(Item& p, errorCode& status){
 
     return result;
 }
+
 /* Calculate hash value of sub hash function of given p item */
 /* hi(p)                                                     */
 int hashFunctionEuclidean::hashSubFunction(Item&p, int index, errorCode& status){
@@ -419,13 +419,12 @@ int hashFunctionEuclidean::hashSubFunction(Item&p, int index, errorCode& status)
         return -1;
     }
 
-    result = this->H[index]->hash(p,status);
+    result = this->H[index]->hash(p, status);
     if(status != SUCCESS)
             return -1;
     
     return result;
-};
-
+}
 
 /* Compare given hash functions */
 /* Discard id                   */
@@ -441,17 +440,21 @@ int hashFunctionEuclidean::compare(hashFunctionEuclidean& x, errorCode& status){
         return -1;
     }
 
-    if(this->k != x.k || this->tableSize != x.tableSize)
+    if(this->k != x.k || this->tableSize != x.tableSize || this->w != x.w)
         return 1;
 
     /* Compare h functions */
-    for(i = 0; i < this->k; i++)
+    for(i = 0; i < this->k; i++){
         if(this->H[i]->compare(*(x.H[i]), status) != 0)
             return 1;
-    
+        
+        if(status != SUCCESS)
+                return -1;
+    } // End for
+
     if(status != SUCCESS)
         return -1;
-
+    
     /* Compare r values */
     for(i = 0; i < this->k; i++)
         if(this->R[i] != x.R[i])
@@ -483,7 +486,7 @@ unsigned hashFunctionEuclidean::size(void){
 
     int i;
 
-    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
     result += sizeof(this->R);
     result += sizeof(int) * this->R.capacity();
 
@@ -496,7 +499,6 @@ unsigned hashFunctionEuclidean::size(void){
     result += sizeof(this->k);
     result += sizeof(this->w);
     result += sizeof(this->tableSize);
-
 
     return result;
 }
@@ -542,7 +544,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
         this->k = -1;
     }
     else{ 
-        int i,j;
+        int i, j;
         errorCode status;
         hCosin* newFunc = NULL;
         
@@ -563,9 +565,8 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
                 break;  
             }
 
+            /* Truncate same sub hash functions */
             for(j = 0; j < i; j++){
-            
-                /* Truncate same sub hash functions */
                 if(this->H[j]->compare(*newFunc, status) == 0){
                     delete newFunc;
                     break;
@@ -575,8 +576,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
                     delete newFunc;
                     this->k = -1;
                     break;
-                }
-            
+                } 
             } // End for
 
             if(status != SUCCESS)
@@ -589,12 +589,11 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
                 i -= 1;
         } // End for
 
-        /* Delete remaining h functions */
+        /* Delete remaining h sub has functions */
         if(status != SUCCESS)
             for(j = 0; j < i; j++)
                 delete this->H[j];
     }
-
 }
 
 /* Destructor */
@@ -620,7 +619,7 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     }
 
     /* Calculate G(p) */
-    for(i = 0; i < k; i++){
+    for(i = 0; i < this->k; i++){
     
         if(this->H[i]->hash(p, status) == 1){
             if(status != SUCCESS)
@@ -628,17 +627,20 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
             
             tempMult = 0;
             
-            if(i == k - 1)
+            if(i == this->k - 1)
                 tempMult = 1;
 
-            for(j = i; j > i; j--){
-                tempMult += myMultInt(2, i, status);
+            for(j = i; j < this->k - i - 1; j++){
+                tempMult += myMultInt(2, 2, status);
                 if(status != SUCCESS)
                     return -1;
             } // End for
         }
-        else
+        else{
+            if(status != SUCCESS)
+                return -1;
             continue;
+        }
 
         result = mySumInt(result, tempMult, status);
         if(status != SUCCESS)
@@ -649,8 +651,7 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
 }
 
 /* Default behavior for cosin */
-int hashFunctionCosin::hashSubFunction(Item&p, int index, errorCode& status){
-    
+int hashFunctionCosin::hashSubFunction(Item&p, int index, errorCode& status){ 
     status = METHOD_NOT_IMPLEMENTED;
     return 0;
 };
@@ -670,12 +671,19 @@ int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
     }
 
     if(this->k != x.k)
-        return -1;
+        return 1;
 
     /* Compare h functions */
-    for(i = 0; i < this->k; i++)
+    for(i = 0; i < this->k; i++){
         if(this->H[i]->compare(*(x.H[i]), status) != 0)
             return 1;
+        
+        if(status != SUCCESS)
+                return -1;
+    } // End for
+
+    if(status != SUCCESS)
+        return -1;
 
     return 0;
 }
@@ -703,7 +711,7 @@ unsigned hashFunctionCosin::size(void){
 
     int i;
 
-    result += sizeof(this->id) + this->id.capacity * sizeof(char);
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
 
     for(i = 0; i < this->k; i++)
         result +=this->H[i]->size(); 
@@ -712,7 +720,6 @@ unsigned hashFunctionCosin::size(void){
 
     result += sizeof(this->H);
     result += sizeof(this->k);
-
 
     return result;
 }
@@ -765,16 +772,15 @@ hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, i
 
         /* Pick k hash(h) functions */
         for(i = 0; i < this->k; i++){
-            newFunc = new hEuclidean(dim,w);
+            newFunc = new hEuclidean(dim, w);
             if(newFunc == NULL){
                 status = ALLOCATION_FAILED;
                 this->k = -1;
                 break;
             }
 
+            /* Truncate same sub hash functions */
             for(j = 0; j < i; j++){
-            
-                /* Truncate same sub hash functions */
                 if(this->H[j]->compare(*newFunc, status) == 0){
                     delete newFunc;
                     break;
@@ -785,7 +791,6 @@ hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, i
                     this->k = -1;
                     break;
                 }
-
             } // End for
             
             if(status != SUCCESS)
@@ -839,7 +844,7 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
     }
 
     /* Calculate G(p) */
-    for(i = 0; i < k; i++){
+    for(i = 0; i < this->k; i++){
 
         /* Get H[i] value */
         currValH = this->H[i]->hash(p, status);
@@ -856,18 +861,18 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
         /* Map current H[i] and add value in map */
         else{
             currValF = (int)getRandom(3);
-            this->hMaps[i].insert(make_pair<int, int>(int(currValH), int(currValF)));
+            this->hMaps[i].insert(make_pair<int, int>(currValH, currValF));
         }
       
         /* Calculate g(p) */
         if(currValF == 1){
             tempMult = 0;
             
-            if(i == k - 1)
+            if(i == this->k - 1)
                 tempMult = 1;
 
-            for(j = i; j > i; j--){
-                tempMult += myMultInt(2, i, status);
+            for(j = i; j < this->k - i - 1; j++){
+                tempMult += myMultInt(2, 2, status);
                 if(status != SUCCESS)
                     return -1;
             } // End for
@@ -884,17 +889,13 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
 }
 
 /* Calculate hash value of sub hash function of given p item */
-/* hi(p)                                                     */
 int hashFunctionEuclideanHypercube::hashSubFunction(Item&p, int index, errorCode& status){
     status = METHOD_NOT_IMPLEMENTED;
     return 0;
 };
 
 
-/* Compare given hash functions */
-/* Discard id                   */
-/* Equal: 0                     */
-/* Not equal: 1                 */
+/* Can't compare different hash functions */
 int hashFunctionEuclideanHypercube::compare(hashFunctionEuclidean& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
@@ -923,8 +924,7 @@ unsigned hashFunctionEuclideanHypercube::size(void){
 
     int i;
 
-    result += sizeof(this->id) + this->id.capacity * sizeof(char);
-    result += sizeof(int) * this->R.capacity();
+    result += sizeof(this->id) + this->id.capacity() * sizeof(char);
 
     for(i = 0; i < this->k; i++)
         result +=this->H[i]->size(); 
@@ -941,7 +941,6 @@ unsigned hashFunctionEuclideanHypercube::size(void){
     result += sizeof(this->H);
     result += sizeof(this->k);
     result += sizeof(this->w);
-
 
     return result;
 }
@@ -968,5 +967,4 @@ void hashFunctionEuclideanHypercube::print(void){
             this->H[i]->print();
     }
 }
-
 // Petropoulakis Panagiotis

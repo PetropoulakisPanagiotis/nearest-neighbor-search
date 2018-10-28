@@ -47,7 +47,7 @@ class hEuclidean: public h{
         hEuclidean(int dim, int w);
         ~hEuclidean();
 
-        /* Overide function */
+        /* Overide functions */
         int hash(Item& p, errorCode& status);
 
         int compare(hEuclidean& x, errorCode& status);
@@ -71,11 +71,11 @@ class hCosin: public h{
         hCosin(int);
         ~hCosin();
 
-        /* Overide function */
+        /* Overide functions */
         int hash(Item& p, errorCode& status);
         
         int compare(hEuclidean& x, errorCode& status);
-        int compare(hCosin& x,errorCode& status);
+        int compare(hCosin& x, errorCode& status);
         
         unsigned size(void);
         int getCount(void);
@@ -94,7 +94,7 @@ class hashFunction{
 
         /* Compare two has functions */
         virtual int compare(hashFunctionEuclidean& x, errorCode& status) = 0;
-        virtual int compare(hashFunctionCosin& x ,errorCode& status) = 0;
+        virtual int compare(hashFunctionCosin& x, errorCode& status) = 0;
         virtual int compare(hashFunctionEuclideanHypercube& x, errorCode& status) = 0;
        
         /* Get size */
@@ -107,9 +107,9 @@ class hashFunction{
         virtual void print(void) = 0;
 };
 
-/* Euclidean hash function class                                      */
-/* Basic hashing: F(p) = [(r1h1(p)+...+rkhk(p)) mod M] mod table size */ 
-/* Level 2 hashing: G(p) = h1(p).h2(p)...hk(p) -> Concatenation       */
+/* Euclidean hash function class                                */
+/* Basic hashing: F(p) = [(r1h1(p)+...+rkhk(p))] mod table size */ 
+/* Level 2 hashing: G(p) = {h1(p),h2(p),...,hk(p)}              */
 class hashFunctionEuclidean: public hashFunction{
     private:
         std::string id;
@@ -124,7 +124,7 @@ class hashFunctionEuclidean: public hashFunction{
         hashFunctionEuclidean(int dim, int k, int w, int tableSize);
         ~hashFunctionEuclidean();
 
-        /* Overide function */
+        /* Overide functions */
         int hash(Item& p, errorCode& status);
         int hashSubFunction(Item&p, int index, errorCode& status);
         
@@ -142,7 +142,7 @@ class hashFunctionEuclidean: public hashFunction{
 class hashFunctionCosin: public hashFunction{
     private:
         std::string id;
-        std::vector<hCosin*> H; // H contains sub-hash functions        
+        std::vector<hCosin*> H; // H contains sub hash functions        
         int k; // Number of sub hash functions
         static int count;
 
@@ -150,7 +150,7 @@ class hashFunctionCosin: public hashFunction{
         hashFunctionCosin(int dim, int k);
         ~hashFunctionCosin();
 
-        /* Overide function */
+        /* Overide functions */
         int hash(Item& p, errorCode& status);
         int hashSubFunction(Item&p, int index, errorCode& status);
 
@@ -163,13 +163,13 @@ class hashFunctionCosin: public hashFunction{
         void print(void);
 };
 
-/* Euclidean hash function for hypercube class  */
+/* Euclidean hash function for hypercube class              */
 /* G(p) = f1(h1(p)).f2(h2(p))...fk(hk(p)) -> Concatenation  */
 class hashFunctionEuclideanHypercube: public hashFunction{
     private:
         std::string id;
-        std::vector<hEuclidean*> H; // H contains sub-hash functions        
-        std::vector<std::unordered_map<int, int>  > hMaps; // Keep map f unique values
+        std::vector<hEuclidean*> H; // H contains sub hash functions        
+        std::vector<std::unordered_map<int, int>  > hMaps; // Keep in map f unique values
         int k; // Number of sub hash functions
         int w; // Window size
         static int count;
@@ -178,7 +178,7 @@ class hashFunctionEuclideanHypercube: public hashFunction{
         hashFunctionEuclideanHypercube(int dim, int k, int w);
         ~hashFunctionEuclideanHypercube();
 
-        /* Overide function */
+        /* Overide functions */
         int hash(Item& p, errorCode& status);
         int hashSubFunction(Item&p, int index, errorCode& status);
 

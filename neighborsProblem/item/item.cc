@@ -90,7 +90,7 @@ Item::Item(const Item& x){
     this->dim = x.dim;
 }
 
-/* No need to decrease count *//
+/* No need to decrease count */
 Item::~Item(){}
 
 //////////////
@@ -228,7 +228,7 @@ int Item::compare(Item& x, errorCode& status){
         return -1;
     }
     
-    if(this->dim != x.dim{
+    if(this->dim != x.dim){
         status = INVALID_DIM;
         return -1;
     }

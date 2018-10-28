@@ -464,12 +464,10 @@ unsigned lshEuclidean::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
-        status = METHOD_UNFITTED;
         return -1;
     }
     
     if(this->k == -1){
-        status = INVALID_METHOD;
         return -1;
     }
 

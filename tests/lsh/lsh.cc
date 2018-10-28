@@ -74,7 +74,7 @@ int main(int argc, char **argv){
     /* Read queries sets, find neighbors and print statistics */
     while(1){
 
-        if(fitAgain == 0{
+        if(fitAgain == 0){
             
             cout << "lsh: Reading data set\n";
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv){
             cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << " bytes\n";
         } 
 
-        if(newQuery = 0{
+        if(newQuery == 0){
 
             cout << "lsh: Reading query set\n";
 

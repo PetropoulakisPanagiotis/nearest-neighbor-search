@@ -121,7 +121,6 @@ unsigned hEuclidean::size(void){
     unsigned result = 0;
 
     if(this->v == NULL){
-        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -250,7 +249,6 @@ unsigned hCosin::size(void){
     unsigned result = 0;
 
     if(this->r == NULL){
-        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -480,7 +478,6 @@ unsigned hashFunctionEuclidean::size(void){
     unsigned result = 0;
 
     if(this->k == -1){
-        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -705,7 +702,6 @@ unsigned hashFunctionCosin::size(void){
     unsigned result = 0;
 
     if(this->k == -1){
-        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -861,7 +857,7 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
         /* Map current H[i] and add value in map */
         else{
             currValF = (int)getRandom(3);
-            this->hMaps[i].insert(make_pair<int, int>(currValH, currValF));
+            this->hMaps[i].insert(pair<int, int>(currValH, currValF));
         }
       
         /* Calculate g(p) */
@@ -918,7 +914,6 @@ unsigned hashFunctionEuclideanHypercube::size(void){
     unsigned result = 0;
 
     if(this->k == -1){
-        status = INVALID_HASH_FUNCTION;
         return -1;
     }
 
@@ -932,7 +927,7 @@ unsigned hashFunctionEuclideanHypercube::size(void){
     result += this->H.capacity() * sizeof(hEuclidean*);
 
     for(i = 0; i < this->k; i++)
-        result += this->hMaps[i].capacity() * 2 * sizeof(int);
+        result += this->hMaps[i].size() * 2 * sizeof(int);
     
     result += this->hMaps.capacity() * sizeof(unordered_map<int, int>);
 

@@ -165,7 +165,6 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
             
             /* Find position in hash table */
             pos = this->hashFunctions[i]->hash(*iterPoints, status);
-           
             if(pos < 0 || pos >= tableSize){
                 status = INVALID_HASH_FUNCTION;
                 break;
@@ -396,12 +395,10 @@ unsigned lshCosin::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
-        status = METHOD_UNFITTED;
         return -1;
     }
     
     if(this->k == -1){
-        status = INVALID_METHOD;
         return -1;
     }
     
@@ -414,9 +411,10 @@ unsigned lshCosin::size(void){
     
     int i, j;
 
-    for(i = 0; i < this->k; i++)
+    for(i = 0; i < this->k; i++){
+        this->hashFunctions[i]->print();
         result += this->hashFunctions[i]->size();
-
+    }
     result += this->hashFunctions.capacity() * sizeof(hashFunction*);
 
     result += sizeof(hashFunctions);

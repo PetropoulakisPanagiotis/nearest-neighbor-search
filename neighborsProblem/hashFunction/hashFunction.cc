@@ -606,8 +606,9 @@ hashFunctionCosin::~hashFunctionCosin(){
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
 int hashFunctionCosin::hash(Item& p, errorCode& status){
-    int result = 0, i, tempMult;
-    int j;
+    int i;
+    string resultStr=""; 
+
 
     status = SUCCESS;    
     if(this->k == -1){
@@ -617,34 +618,12 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
 
     /* Calculate G(p) */
     for(i = 0; i < this->k; i++){
-    
-        if(this->H[i]->hash(p, status) == 1){
-            if(status != SUCCESS)
-                return -1;
-            
-            tempMult = 0;
-            
-            if(i == this->k - 1)
-                tempMult = 1;
-
-            for(j = i; j < this->k - i - 1; j++){
-                tempMult += myMultInt(2, 2, status);
-                if(status != SUCCESS)
-                    return -1;
-            } // End for
-        }
-        else{
-            if(status != SUCCESS)
-                return -1;
-            continue;
-        }
-
-        result = mySumInt(result, tempMult, status);
+        resultStr += to_string(this->H[i]->hash(p, status));
         if(status != SUCCESS)
             return -1;
     }
 
-    return result;
+    return stoi(resultStr, nullptr, 2);
 }
 
 /* Default behavior for cosin */
@@ -827,11 +806,11 @@ hashFunctionEuclideanHypercube::~hashFunctionEuclideanHypercube(){
 /* G(p) = f1(h1(p)).f2(h2(p))...fk(hk(p)) -> Concatenation  */
 /* Fi(p) maps hi(p) function to 0 or 1 with random way      */
 int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
-    int result = 0, i, tempMult;
-    int j;
+    int i;
     int currValF; // Current value of fi 
     int currValH; // Current value of hi
     unordered_map<int, int>::const_iterator iter; // Iterate through map
+    string resultStr = "";
 
     status = SUCCESS;    
     if(this->k == -1){
@@ -846,7 +825,7 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
         currValH = this->H[i]->hash(p, status);
         if(status != SUCCESS)
                 return -1;
-
+        
         /* Find if H[i] value exists */
         iter = this->hMaps[i].find(currValH);
         
@@ -861,27 +840,10 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
         }
       
         /* Calculate g(p) */
-        if(currValF == 1){
-            tempMult = 0;
-            
-            if(i == this->k - 1)
-                tempMult = 1;
-
-            for(j = i; j < this->k - i - 1; j++){
-                tempMult += myMultInt(2, 2, status);
-                if(status != SUCCESS)
-                    return -1;
-            } // End for
-        }
-        else
-            continue;
-
-        result = mySumInt(result, tempMult, status);
-        if(status != SUCCESS)
-            return -1;
+        resultStr += to_string(currValF);
     } // End while
 
-    return result;
+    return stoi(resultStr, nullptr, 2);
 }
 
 /* Calculate hash value of sub hash function of given p item */

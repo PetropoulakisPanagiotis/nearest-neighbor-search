@@ -52,7 +52,6 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
 
 /* Find the radius neighbors of a given point */
 void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
-    int queryDim = query.getDim();
     int i;
     double currDist; // Distance of a point in list
 
@@ -93,7 +92,6 @@ void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neig
 
 /* Find the nearest neighbor of a given point */
 void exhaustiveSearch::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
-    int queryDim = query.getDim();
     int i, posMin = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list
@@ -161,10 +159,8 @@ int exhaustiveSearch::getDim(errorCode& status){
 unsigned exhaustiveSearch::size(void){
     unsigned result = 0;
 
-    if(fitted == 0){
-        status = METHOD_UNFITTED;
+    if(this->fitted == 0)
         return -1;
-    }
     
     result += sizeof(this->tableSize);
     result += sizeof(this->n);
@@ -173,7 +169,7 @@ unsigned exhaustiveSearch::size(void){
     
     int i;
 
-    for(i = 0; i < this->k; i++)
+    for(i = 0; i < this->tableSize; i++)
         result += this->points.size();
 
     result += this->points.capacity() * sizeof(Item);

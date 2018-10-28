@@ -2,6 +2,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <new>
 #include "hypercube.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -71,7 +72,7 @@ void hypercubeCosin::fit(list<Item>& points, errorCode& status){
     }
     
     /* Set table size */
-    this->tableSize = pow(2,this->k);
+    this->tableSize = pow(2, this->k);
 
     /* Fix table */
     for(i = 0; i < this->tableSize; i++)
@@ -338,7 +339,6 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
         if(neighborDistance != NULL)
             *neighborDistance = minDist;
     }
-
 }
 
 ///////////////
@@ -376,7 +376,50 @@ int hypercubeCosin::getDim(errorCode& status){
 }
 
 unsigned hypercubeCosin::size(void){
-    return sizeof(*this);
+    unsigned result = 0;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return -1;
+    }
+    
+    if(this->k == -1){
+        status = INVALID_METHOD;
+        return -1;
+    }
+    
+    result += sizeof(this->tableSize);
+    result += sizeof(this->n);
+    result += sizeof(this->k);
+    result += sizeof(this->dim);
+    result += sizeof(this->w);
+    result += sizeof(this->m);
+    result += sizeof(this->m);
+    result += sizeof(this->probes);
+    result += sizeof(this->fitted);
+    
+    int i;
+
+    result += this->hashFunctions->size();
+
+    result += sizeof(this->hashFunctions);
+
+    list<Item>::iterator iter;
+
+    for(i = 0; i < this->tableSize; i++){
+        for(iter = this->cube[i].begin(); iter!= this->cube[i].end(); iter++){
+            result += iter->size();
+
+            result += sizeof(iter);
+        } // End for - iter
+    } // End for - table size
+
+    result += this->cube.capacity() * sizeof(list<Item>);
+
+    result += sizeof(this->cube);
+
+    return result;
+
 }
 
 /* Print statistics */

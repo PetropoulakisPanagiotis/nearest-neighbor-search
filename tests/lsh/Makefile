@@ -1,3 +1,4 @@
+# Petropoulakis Panagiotis
 CC = g++
 FLAGS = -g -Wall
 

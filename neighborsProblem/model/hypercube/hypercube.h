@@ -10,8 +10,8 @@
 class hypercubeEuclidean: public model{
     private:
 
-        /* For every vertice find all neighbors and keep up to probes(sorted by hamming Distance) */
-        /* With min heap                                                                          */
+        /* For every vertice find all neighbors and scann up to probes vertices(sorted by hamming Distance) */
+        /* With min heap                                                                                    */
         typedef struct neighborVertice{
             int hammingDist; // Hamming distance with current pos
             int pos; // Position in cube 
@@ -22,7 +22,7 @@ class hypercubeEuclidean: public model{
             }
         }neighborVertice;
 
-        /* Create a compare fucntion based in hamming distance*/
+        /* Create a compare class based in hamming distance*/
         struct verticesCompare{
             bool operator()(const neighborVertice& x, const neighborVertice& y) const{
                 return x.hammingDist < y.hammingDist;
@@ -111,3 +111,5 @@ class hypercubeCosin: public model{
         void print(void);
         void printHashFunctions(void);
 };
+
+// Petropoulakis Panagiotis

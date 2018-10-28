@@ -3,8 +3,8 @@
 #include <list>
 #include <string>
 #include <fstream>
-#include <string.h>
 #include <chrono>
+#include <string.h>
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 
 #include "../../neighborsProblem/item/item.h" // Items in sets
@@ -19,7 +19,7 @@ int scanArguments(int& k, int& m, int& probes, string& inputFile, string& queryF
 
 int main(int argc, char **argv){
     char delim = ' '; // For data set
-    int argumentsProvided; // User provided arguments during compilation 
+    int argumentsProvided; // User provided arguments
     double radius;
     list<Item> dataSetPoints, querySetPoints; // Points in data set
     string metrice; // Metrice
@@ -49,8 +49,8 @@ int main(int argc, char **argv){
         }
     }
 
-    /* Main test */
-    model* myModel; // Euclidean or cosin lsh 
+    /* Models to be tested */
+    model* myModel; // Euclidean or cosin cube 
     model* optimalModel; // For exhaustive search
 
     double nearestDistanceSubOpt, nearestDistanceOpt;
@@ -58,6 +58,7 @@ int main(int argc, char **argv){
     list<Item>::iterator iterNeighbors; // Iterate through neighbors 
     Item nearestNeighborSubOpt, nearestNeighborOpt;
     list<Item> radiusNeighbors;
+
     double mApproximation = -1; // Maximum approximation fraction (dist nearest sub opt / dist nearest opt)
 
     /* Measure time */
@@ -66,79 +67,96 @@ int main(int argc, char **argv){
     double avgTimeNearest = 0; 
     int flag = 0;
 
-    string inputStr; // Repeat procedure with different query set
+    string inputStr; // Read new files from the user  
+    int fitAgain = 0, newQuery = 0;
 
     /* Read queries sets, find neighbors and print statistics */
     while(1){
 
-        cout << "cube: Reading data set\n";
 
-        /* Read data set */
-        readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
-        if(status != SUCCESS){
-            printError(status);
-            return 0;
+        if(fitAgain == 0){
+            cout << "cube: Reading data set\n";
+
+            /* Read data set */
+            readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
+            if(status != SUCCESS){
+                printError(status);
+                return 0;
+            }
+
+            /* Create model */
+            if(metrice == "euclidean"){
+                if(k != -1)
+                    myModel = new hypercubeEuclidean(k, m, probes, status);
+                else
+                    myModel = new hypercubeEuclidean();
+            }
+            else if(metrice == "cosin"){
+                if(k != -1)
+                    myModel = new hypercubeCosin(k, m, probes, status);
+                else
+                    myModel = new hypercubeCosin();
+            }
+
+            if(status != SUCCESS){
+                printError(status);
+                delete myModel;
+                return -1;
+            }
+
+            if(myModel == NULL){
+                status = ALLOCATION_FAILED;
+                printError(status);
+                return -1;
+            }
+            
+            /* Create optimal model */
+            optimalModel = new exhaustiveSearch();
+            if(optimalModel == NULL){
+                status = ALLOCATION_FAILED;
+                printError(status);
+                delete myModel;
+                return -1;
+            }
+
+            cout << "cube: Fitting sub-opt model\n";
+            
+            /* Fit data set */
+            myModel->fit(dataSetPoints,status);
+            if(status != SUCCESS){
+                delete myModel;
+                delete optimalModel;
+                printError(status);
+                return 0;
+            }
+
+            cout << "cube: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << " bytes\n";
+            
+            cout << "cube: Fitting opt model\n";
+
+            /* Fit optimal model */
+            optimalModel->fit(dataSetPoints,status);
+            if(status != SUCCESS){
+                delete myModel;
+                delete optimalModel;
+                printError(status);
+                return 0;
+            }
+
+            cout << "cube: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << " bytes\n";
         }
 
-        /* Create model */
-        if(metrice == "euclidean"){
-            if(k != -1)
-                myModel = new hypercubeEuclidean(k, m, probes, status);
-            else
-                myModel = new hypercubeEuclidean();
-        }
-        else if(metrice == "cosin"){
-            if(k != -1)
-                myModel = new hypercubeCosin(k, m, probes, status);
-            else
-                myModel = new hypercubeCosin();
-        }
+        if(newQuery == 0){
+            cout << "cube: Reading query set\n";
 
-        if(status != SUCCESS){
-            printError(status);
-            delete myModel;
-            return -1;
-        }
-
-        /* Create optimal model */
-        optimalModel = new exhaustiveSearch();
-        
-        cout << "cube: Fitting sub-opt model\n";
-        
-        /* Fit data set */
-        myModel->fit(dataSetPoints,status);
-        if(status != SUCCESS){
-            delete myModel;
-            delete optimalModel;
-            printError(status);
-            return 0;
-        }
-
-        cout << "cube: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
-        
-        cout << "cube: Fitting opt model\n";
-
-        /* Fit optimal model */
-        optimalModel->fit(dataSetPoints,status);
-        if(status != SUCCESS){
-            delete myModel;
-            delete optimalModel;
-            printError(status);
-            return 0;
-        }
-
-        cout << "cube: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
-
-
-        cout << "cube: Reading query set\n";
-
-        /* Read query set */
-        readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
-        if(status != SUCCESS){
-            printError(status);   
-            delete myModel;
-            delete optimalModel;
-            return 0;
+            /* Read query set */
+            readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
+            if(status != SUCCESS){
+                printError(status);   
+                delete myModel;
+                delete optimalModel;
+                return 0;
+            }
         }
 
         cout << "cube: Opening output file\n";
@@ -170,6 +188,7 @@ int main(int argc, char **argv){
            
             }
 
+            /* Find nearest */
             beginSubOpt = chrono::steady_clock::now();
             myModel->nNeighbor(*iterQueries, nearestNeighborSubOpt, &nearestDistanceSubOpt, status);
             if(status != SUCCESS){
@@ -242,7 +261,7 @@ int main(int argc, char **argv){
             
         cout << "cube: Closing output file: " << outputFile << "\n";
         
-        cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
+        cout << "\nDo you want to repeat the procedure with different sets(y/n)?:";
         while(1){
             cin >> inputStr;
 
@@ -254,6 +273,12 @@ int main(int argc, char **argv){
         } // End while
 
         if(inputStr == "n"){
+            cout << "cube: Deleting models\n";
+
+            /* Delete models */
+            delete optimalModel;    
+            delete myModel;
+            
             cout << "cube: Terminating\n";
             break;
         }
@@ -261,15 +286,53 @@ int main(int argc, char **argv){
 
             resultsFile.close();
             
-            cout << "Give input file name:";
-            cin >> inputStr;
+            cout << "\nDo you want to fit different data set(y/n)?:";
+            while(1){
+                cin >> inputStr;
 
-            inputFile = inputStr;
+                /* Check answer */
+                if(inputStr == "y" || inputStr == "n")
+                    break;
+                else
+                cout << "Please pres y or n:";
+            } // End while
 
-            cout << "Give query file name:";
-            cin >> inputStr;
+            if(inputStr == "n")
+                fitAgain = 1;
+            else{
+                fitAgain = 0;
+                cout << "cube: Deleting models\n";
 
-            queryFile = inputStr;
+                /* Delete models */
+                delete optimalModel;    
+                delete myModel;
+                
+                cout << "Give input file name:";
+                cin >> inputStr;
+                inputFile = inputStr;
+            }
+
+            cout << "\nDo you want to give different query set(y/n)?:";
+            while(1){
+                cin >> inputStr;
+
+                /* Check answer */
+                if(inputStr == "y" || inputStr == "n")
+                    break;
+                else
+                cout << "Please pres y or n:";
+            } // End while
+
+            if(inputStr == "n")
+                newQuery = 1;
+            else{
+                
+                newQuery = 0;
+                cout << "Give query file name:";
+                cin >> inputStr;
+
+                queryFile = inputStr;
+            }
 
             cout << "Give output file name:";
             cin >> inputStr;

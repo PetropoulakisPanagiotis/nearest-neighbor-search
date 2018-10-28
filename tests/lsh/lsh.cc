@@ -3,8 +3,8 @@
 #include <list>
 #include <string>
 #include <fstream>
-#include <string.h>
 #include <chrono>
+#include <string.h>
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 
 #include "../../neighborsProblem/item/item.h" // Items in sets
@@ -14,12 +14,12 @@
 using namespace std;
 
 /* Read arguments from the user */
-int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, string& queryFile, string& outputFile);
-int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile);
+int readArguments(int argc, char **argv, int& k, int& l, string& inputFile, string& queryFile, string& outputFile);
+int scanArguments(int& k, int& l, string& inputFile, string& queryFile, string& outputFile);
 
 int main(int argc, char **argv){
     char delim = ' '; // For data set
-    int argumentsProvided; // User provided arguments during compilation 
+    int argumentsProvided; // User provided arguments 
     double radius;
     list<Item> dataSetPoints, querySetPoints; // Points in data set
     string metrice; // Metrice
@@ -49,7 +49,7 @@ int main(int argc, char **argv){
         }
     }
 
-    /* Main test */
+    /* Models to be tested */
     model* myModel; // Euclidean or cosin lsh 
     model* optimalModel; // For exhaustive search
 
@@ -58,6 +58,7 @@ int main(int argc, char **argv){
     list<Item>::iterator iterNeighbors; // Iterate through neighbors 
     Item nearestNeighborSubOpt, nearestNeighborOpt;
     list<Item> radiusNeighbors;
+
     double mApproximation = -1; // Maximum approximation fraction (dist nearest sub opt / dist nearest opt)
 
     /* Measure time */
@@ -66,79 +67,97 @@ int main(int argc, char **argv){
     double avgTimeNearest = 0; 
     int flag = 0;
 
-    string inputStr; // Repeat procedure with different query set
+    string inputStr;
+    int fitAgain = 0, newQuery = 0;
 
     /* Read queries sets, find neighbors and print statistics */
     while(1){
 
-        cout << "lsh: Reading data set\n";
+        if(fitAgain == 0{
+            
+            cout << "lsh: Reading data set\n";
 
-        /* Read data set */
-        readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
-        if(status != SUCCESS){
-            printError(status);
-            return 0;
-        }
+            /* Read data set */
+            readDataSet(inputFile, 1, delim, dataSetPoints, metrice, status);
+            if(status != SUCCESS){
+                printError(status);
+                return 0;
+            }
 
-        /* Create model */
-        if(metrice == "euclidean"){
-            if(k != -1)
-                myModel = new lshEuclidean(k,l, status);
-            else
-                myModel = new lshEuclidean();
-        }
-        else if(metrice == "cosin"){
-            if(k != -1)
-                myModel = new lshCosin(k,l, status);
-            else
-                myModel = new lshCosin();
-        }
+            /* Create model */
+            if(metrice == "euclidean"){
+                if(k != -1)
+                    myModel = new lshEuclidean(k,l, status);
+                else
+                    myModel = new lshEuclidean();
+            }
+            else if(metrice == "cosin"){
+                if(k != -1)
+                    myModel = new lshCosin(k,l, status);
+                else
+                    myModel = new lshCosin();
+            }
 
-        if(status != SUCCESS){
-            printError(status);
-            delete myModel;
-            return -1;
-        }
+            if(status != SUCCESS){
+                printError(status);
+                delete myModel;
+                return -1;
+            }
 
-        /* Create optimal model */
-        optimalModel = new exhaustiveSearch();
-        
-        cout << "lsh: Fitting sub-opt model\n";
-        
-        /* Fit data set */
-        myModel->fit(dataSetPoints,status);
-        if(status != SUCCESS){
-            delete myModel;
-            delete optimalModel;
-            printError(status);
-            return 0;
-        }
+            if(myModel == NULL){
+                status = ALLOCATION_FAILED;
+                printError(status);
+                return -1;
+            }
 
-        cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << "bytes\n";
-        
-        cout << "lsh: Fitting opt model\n";
+            /* Create optimal model */
+            optimalModel = new exhaustiveSearch();
+            if(optimalModel == NULL){
+                status = ALLOCATION_FAILED;
+                printError(status);
+                delete myModel;
+                return -1;
+            }
 
-        /* Fit optimal model */
-        optimalModel->fit(dataSetPoints,status);
-        if(status != SUCCESS){
-            delete myModel;
-            delete optimalModel;
-            printError(status);
-            return 0;
-        }
+            cout << "lsh: Fitting sub-opt model\n";
+            
+            /* Fit data set */
+            myModel->fit(dataSetPoints,status);
+            if(status != SUCCESS){
+                delete myModel;
+                delete optimalModel;
+                printError(status);
+                return 0;
+            }
 
-        cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << "bytes\n";
+            cout << "lsh: Sub-opt model is fitted correctly. Memory consumption is: " << myModel->size() << " bytes\n";
+            
+            cout << "lsh: Fitting opt model\n";
 
+            /* Fit optimal model */
+            optimalModel->fit(dataSetPoints,status);
+            if(status != SUCCESS){
+                delete myModel;
+                delete optimalModel;
+                printError(status);
+                return 0;
+            }
 
-        cout << "lsh: Reading query set\n";
+            cout << "lsh: Opt model is fitted correctly. Memory consumption is: " << optimalModel->size() << " bytes\n";
+        } 
 
-        /* Read query set */
-        readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
-        if(status != SUCCESS){
-            printError(status);   
-            delete myModel;
-            delete optimalModel;
-            return 0;
+        if(newQuery = 0{
+
+            cout << "lsh: Reading query set\n";
+
+            /* Read query set */
+            readQuerySet(queryFile, 0, delim, querySetPoints, radius, status);
+            if(status != SUCCESS){
+                printError(status);   
+                delete myModel;
+                delete optimalModel;
+                return 0;
+            }
         }
 
         cout << "lsh: Opening output file\n";
@@ -169,6 +188,7 @@ int main(int argc, char **argv){
                 }
             }
 
+            /* Find nearest */
             beginSubOpt = chrono::steady_clock::now();
             myModel->nNeighbor(*iterQueries, nearestNeighborSubOpt, &nearestDistanceSubOpt, status);
             if(status != SUCCESS){
@@ -225,8 +245,7 @@ int main(int argc, char **argv){
             resultsFile << "\n";
 
             flag = 1;
-        } // End for - query points 
-   
+        } // End for - query points  
 
         if(mApproximation == -1)
             cout << "lsh: Can't find nearest neighbors for given data set\n";
@@ -234,15 +253,10 @@ int main(int argc, char **argv){
             cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
 
         cout << "lsh: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
-        
-        cout << "lsh: Deleting models\n";
-        /* Delete models */
-        delete optimalModel;    
-        delete myModel;
             
         cout << "lsh: Closing output file: " << outputFile << "\n";
         
-        cout << "\nDo you want to repeat the procedure with different query set(y/n)?:";
+        cout << "\nDo you want to repeat the procedure with different sets(y/n)?:";
         while(1){
             cin >> inputStr;
 
@@ -254,6 +268,12 @@ int main(int argc, char **argv){
         } // End while
 
         if(inputStr == "n"){
+            cout << "lsh: Deleting models\n";
+
+            /* Delete models */
+            delete optimalModel;    
+            delete myModel;
+            
             cout << "lsh: Terminating\n";
             break;
         }
@@ -261,15 +281,53 @@ int main(int argc, char **argv){
 
             resultsFile.close();
             
-            cout << "Give input file name:";
-            cin >> inputStr;
+            cout << "\nDo you want to fit different data set(y/n)?:";
+            while(1){
+                cin >> inputStr;
 
-            inputFile = inputStr;
+                /* Check answer */
+                if(inputStr == "y" || inputStr == "n")
+                    break;
+                else
+                cout << "Please pres y or n:";
+            } // End while
 
-            cout << "Give query file name:";
-            cin >> inputStr;
+            if(inputStr == "n")
+                fitAgain = 1;
+            else{
+                fitAgain = 0;
+                cout << "lsh: Deleting models\n";
 
-            queryFile = inputStr;
+                /* Delete models */
+                delete optimalModel;    
+                delete myModel;
+                
+                cout << "Give input file name:";
+                cin >> inputStr;
+                inputFile = inputStr;
+            }
+
+            cout << "\nDo you want to give different query set(y/n)?:";
+            while(1){
+                cin >> inputStr;
+
+                /* Check answer */
+                if(inputStr == "y" || inputStr == "n")
+                    break;
+                else
+                cout << "Please pres y or n:";
+            } // End while
+
+            if(inputStr == "n")
+                newQuery = 1;
+            else{
+                
+                newQuery = 0;
+                cout << "Give query file name:";
+                cin >> inputStr;
+
+                queryFile = inputStr;
+            }
 
             cout << "Give output file name:";
             cin >> inputStr;
@@ -285,7 +343,7 @@ int main(int argc, char **argv){
 /* No arguments: 0              */
 /* Arguments provided: 1        */
 /* Invalid arguments: -1        */
-int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, string& queryFile, string& outputFile){
+int readArguments(int argc, char **argv, int& k, int& l, string& inputFile, string& queryFile, string& outputFile){
 
     /* No argumets */
     if(argc == 1)
@@ -323,7 +381,7 @@ int readArguments(int argc, char **argv, int& k, int &l, string& inputFile, stri
 /* Read arguments from stdin */
 /* Arguments provided: 1     */
 /* Invalid arguments: -1     */
-int scanArguments(int& k, int &l, string& inputFile, string& queryFile, string& outputFile){
+int scanArguments(int& k, int& l, string& inputFile, string& queryFile, string& outputFile){
     string inputStr;
 
     cout << "Give input file name:";

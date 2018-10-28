@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <chrono>
+#include <new>
 #include <string.h>
 #include "../../neighborsProblem/utils/utils.h" // For errors etc.
 #include "../../neighborsProblem/fileHandler/fileHandler.h" // Read files 

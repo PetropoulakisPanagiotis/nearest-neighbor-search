@@ -55,10 +55,6 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, st
         /* Discard empty lines */
         if(line.length() == 0)
             continue;
-    
-        /* For current points in line */
-        vector<double> components;
-        string id; 
 
         /* Check for metrices */
         if(flag == 0){
@@ -82,6 +78,10 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, st
             types = "euclidean"; // Default metrice
             flag = 1;
         }  // End if metrices
+
+        /* For current points in line */
+        vector<double> components;
+        string id; 
 
         /* Split line */
         std::istringstream wordStream(line);
@@ -236,10 +236,6 @@ void readQuerySet(string fileName, int withId, char delim, list<Item>& points, d
         if(line.length() == 0)
             continue;
 
-        /* For current points in line */
-        vector<double> components;
-        string id; 
-
         /* Check for radius */
         if(flag == 0){
              
@@ -264,10 +260,15 @@ void readQuerySet(string fileName, int withId, char delim, list<Item>& points, d
                     continue;
                 }
             }
-            /* No radius - Reset words */
+
+            /* No radius */
             radius = 0; // Default radius - Find only nearest neighbor
             flag = 1;
         }  // End if metrices
+
+        /* For current points in line */
+        vector<double> components;
+        string id; 
 
         /* Split line */
         std::istringstream wordStream(line);
@@ -350,12 +351,6 @@ void readQuerySet(string fileName, int withId, char delim, list<Item>& points, d
             components.push_back(currComponent);
         } // End for
         
-        /* Number of points is too big */
-        if(points.size() == MAX_POINTS){
-            status = INVALID_POINTS;
-            return;
-        }
-
         /* Create new item */
         if(withId == 1){      
             points.push_back(Item(id,components,status));
@@ -369,14 +364,7 @@ void readQuerySet(string fileName, int withId, char delim, list<Item>& points, d
                 return;
             }
         }
-    
     } // End while - Read line
-
-    /* Small number of points */
-    if(points.size() < MIN_POINTS){
-        status = INVALID_POINTS;
-        return;
-    }
 
     file.close();
 }

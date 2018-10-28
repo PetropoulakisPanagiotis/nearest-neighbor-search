@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <list>
 #include <cmath>
+#include <new>
 #include "lsh.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -20,8 +21,6 @@ lshCosin::lshCosin():tableSize(0),n(0),l(5),k(4),dim(0),fitted(0){
     
     /* Set size of hash functions */
     this->hashFunctions.reserve(this->l);
-    for(i = 0; i < this->l; i++)
-        this->hashFunctions[i] = NULL;
 
     /* Set size of hash tables */
     for(i = 0; i < this->l; i++)
@@ -40,8 +39,6 @@ lshCosin::lshCosin(int k, int l, errorCode& status):tableSize(0),n(0),l(l),k(k),
 
         /* Set size of hash functions */
         this->hashFunctions.reserve(this->l);
-        for(i = 0; i < this->l; i++)
-            this->hashFunctions[i] = NULL;
 
         /* Set size of hash tables */
         for(i = 0; i < this->l; i++)
@@ -95,7 +92,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     }
 
     /* Set table size */
-    this->tableSize = pow(2,this->k);
+    this->tableSize = pow(2, this->k);
 
     /* Fix each table - Each table contains lists of entries */
     for(i = 0; i < this->l; i++)
@@ -145,7 +142,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     } // End for - Hash functions
 
     /* Delete remaining hash functions */
-    if(status == ALLOCATION_FAILED){
+    if(status != SUCCESS){
         for(j = 0; j < i; j++)
             delete this->hashFunctions[j];
         return;
@@ -251,7 +248,7 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
         /* Scan list of specific bucket */
         for(iter = this->tables[i][pos].begin(); iter != this->tables[i][pos].end(); iter++){  
 
-            /* Check if current points is checked */
+            /* Check if current point is checked */
             currId = iter->getId();
 
             /* Not found - add it */
@@ -345,7 +342,6 @@ void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance,
                 minDist = currDist;
                 iterNearestNeighbor = iter;
             }
-
         } // End for - Scan list
     } // End for - Tables
 
@@ -397,7 +393,57 @@ int lshCosin::getDim(errorCode& status){
 }
 
 unsigned lshCosin::size(void){
-    return sizeof(*this);
+    unsigned result = 0;
+
+    if(fitted == 0){
+        status = METHOD_UNFITTED;
+        return -1;
+    }
+    
+    if(this->k == -1){
+        status = INVALID_METHOD;
+        return -1;
+    }
+    
+    result += sizeof(this->tableSize);
+    result += sizeof(this->n);
+    result += sizeof(this->l);
+    result += sizeof(this->k);
+    result += sizeof(this->dim);
+    result += sizeof(this->fitted);
+    
+    int i, j;
+
+    for(i = 0; i < this->k; i++)
+        result += this->hashFunctions[i]->size();
+
+    result += this->hashFunctions.capacity() * sizeof(hashFunction*);
+
+    result += sizeof(hashFunctions);
+
+    list<Item>::iterator iter;
+
+    for(i = 0; i < this->l; i++){
+        for(j = 0; j < this->tableSize; j++){
+            for(iter = this->tables[i][j].begin(); iter!= this->tables[i][j].end(); iter++){
+                result += iter->size();
+
+                result += sizeof(iter);
+            } // End for - iter
+        } // End for - table size
+    } // End for - l
+
+    for(i = 0; i < this->l; i++){
+        for(j = 0; j < this->tableSize; j++){
+            result += sizeof(list<Item>);
+        } // End for - table size
+    } // End for - l
+
+    result += this->tables.capacity() * sizeof(vector<list<Item> >);
+
+    result += sizeof(this->tables);
+
+    return result;
 }
 
 /* Print statistics */
@@ -430,4 +476,4 @@ void lshCosin::printHashFunctions(void){
     }
 }
 
-
+// Petropoulakis Panagiotis

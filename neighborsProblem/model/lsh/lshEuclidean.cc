@@ -3,6 +3,7 @@
 #include <list>
 #include <cmath>
 #include <unordered_set>
+#include <new>
 #include "lsh.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -20,8 +21,6 @@ lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0
 
     /* Set size of hash functions */
     this->hashFunctions.reserve(this->l);
-    for(i = 0; i < this->l; i++)
-        this->hashFunctions[i] = NULL;
 
     /* Set size of hash tables */
     for(i = 0; i < this->l; i++)
@@ -39,8 +38,6 @@ lshEuclidean::lshEuclidean(int k, int l, errorCode& status):tableSize(0),coeffic
     else{
         /* Set size of hash functions */
         this->hashFunctions.reserve(this->l);
-        for(i = 0; i < this->l; i++)
-            this->hashFunctions[i] = NULL;
 
         /* Set size of hash tables */
         for(i = 0; i < this->l; i++)
@@ -61,13 +58,10 @@ lshEuclidean::lshEuclidean(int l, int k, int w, float coefficient, errorCode& st
     
         /* Set size of hash functions */
         this->hashFunctions.reserve(this->l);
-        for(i = 0; i < this->l; i++)
-            this->hashFunctions[i] = NULL;
 
         /* Set size of hash tables */
         for(i = 0; i < this->l; i++)
-            this->tables.push_back(vector<list<entry> >(this->l));
-    
+            this->tables.push_back(vector<list<entry> >(this->l)); 
     }
 }
 
@@ -174,7 +168,7 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
     } // End for - Hash functions
 
     /* Delete remaining hash functions */
-    if(status == ALLOCATION_FAILED){
+    if(status != SUCCESS){
         for(j = 0; j < i; j++)
             delete this->hashFunctions[j];
         return;
@@ -208,8 +202,9 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
             }
  
             /* Set value g */
-            vector<int> newValueG; 
-            for(j = 0; j < k; j++){
+            vector<int> newValueG;
+
+            for(j = 0; j < this->k; j++){
                 newValueG.push_back(this->hashFunctions[i]->hashSubFunction(*iterPoints, j, status));
                 if(status != SUCCESS){
                     this->k = -1;
@@ -219,11 +214,10 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
 
             /* Set new entry */
             newEntry.point = *(iterPoints);
-            newEntry.valueG = newValueG;
+            newEntry.valueG.assign(newValueG.begin(), newValueG.end());
 
             /* Add point */
             this->tables[i][pos].push_back(newEntry);
-
         } // End for - Points
 
         if(status != SUCCESS)
@@ -416,7 +410,6 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
                 minDist = currDist;
                 iterNearestNeighbor = iter;
             }
-
         } // End for - Scan list
     } // End for - Tables
 
@@ -433,7 +426,6 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
     }
 }
 
-
 ///////////////
 /* Accessors */
 ///////////////
@@ -441,7 +433,7 @@ void lshEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDista
 int lshEuclidean::getNumberOfPoints(errorCode& status){
     status = SUCCESS;
 
-    if(fitted == 0){
+    if(this->fitted == 0){
         status = METHOD_UNFITTED;
         return -1;
     }
@@ -456,7 +448,7 @@ int lshEuclidean::getNumberOfPoints(errorCode& status){
 int lshEuclidean::getDim(errorCode& status){
     status = SUCCESS;
 
-    if(fitted == 0){
+    if(this->fitted == 0){
         status = METHOD_UNFITTED;
         return -1;
     }
@@ -476,6 +468,12 @@ unsigned lshEuclidean::size(void){
         return -1;
     }
     
+    if(this->k == -1){
+        status = INVALID_METHOD;
+        return -1;
+    }
+
+    
     result += sizeof(this->tableSize);
     result += sizeof(this->coefficient);
     result += sizeof(this->n);
@@ -485,17 +483,38 @@ unsigned lshEuclidean::size(void){
     result += sizeof(this->w);
     result += sizeof(this->fitted);
     
-    int i;
+    int i, j;
 
     for(i = 0; i < this->k; i++)
-        result = this->hashFunctions[i]->size();
+        result += this->hashFunctions[i]->size();
 
     result += this->hashFunctions.capacity() * sizeof(hashFunction*);
 
     result += sizeof(hashFunctions);
 
+    list<entry>::iterator iter;
+
+    for(i = 0; i < this->l; i++){
+        for(j = 0; j < this->tableSize; j++){
+            for(iter = this->tables[i][j].begin(); iter!= this->tables[i][j].end(); iter++){
+                result += iter->point.size();
+
+                result += iter->valueG.capacity() * sizeof(int);
+                result += sizeof(iter);
+
+            } // End for - iter
+        } // End for - table size
+    } // End for - l
+
+    for(i = 0; i < this->l; i++){
+        for(j = 0; j < this->tableSize; j++){
+            result += sizeof(list<entry>);
+        } // End for - table size
+    } // End for - l
+
+    result += this->tables.capacity() * sizeof(vector<list<entry> >);
+
     result += sizeof(this->tables);
-    result += this->tables.capacity() * 
 
     return result;
 }
@@ -532,4 +551,5 @@ void lshEuclidean::printHashFunctions(void){
     }
 }
 
+// Petropoulakis Panagiotis
 

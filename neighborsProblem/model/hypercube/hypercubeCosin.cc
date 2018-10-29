@@ -16,7 +16,7 @@ using namespace std;
 /////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(15),dim(0),m(5),probes(1),fitted(0){}
+hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(5),dim(0),m(5),probes(1),fitted(0){}
 
 hypercubeCosin::hypercubeCosin(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),m(m),probes(probes),fitted(0){
     /* Check parameters */
@@ -406,7 +406,7 @@ unsigned hypercubeCosin::size(void){
         for(iter = this->cube[i].begin(); iter!= this->cube[i].end(); iter++){
             result += iter->size();
 
-            result += sizeof(iter);
+            result += sizeof(Item);
         } // End for - iter
     } // End for - table size
 

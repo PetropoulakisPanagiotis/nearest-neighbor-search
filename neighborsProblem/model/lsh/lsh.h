@@ -11,10 +11,11 @@ class lshEuclidean: public model{
     private:
         /* Entries in hash tables */
         typedef struct entry{
-            Item point;
+            Item* point; // Use pointer - Save memory
             std::vector<int> valueG; // Value of g hash function(2 levels of hashing - compare query and point with same g)
         }entry;
 
+        std::vector<Item> points; // Keep points
         std::vector<std::vector<std::list<entry> > > tables; // Each table is a hash table(vector of lists)
         std::vector<hashFunction*> hashFunctions; // Each table has one hash function
         int tableSize;
@@ -50,7 +51,8 @@ class lshEuclidean: public model{
 /* Neighbors problem using lsh cosin */
 class lshCosin: public model{
     private:
-        std::vector<std::vector<std::list<Item> > > tables; // Each table is a hash table(vector of lists)
+        std::vector<Item> points; // Keep points
+        std::vector<std::vector<std::list<Item*> > > tables; // Each table is a hash table(vector of lists)
         std::vector<hashFunction*> hashFunctions; // Each table has one hash function       
         int tableSize;
         int n; // Number of items 

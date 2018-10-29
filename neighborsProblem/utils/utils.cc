@@ -14,7 +14,6 @@ using namespace std;
 /* Type 0: uniform float   */
 /* Type 1: standard float  */
 /* Type 2: uniform float   */
-/* Type 3: random 0 or 1   */
 float getRandom(int type, int w){
     /* Set random engine */
     static unsigned seed = chrono::system_clock::now().time_since_epoch().count();    
@@ -32,7 +31,7 @@ float getRandom(int type, int w){
     else if(type == 2)
         return (float)uniformDist2(generator);
     else
-        return (float)(rand() % 2);
+        return -1;
 }
 
 /* Get mod of given number */
@@ -263,6 +262,10 @@ void printError(errorCode& status){
         
         case(METHOD_NOT_IMPLEMENTED):
             cout << "Method not implemented for current class\n";
+            break;
+
+        case(INVALID_METRICE):
+            cout << "Models does not support give metrice\n";
             break;
     } // End switch
 }

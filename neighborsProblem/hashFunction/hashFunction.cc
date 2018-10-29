@@ -609,7 +609,6 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     int i;
     string resultStr=""; 
 
-
     status = SUCCESS;    
     if(this->k == -1){
         status = INVALID_HASH_FUNCTION;
@@ -786,9 +785,11 @@ hashFunctionEuclideanHypercube::hashFunctionEuclideanHypercube(int dim, int k, i
             return;
         }
 
-        /* Fix maps */
-        for(i = 0; i < this->k; i++)
+        /* Fix maps -dist */
+        for(i = 0; i < this->k; i++){
+            this->dist.push_back(uniform_int_distribution<int>(0,1));
             this->hMaps.push_back(unordered_map<int, int>());
+        }
     }
 }
 
@@ -820,7 +821,7 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
 
     /* Calculate G(p) */
     for(i = 0; i < this->k; i++){
-
+        
         /* Get H[i] value */
         currValH = this->H[i]->hash(p, status);
         if(status != SUCCESS)
@@ -835,7 +836,7 @@ int hashFunctionEuclideanHypercube::hash(Item& p, errorCode& status){
 
         /* Map current H[i] and add value in map */
         else{
-            currValF = (int)getRandom(3);
+            currValF = this->dist[i](this->generator);
             this->hMaps[i].insert(pair<int, int>(currValH, currValF));
         }
       
@@ -893,6 +894,8 @@ unsigned hashFunctionEuclideanHypercube::size(void){
     
     result += this->hMaps.capacity() * sizeof(unordered_map<int, int>);
 
+    result += this->dist.capacity() * sizeof(uniform_int_distribution<int>(0,1)) + sizeof(dist);
+    result += sizeof(this->generator);
     result += sizeof(hMaps);
 
     result += sizeof(this->H);

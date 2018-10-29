@@ -38,6 +38,11 @@ int main(int argc, char **argv){
         return 0;
     }
    
+    if(argumentsProvided == 1 && k < 0){
+        cout << "Please give valid arguments. Try again later\n";
+        return 0;
+    }
+
     cout << "Welcome to lsh search\n";
     cout << "-----------------------\n\n";
     
@@ -65,8 +70,11 @@ int main(int argc, char **argv){
     /* Measure time */
     chrono::steady_clock::time_point beginOpt, endOpt;
     chrono::steady_clock::time_point beginSubOpt, endSubOpt;
-    double avgTimeNearest = 0; 
+    double avgTimeNearestSubOpt = 0; 
+    double avgTimeNearestOpt = 0; 
+
     int flag = 0;
+    int flag1 = 0;
 
     string inputStr;
     int fitAgain = 0, newQuery = 0;
@@ -112,7 +120,7 @@ int main(int argc, char **argv){
             }
 
             /* Create optimal model */
-            optimalModel = new exhaustiveSearch();
+            optimalModel = new exhaustiveSearch(metrice);
             if(optimalModel == NULL){
                 status = ALLOCATION_FAILED;
                 printError(status);
@@ -237,15 +245,22 @@ int main(int argc, char **argv){
             resultsFile << "tTrue: " << chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0 << " sec\n"; 
 
             if(flag == 0 && nearestDistanceSubOpt != -1)
-                avgTimeNearest = chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+                avgTimeNearestSubOpt = chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
             else if(nearestDistanceSubOpt != -1){
-                avgTimeNearest += chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
-                avgTimeNearest /= 2;
+                avgTimeNearestSubOpt += chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+                avgTimeNearestSubOpt /= 2;
+                flag = 1;
+            }           
+           
+            if(flag1 == 0)
+                avgTimeNearestOpt = chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0;
+            else if(nearestDistanceOpt != -1){
+                avgTimeNearestOpt += chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0;
+                avgTimeNearestOpt /= 2;
+                flag1 = 1;
             }
 
             resultsFile << "\n";
-
-            flag = 1;
         } // End for - query points  
 
         if(mApproximation == -1)
@@ -253,7 +268,8 @@ int main(int argc, char **argv){
         else
             cout << "lsh: Max approximation fraction: " << mApproximation << "\n";
 
-        cout << "lsh: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
+        cout << "lsh: Average time for nearest neighbors - sub opt: " << avgTimeNearestSubOpt << " sec\n";
+        cout << "lsh: Average time for nearest neighbors - opt: " << avgTimeNearestOpt << " sec\n";
             
         cout << "lsh: Closing output file: " << outputFile << "\n";
         

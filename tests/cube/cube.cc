@@ -37,10 +37,15 @@ int main(int argc, char **argv){
         cout << "Please give valid arguments. Try again later\n";
         return 0;
     }
-   
+
+    if(argumentsProvided == 1 && k < 0){
+        cout << "Please give valid arguments. Try again later\n";
+        return 0;
+    }
+
     cout << "Welcome to cube search\n";
     cout << "-----------------------\n\n";
-    
+
     /* Scan arguments from the stdin */
     if(argumentsProvided == 0){
         argumentsProvided = scanArguments(k, k, m, inputFile, queryFile, outputFile);
@@ -65,8 +70,11 @@ int main(int argc, char **argv){
     /* Measure time */
     chrono::steady_clock::time_point beginOpt, endOpt;
     chrono::steady_clock::time_point beginSubOpt, endSubOpt;
-    double avgTimeNearest = 0; 
+    double avgTimeNearestSubOpt = 0; 
+    double avgTimeNearestOpt = 0; 
+
     int flag = 0;
+    int flag1 = 0;
 
     string inputStr; // Read new files from the user  
     int fitAgain = 0, newQuery = 0;
@@ -112,7 +120,7 @@ int main(int argc, char **argv){
             }
             
             /* Create optimal model */
-            optimalModel = new exhaustiveSearch();
+            optimalModel = new exhaustiveSearch(metrice);
             if(optimalModel == NULL){
                 status = ALLOCATION_FAILED;
                 printError(status);
@@ -238,11 +246,21 @@ int main(int argc, char **argv){
             resultsFile << "tTrue: " << chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0 << "sec\n"; 
 
             if(flag == 0 && nearestDistanceSubOpt != -1)
-                avgTimeNearest = chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+                avgTimeNearestSubOpt = chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
             else if(nearestDistanceSubOpt != -1){
-                avgTimeNearest += chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
-                avgTimeNearest /= 2;
+                avgTimeNearestSubOpt += chrono::duration_cast<chrono::microseconds>(endSubOpt - beginSubOpt).count() / 1000000.0;
+                avgTimeNearestSubOpt /= 2;
+                flag = 1;
+            }           
+           
+            if(flag1 == 0)
+                avgTimeNearestOpt = chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0;
+            else if(nearestDistanceOpt != -1){
+                avgTimeNearestOpt += chrono::duration_cast<chrono::microseconds>(endOpt - beginOpt).count() / 1000000.0;
+                avgTimeNearestOpt /= 2;
+                flag1 = 1;
             }
+
             
             resultsFile << "\n";
         } // End for - query points 
@@ -252,14 +270,11 @@ int main(int argc, char **argv){
         else
             cout << "cube: Max approximation fraction: " << mApproximation << "\n";
 
-        cout << "cube: Average time for nearest neighbors: " << avgTimeNearest << " sec\n";
+        cout << "cube: Average time for nearest neighbors - sub opt: " << avgTimeNearestSubOpt << " sec\n";
+        cout << "cube: Average time for nearest neighbors opt: " << avgTimeNearestOpt << " sec\n";
        
         cout << "cube: Deleting models\n";
 
-        /* Delete models */
-        delete optimalModel;    
-        delete myModel;
-            
         cout << "cube: Closing output file: " << outputFile << "\n";
         
         cout << "\nDo you want to repeat the procedure with different sets(y/n)?:";

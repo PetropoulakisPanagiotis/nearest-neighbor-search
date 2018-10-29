@@ -14,7 +14,7 @@ using namespace std;
 /////////////////////////////////////////
 
 /* Default constructor */
-exhaustiveSearch::exhaustiveSearch():tableSize(0),n(0),dim(0),fitted(0){}
+exhaustiveSearch::exhaustiveSearch(string metrice):tableSize(0),n(0),dim(0),fitted(0),metrice(metrice){}
 
 exhaustiveSearch::~exhaustiveSearch(){}
 
@@ -32,6 +32,12 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
         return;
     }
 
+    /* Check metrice */
+    if(this->metrice != "euclidean" && this->metrice != "cosin"){
+        status = INVALID_METRICE;
+        return;
+    }
+
     /* Check parameters */
     this->points.reserve(points.size());
 
@@ -41,11 +47,20 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
         status = INVALID_POINTS;
         return;
     }
+
+    this->dim = iterPoints->getDim();
  
     this->tableSize = this->n;
     /* Copy points */
-    for(iterPoints = points.begin(); iterPoints != points.end(); iterPoints++)
+    for(iterPoints = points.begin(); iterPoints != points.end(); iterPoints++){
+
+        if(this->dim != iterPoints->getDim()){
+            status = INVALID_POINTS;
+            return;
+        }
+
         this->points.push_back(*iterPoints);
+    } // End for
 
     this->fitted = 1;
 }
@@ -77,7 +92,12 @@ void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neig
     /* Scann all points */
     for(i = 0; i < this->tableSize; i++){
         /* Find current distance */
-        currDist = this->points[i].euclideanDist(query, status);
+
+        if(this->metrice == "euclidean")
+            currDist = this->points[i].euclideanDist(query, status);
+        else 
+            currDist = this->points[i].cosinDist(query, status);
+
         if(status != SUCCESS)
             return;
 
@@ -108,7 +128,10 @@ void exhaustiveSearch::nNeighbor(Item& query, Item& nNeighbor, double* neighborD
     for(i = 0; i < this->tableSize; i++){
         
         /* Get current distance from query */
-        currDist = this->points[i].euclideanDist(query, status);
+        if(this->metrice == "euclidean")
+            currDist = this->points[i].euclideanDist(query, status);
+        else 
+            currDist = this->points[i].cosinDist(query, status);
         if(status != SUCCESS)
             return;
     
@@ -166,11 +189,12 @@ unsigned exhaustiveSearch::size(void){
     result += sizeof(this->n);
     result += sizeof(this->dim);
     result += sizeof(this->fitted);
+    result += sizeof(this->metrice);
     
     int i;
 
     for(i = 0; i < this->tableSize; i++)
-        result += this->points.size();
+        result += this->points[i].size();
 
     result += this->points.capacity() * sizeof(Item);
         

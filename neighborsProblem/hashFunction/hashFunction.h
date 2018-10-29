@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
+#include <random>
 #include "../item/item.h"
 #include "../utils/utils.h"
 
@@ -172,6 +173,8 @@ class hashFunctionEuclideanHypercube: public hashFunction{
         std::vector<std::unordered_map<int, int>  > hMaps; // Keep in map f unique values
         int k; // Number of sub hash functions
         int w; // Window size
+        std::vector<std::uniform_int_distribution<int> > dist; // DIstributions for fi 
+        std::default_random_engine generator; 
         static int count;
 
     public:

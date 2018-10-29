@@ -3,6 +3,7 @@
 #include <list>
 #include <algorithm>
 #include <new>
+#include <cmath>
 #include "hypercube.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -145,7 +146,6 @@ void hypercubeCosin::fit(list<Item>& points, errorCode& status){
 
 /* Find the radius neighbors of a given point */
 void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
-    int queryDim = query.getDim();
     int i, initialPos, pos;
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
@@ -238,7 +238,6 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
 
 /* Find the nearest neighbor of a given point */
 void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
-    int queryDim = query.getDim();
     int i, initialPos, pos, found = 0, flag = 0;
     double currDist; // Distance of a point in list
     double minDist = -1;
@@ -379,12 +378,10 @@ unsigned hypercubeCosin::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
-        status = METHOD_UNFITTED;
         return -1;
     }
     
     if(this->k == -1){
-        status = INVALID_METHOD;
         return -1;
     }
     
@@ -392,7 +389,6 @@ unsigned hypercubeCosin::size(void){
     result += sizeof(this->n);
     result += sizeof(this->k);
     result += sizeof(this->dim);
-    result += sizeof(this->w);
     result += sizeof(this->m);
     result += sizeof(this->m);
     result += sizeof(this->probes);

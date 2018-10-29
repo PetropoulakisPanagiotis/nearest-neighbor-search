@@ -13,9 +13,10 @@ class exhaustiveSearch: public model{
         int n; // Number of items 
         int dim; // Dimension
         int fitted; // Method is fitted with data
+        std::string metrice; 
     public:
 
-        exhaustiveSearch();
+        exhaustiveSearch(std::string="euclidean");
         ~exhaustiveSearch();
 
         void fit(std::list<Item>& points, errorCode& status);

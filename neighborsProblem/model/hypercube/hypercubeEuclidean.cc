@@ -3,6 +3,7 @@
 #include <list>
 #include <algorithm>
 #include <new>
+#include <cmath>
 #include "hypercube.h"
 #include "../../hashFunction/hashFunction.h"
 #include "../../item/item.h"
@@ -15,10 +16,11 @@ using namespace std;
 /////////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeEuclidean::hypercubeEuclidean():tableSize(0),n(0),k(15),dim(0),w(500),m(15),probes(1),fitted(0){}
+hypercubeEuclidean::hypercubeEuclidean():tableSize(0),n(0),k(9),dim(0),w(550),m(9000),probes(35),fitted(0){}
 
 hypercubeEuclidean::hypercubeEuclidean(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),w(800),m(m),probes(probes),fitted(0){
     /* Check parameters */
+    
     if(k < MIN_K || k > MAX_K || m < MIN_M || m > MAX_M){
         status = INVALID_PARAMETERS;
         this->k = -1;
@@ -159,7 +161,6 @@ void hypercubeEuclidean::fit(list<Item>& points, errorCode& status){
 
 /* Find the radius neighbors of a given point */
 void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
-    int queryDim = query.getDim();
     int i, initialPos, pos;
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
@@ -252,7 +253,6 @@ void hypercubeEuclidean::radiusNeighbors(Item& query, int radius, list<Item>& ne
 
 /* Find the nearest neighbor of a given point */
 void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
-    int queryDim = query.getDim();
     int i, initialPos, pos, found = 0, flag = 0;
     double currDist; // Distance of a point in list
     double minDist = -1;
@@ -294,7 +294,7 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
 
     /* Check probes vertices for neighbors */
     for(i = 0; i < this->probes; i++){
-   
+
         /* Check initial pos */
         if(i == 0)
             pos = initialPos;
@@ -329,7 +329,6 @@ void hypercubeEuclidean::nNeighbor(Item& query, Item& nNeighbor, double* neighbo
             else if(minDist > currDist){
                 iterNearestNeighbor = iter;
                 minDist = currDist;
-
             }
 
             /* Found m neighbors */
@@ -393,12 +392,10 @@ unsigned hypercubeEuclidean::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
-        status = METHOD_UNFITTED;
         return -1;
     }
     
     if(this->k == -1){
-        status = INVALID_METHOD;
         return -1;
     }
     
@@ -424,7 +421,7 @@ unsigned hypercubeEuclidean::size(void){
         for(iter = this->cube[i].begin(); iter!= this->cube[i].end(); iter++){
             result += iter->size();
 
-            result += sizeof(iter);
+            result += sizeof(Item);
         } // End for - iter
     } // End for - table size
 

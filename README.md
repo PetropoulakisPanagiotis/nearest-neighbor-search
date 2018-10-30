@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # neighbors problem - Nearest and radius neighbors
-<img src="https://cdn-images-1.medium.com/max/1600/0*Sk18h9op6uK9EpT8." width="500px" height="350px"> <br />
+<img src="https://cdn-images-1.medium.com/max/1600/0*Sk18h9op6uK9EpT8." width="520px" height="320px"> <br />
 Available methods: 
 * Lsh Euclidean / Cosine
 * Hypercube Euclidena / Cosine

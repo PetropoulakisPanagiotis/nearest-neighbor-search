@@ -10,9 +10,7 @@ Available methods:
 ## Lsh Euclidean
 Sub hash functions:
 ```
-h(p) = 	\begin{equation*}
-    \floor*{\frac{x}{2}} 
-  \end{equation*}
+
 ```
 
 # Tutorial 

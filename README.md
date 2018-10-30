@@ -1,1 +1,7 @@
-# Nearest-Neighbors
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# neighbors problem - Nearest and radius neighbors
+<img src="https://cdn-images-1.medium.com/max/1600/0*Sk18h9op6uK9EpT8."> <br />
+Available methods: 
+* Lsh Euclidean / Cosine
+* Hypercube Euclidena / Cosine
+* Exhuastive search

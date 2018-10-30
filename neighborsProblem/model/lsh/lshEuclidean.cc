@@ -24,6 +24,7 @@ lshEuclidean::lshEuclidean():tableSize(0),coefficient(0.25),n(0),l(5),k(4),dim(0
     /* Set size of hash tables */
     for(i = 0; i < this->l; i++)
         this->tables.push_back(vector<list<entry> >(this->l));
+        
 }
 
 lshEuclidean::lshEuclidean(int k, int l, errorCode& status):tableSize(0),coefficient(0.25),n(0),l(l),k(k),dim(0),w(500),fitted(0){
@@ -116,9 +117,12 @@ void lshEuclidean::fit(list<Item>& points, errorCode& status){
         this->tableSize = 1;
 
     /* Fix each table - Each table contains lists of entries */
-    for(i = 0; i < this->l; i++)
+    for(i = 0; i < this->l; i++){
+        this->tables[i].reserve(this->tableSize);
         for(j = 0; j < this->tableSize; j++)
             this->tables[i].push_back(list<entry>());
+
+    }
 
     /* Set dimension */
     this->dim = iterPoints->getDim();

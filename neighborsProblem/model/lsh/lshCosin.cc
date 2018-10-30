@@ -95,9 +95,11 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     this->tableSize = pow(2, this->k);
 
     /* Fix each table - Each table contains lists of entries */
-    for(i = 0; i < this->l; i++)
+    for(i = 0; i < this->l; i++){
+        this->tables[i].reserve(this->tableSize);
         for(j = 0; j < this->tableSize; j++)
             this->tables[i].push_back(list<Item*>());
+    }
 
     /* Set dimension */
     this->dim = iterPoints->getDim();

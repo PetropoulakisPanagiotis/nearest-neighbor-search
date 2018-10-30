@@ -90,6 +90,7 @@ void hypercubeEuclidean::fit(list<Item>& points, errorCode& status){
     
     /* Set table size */
     this->tableSize = pow(2, this->k);
+    this->cube.reserve(this->tableSize);
 
     /* Fix table */
     for(i = 0; i < this->tableSize; i++)

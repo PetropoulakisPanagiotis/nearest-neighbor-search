@@ -18,5 +18,5 @@ Sub hash functions:
 ## Requirements
 * Compiler: g++ - C11 standard
 
-## Authors
+## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

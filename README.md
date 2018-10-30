@@ -9,9 +9,9 @@ Available methods:
 # How It Works
 ## Lsh Euclidean
 Sub hash functions:
-
-h(p) = 	\lfloor p . v + t / w \rfloor
-
+```
+h(p) = 	\lfloor f \rfloor
+```
 
 # Tutorial 
 

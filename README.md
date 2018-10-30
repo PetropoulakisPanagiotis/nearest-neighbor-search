@@ -5,3 +5,19 @@ Available methods:
 * Lsh Euclidean / Cosine
 * Hypercube Euclidena / Cosine
 * Exhuastive search
+
+# How It Works
+## Lsh Euclidean
+Sub hash functions:
+```
+h(p) = \lfloor p . v + t / w \rfloor
+```
+
+
+# Tutorial 
+
+## Requirements
+* Compiler: g++ - C11 standard
+
+## Authors
+Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

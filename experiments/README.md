@@ -12,3 +12,5 @@ or
 ```
 $ ./cube
 ```
+
+* Step 3: Follow the command line instructions(provide data sets and hyperparameters) and observe the results 

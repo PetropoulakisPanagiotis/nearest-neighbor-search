@@ -7,6 +7,7 @@ Available methods:
 * Exhuastive search
 
 # How It Works
+
 ## Lsh Euclidean
 Sub hash functions:
 ```
@@ -18,5 +19,9 @@ Sub hash functions:
 ## Requirements
 * Compiler: g++ - C11 standard
 
+## Αcknowledgements
+Thank you Ioannis z. Emiris Professor(Department of Informatics & Telecommunications 
+National and Kapodistrian University of Athens) that let me to use his slides.<br />
+Webpage: http://cgi.di.uoa.gr/~emiris/index-eng.html
 ## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

@@ -37,7 +37,7 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 * L(lsh): Number of hash tables
 * K: Number of sub hash functions
 * W(euclidean): Window size. The value depends on the anticipate distance from the nearest neighbor
-* Table size(euclidean lsh): Size of each hash table. Table size = n(number of data points) * Coefficient(< 1)
+* Coefficient(euclidean lsh): Defines the table size of each hash table. Table size = n(number of data points) * coefficient(< 1)
 
 ## Αcknowledgements
 Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />

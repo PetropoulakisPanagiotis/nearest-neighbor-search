@@ -7,11 +7,16 @@ Available methods:
 * Exhuastive search
 Available metrices: euclidean and cosine
 
+# Requirements
+* Compiler: g++ - C11 standard
+
 # Installation
 * Clone this repo to your local machine: 
 ```
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
+# Tutorial
+* This repository contains a [tutorial](https://www.google.com)https://github.com/PetropoulakisPanagiotis/neighbors-problem/tree/master/tutorial for newcomers
 
 # How It Works
 * Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket.
@@ -27,11 +32,6 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 
 ## Hash functions: Hypercube
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
-
-# Tutorial 
-
-# Requirements
-* Compiler: g++ - C11 standard
 
 ## Αcknowledgements
 Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />

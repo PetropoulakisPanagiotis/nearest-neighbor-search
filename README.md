@@ -2,8 +2,8 @@
 # Neighbors problem: nearest and radius neighbors
 <img src="https://www.researchgate.net/profile/Saleh_Alaliyat/publication/267953942/figure/fig14/AS:295388776026147@1447437580523/K-nearest-neighbor-algorithm-illustration-The-green-circle-is-the-sample-which-is-to-be.png" width="500px" height="250px"> <br /> <br />
 Available methods: 
-* Locality-sensitive hashing(lsh): 
-* Hypercube:
+* Locality-sensitive hashing(lsh)
+* Hypercube
 * Exhuastive search
 Available metrices: euclidean and cosine
 
@@ -16,11 +16,11 @@ Available metrices: euclidean and cosine
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
 # Tutorial
-* This repository contains a [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/tree/master/tutorial) for newcomers.
+* This repository contains a [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/tree/master/tutorial) for newcomers
 
 # How It Works
-* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket.
-* Hypercube: Each model stores the data points in a hypercube structure(vector). Every new query is hashed and is <br /> compared with the data of one or more(neighbor vertices) vertices.
+* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket
+* Hypercube: Each model stores the data points in a hypercube structure(vector). Every new query is hashed and is <br /> compared with the data of one or more(neighbor vertices) vertices
 
 ## Hash functions: Lsh Euclidean
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_euclidean.png) <br /> <br />
@@ -34,14 +34,14 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
 
 # The hyperparameters
-* L(lsh): Number of hash tables.
-* K: Number of sub hash functions.
-* W(euclidean lsh): Window size. The value depends on the anticipate distance from the nearest neighbor.
-* Table size(euclidean lsh): n(number of data points) * Coefficient(< 1).
+* L(lsh): Number of hash tables
+* K: Number of sub hash functions
+* W(euclidean lsh): Window size. The value depends on the anticipate distance from the nearest neighbor
+* Table size(euclidean lsh): n(number of data points) * Coefficient(< 1)
 
 ## Αcknowledgements
 Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />
-National and Kapodistrian University of Athens that let me to use his slides.<br />
+National and Kapodistrian University of Athens that let me to use his slides<br />
 Webpage: http://cgi.di.uoa.gr/~emiris/index-eng.html
 
 ## Author

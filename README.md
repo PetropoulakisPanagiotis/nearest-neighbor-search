@@ -2,18 +2,21 @@
 # Neighbors problem: nearest and radius neighbors
 <img src="https://www.researchgate.net/profile/Saleh_Alaliyat/publication/267953942/figure/fig14/AS:295388776026147@1447437580523/K-nearest-neighbor-algorithm-illustration-The-green-circle-is-the-sample-which-is-to-be.png" width="500px" height="250px"> <br />
 Available methods: 
-* Lsh Euclidean / Cosine
-* Hypercube Euclidena / Cosine
+* Locality-sensitive hashing(lsh): 
+* Hypercube:
 * Exhuastive search
+Available metrices: euclidean and cosine
 
 # Installation
 * Clone this repo to your local machine: 
 ```
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
+
 # How It Works
-* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and it is <br />  compared with the data of one specific bucket 
-* Hypercube: Each model stores the data points in a hypercube. Every new query is hashed and it is <br /> compared with the data of one or more(neighbor vertices) vertices.
+* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket 
+* Hypercube: Each model stores the data points in a hypercube structure(vector). Every new query is hashed and is <br /> compared with the data of one or more(neighbor vertices) vertices.
+
 ## Hash functions: Lsh Euclidean
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_euclidean.png) <br /> <br />
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hash_table_euclidean.png)

@@ -6,6 +6,9 @@ Available methods:
 * Hypercube Euclidena / Cosine
 * Exhuastive search
 
+# Installation
+* Clone this repo to your local machine using https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
+
 # How It Works
 * Lsh: Each model stores the data points in L hash tables. Every new query is hashed and it is <br />  compared with the data of one specific bucket 
 * Hypercube: Each model stores the data points in a hypercube. Every new query is hashed and it is <br /> compared with the data of one or more(neighbor vertices) vertices.
@@ -20,9 +23,9 @@ Available methods:
 ## Hash functions: Hypercube
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
 
-## Tutorial 
+# Tutorial 
 
-## Requirements
+# Requirements
 * Compiler: g++ - C11 standard
 
 ## Αcknowledgements

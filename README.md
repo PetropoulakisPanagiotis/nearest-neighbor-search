@@ -33,6 +33,12 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ## Hash functions: Hypercube
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
 
+# The hyperparameters
+* L(lsh): Number of hash tables.
+* K: Number of sub hash functions.
+* W(euclidean lsh): Window size. The value depends on the anticipate distance from the nearest neighbor.
+* Table size(euclidean lsh): n(number of data points) * Coefficient(< 1).
+
 ## Αcknowledgements
 Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />
 National and Kapodistrian University of Athens that let me to use his slides.<br />

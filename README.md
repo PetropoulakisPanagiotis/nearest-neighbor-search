@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Neighbors problem: Nearest and radius neighbors
-<img src="https://cdn-images-1.medium.com/max/1600/0*Sk18h9op6uK9EpT8." width="500px" height="250px"> <br />
+<img src="https://www.researchgate.net/profile/Saleh_Alaliyat/publication/267953942/figure/fig14/AS:295388776026147@1447437580523/K-nearest-neighbor-algorithm-illustration-The-green-circle-is-the-sample-which-is-to-be.png" width="500px" height="250px"> <br />
 Available methods: 
 * Lsh Euclidean / Cosine
 * Hypercube Euclidena / Cosine

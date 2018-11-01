@@ -14,7 +14,7 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
 
 # How It Works
-* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket 
+* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket.
 * Hypercube: Each model stores the data points in a hypercube structure(vector). Every new query is hashed and is <br /> compared with the data of one or more(neighbor vertices) vertices.
 
 ## Hash functions: Lsh Euclidean

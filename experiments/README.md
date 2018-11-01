@@ -6,6 +6,9 @@ make
 * Step 2: Run expiriment  
 ```
 $ ./lsh
+```
 or
+
+```
 $ ./cube
 ```

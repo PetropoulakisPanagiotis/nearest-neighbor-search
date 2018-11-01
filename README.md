@@ -10,19 +10,17 @@ Available methods:
 * Lsh: Each model stores the data points in L hash tables. Every new query is hashed and it is <br />  compared with the data of one specific bucket 
 * Hypercube: Each model stores the data points in a hypercube. Every new query is hashed and it is <br /> compared with the data of one or more(neighbor vertices) vertices.
 ## Hash functions: Lsh Euclidean
-Sub hash functions:
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_euclidean.png)
-Main hash function:
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hash_table_euclidean.png)
 
 ## Hash functions: Lsh Cosine
-Sub hash functons: 
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_cosin.png)
-Main hash function:
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/lsh_cosin.png)
+
 ## Hash functions: Hypercube
 ![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
-# Tutorial 
+
+## Tutorial 
 
 ## Requirements
 * Compiler: g++ - C11 standard

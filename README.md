@@ -20,8 +20,8 @@ Sub hash functions:
 * Compiler: g++ - C11 standard
 
 ## Αcknowledgements
-Thank you Ioannis z. Emiris Professor(Department of Informatics & Telecommunications <br />
-National and Kapodistrian University of Athens) that let me to use his slides.<br />
+Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />
+National and Kapodistrian University of Athens that let me to use his slides.<br />
 Webpage: http://cgi.di.uoa.gr/~emiris/index-eng.html
 ## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

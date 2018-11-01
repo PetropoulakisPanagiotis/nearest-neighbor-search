@@ -1,7 +1,7 @@
 # Instructions
 * Step 1: Run make file inside folders 
 ```
-make
+$ make
 ```
 * Step 2: Run expiriment  
 ```

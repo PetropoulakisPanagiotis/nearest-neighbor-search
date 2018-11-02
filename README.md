@@ -7,8 +7,7 @@
 Available methods: 
 * Locality-sensitive hashing(lsh)
 * Hypercube
-* Exhuastive search <br />
-Available metrices: euclidean and cosine
+* Exhuastive search <br />Available metrices: euclidean and cosine
 # Requirements
 * Compiler: g++ - C11 standard
 

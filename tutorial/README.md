@@ -10,7 +10,7 @@ for(i = 0; i < n; i++){
     components.push_back(i + 5);
   }
   
-  dataPoints.push_back(Item(components), status);
+  dataPoints.push_back(Item(components, status));
   if(status != SUCCESS){
     printError(status);
     return;

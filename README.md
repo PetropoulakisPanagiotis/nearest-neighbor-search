@@ -20,7 +20,7 @@ Metrices: euclidean and cosine
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
 # How it works & Tutorial
-* This repository contains a [wiki](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki) page for the newcomers <br/ > It contains a section called [how it works](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/How-it-works) that explains <br  /> lsh and hypercube hash functions and a usefull [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/Tutorial)
+* This repository contains a [wiki](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki) page for the newcomers <br /> It contains a section called [how it works](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/How-it-works) that explains <br  /> lsh and hypercube hash functions and a usefull [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/Tutorial)
 
 ## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

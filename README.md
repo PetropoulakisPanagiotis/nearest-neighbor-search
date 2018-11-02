@@ -20,7 +20,7 @@ Metrices: euclidean and cosine
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
 # Tutorial
-* This repository contains a [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/tree/master/tutorial) for the newcomers
+* This repository contains a [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki) for the newcomers
 
 # How It Works
 * Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket

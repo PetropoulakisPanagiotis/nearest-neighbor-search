@@ -9,7 +9,8 @@ Available methods:
 * Hypercube
 * Exhuastive search <br />
 
-Available metrices: euclidean and cosine
+Metrices: euclidean and cosine
+
 # Requirements
 * Compiler: g++ - C11 standard
 

@@ -22,31 +22,5 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 # Tutorial
 * This repository contains a [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki) for the newcomers
 
-# How It Works
-* Lsh: Each model stores the data points in L hash tables. Every new query is hashed and is <br />  compared with the data of one specific bucket
-* Hypercube: Each model stores the data points in a hypercube structure(vector). Every new query is hashed and is <br /> compared with the data of one or more(neighbor vertices) vertices
-
-## Hash functions: Lsh Euclidean
-![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_euclidean.png) <br /> <br />
-![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hash_table_euclidean.png)
-
-## Hash functions: Lsh Cosine
-![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/h_cosin.png) <br /> <br />
-![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/lsh_cosin.png)
-
-## Hash functions: Hypercube
-![alt text](https://github.com/PetropoulakisPanagiotis/neighbors-problem/blob/master/images/hypercube.png)
-
-# The hyperparameters
-* L(lsh): Number of hash tables
-* K: Number of sub hash functions
-* W(euclidean): Window size. The value depends on the anticipate distance from the nearest neighbor
-* Coefficient(euclidean lsh): Defines the table size of each hash table. Table size = n(number of data points) * coefficient(< 1)
-
-## Αcknowledgements
-Thank you Ioannis z. Emiris Professor @ Department of Informatics & Telecommunications <br />
-National and Kapodistrian University of Athens that let me to use his slides<br />
-Webpage: http://cgi.di.uoa.gr/~emiris/index-eng.html
-
 ## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

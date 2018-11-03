@@ -16,5 +16,5 @@ $ ./cube
 * Step 3: Follow the command line instructions(provide data sets and hyperparameters) and observe the results 
 ```
 data set path: ../dataSets/input_small.txt -- Change first line to provide different metrice
-query set path: ../dataSets/query_small.txt -- Change radius in the first line
+query set path: ../dataSets/query_small.txt -- Change first line to provide different radius
 ```

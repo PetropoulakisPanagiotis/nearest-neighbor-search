@@ -13,7 +13,7 @@
 
 using namespace std;
 
-/* Read given file, extract points and read possible metrices(euclidean, cosin, etc) */
+/* Read given file, extract points and read possible metrices(euclidean, cosine, etc) */
 /* WithId == 0, points have id's                                                     */
 /* WithId == 1, points havn't id's                                                   */
 void readDataSet(string fileName, int withId, char delim, list<Item>& points, string& types, errorCode& status){
@@ -24,7 +24,7 @@ void readDataSet(string fileName, int withId, char delim, list<Item>& points, st
     double currComponent;
     
     /* Structures */
-    vector<string> metrices {"euclidean" , "cosin"}; // Available metrices
+    vector<string> metrices {"euclidean" , "cosine"}; // Available metrices
     set<string> ids; // Keep all ids - Check if all ids are unique
     set<string>::iterator iterSet; // Iterate through ids
     string::iterator iterStr; // Iteratre through word

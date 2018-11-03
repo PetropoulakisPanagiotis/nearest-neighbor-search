@@ -56,7 +56,7 @@ int main(int argc, char **argv){
     }
 
     /* Models to be tested */
-    model* myModel; // Euclidean or cosin cube 
+    model* myModel; // Euclidean or cosine cube 
     model* optimalModel; // For exhaustive search
 
     double nearestDistanceSubOpt, nearestDistanceOpt;
@@ -100,11 +100,11 @@ int main(int argc, char **argv){
                 else
                     myModel = new hypercubeEuclidean();
             }
-            else if(metrice == "cosin"){
+            else if(metrice == "cosine"){
                 if(k != -1)
-                    myModel = new hypercubeCosin(k, m, probes, status);
+                    myModel = new hypercubeCosine(k, m, probes, status);
                 else
-                    myModel = new hypercubeCosin();
+                    myModel = new hypercubeCosine();
             }
 
             if(status != SUCCESS){

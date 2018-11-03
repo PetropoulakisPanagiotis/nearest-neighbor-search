@@ -11,14 +11,14 @@
 
 using namespace std;
 
-/////////////////////////////////////////////
-/* Implementation of hypercube cosin class */
-/////////////////////////////////////////////
+//////////////////////////////////////////////
+/* Implementation of hypercube cosine class */
+//////////////////////////////////////////////
 
 /* Default constructor */
-hypercubeCosin::hypercubeCosin():tableSize(0),n(0),k(5),dim(0),m(5),probes(1),fitted(0){}
+hypercubeCosine::hypercubeCosine():tableSize(0),n(0),k(5),dim(0),m(5),probes(1),fitted(0){}
 
-hypercubeCosin::hypercubeCosin(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),m(m),probes(probes),fitted(0){
+hypercubeCosine::hypercubeCosine(int k, int m, int probes, errorCode& status):tableSize(0),n(0),k(k),dim(0),m(m),probes(probes),fitted(0){
     /* Check parameters */
     if(k < MIN_K || k > MAX_K || m < MIN_M || m > MAX_M){
         status = INVALID_PARAMETERS;
@@ -32,7 +32,7 @@ hypercubeCosin::hypercubeCosin(int k, int m, int probes, errorCode& status):tabl
     }
 }
 
-hypercubeCosin::~hypercubeCosin(){ 
+hypercubeCosine::~hypercubeCosine(){ 
     /* Check method */
     if(this->k == -1){
         return;
@@ -43,8 +43,8 @@ hypercubeCosin::~hypercubeCosin(){
         delete this->hashFunctions;
 }
 
-/* Fix hash function, members of hypercube cosin and add given points in the cube */
-void hypercubeCosin::fit(list<Item>& points, errorCode& status){
+/* Fix hash function, members of hypercube cosine and add given points in the cube */
+void hypercubeCosine::fit(list<Item>& points, errorCode& status){
     int i;
     int pos; // Pos in cube
 
@@ -91,9 +91,9 @@ void hypercubeCosin::fit(list<Item>& points, errorCode& status){
     /* Set hash function */
     ///////////////////////
 
-    hashFunctionCosin* newFunc = NULL;  
+    hashFunctionCosine* newFunc = NULL;  
 
-    newFunc = new hashFunctionCosin(this->dim, this->k); 
+    newFunc = new hashFunctionCosine(this->dim, this->k); 
     if(newFunc == NULL){
         status = ALLOCATION_FAILED;
         this->k = -1;
@@ -146,7 +146,7 @@ void hypercubeCosin::fit(list<Item>& points, errorCode& status){
 }
 
 /* Find the radius neighbors of a given point */
-void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
+void hypercubeCosine::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
     int i, initialPos, pos;
     double currDist; // Distance of a point in list
     list<Item>::iterator iter;
@@ -215,7 +215,7 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
             numNeighbors += 1;
             
             /* Find current distance */
-            currDist = iter->cosinDist(query, status);
+            currDist = iter->cosineDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -238,7 +238,7 @@ void hypercubeCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighb
 }
 
 /* Find the nearest neighbor of a given point */
-void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
+void hypercubeCosine::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int i, initialPos, pos, found = 0, flag = 0;
     double currDist; // Distance of a point in list
     double minDist = -1;
@@ -298,7 +298,7 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
             numNeighbors += 1;
             
             /* Find current distance */
-            currDist = iter->cosinDist(query, status);
+            currDist = iter->cosineDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -345,7 +345,7 @@ void hypercubeCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDis
 /* Accessors */
 ///////////////
 
-int hypercubeCosin::getNumberOfPoints(errorCode& status){
+int hypercubeCosine::getNumberOfPoints(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -360,7 +360,7 @@ int hypercubeCosin::getNumberOfPoints(errorCode& status){
         return this->n;
 }
 
-int hypercubeCosin::getDim(errorCode& status){
+int hypercubeCosine::getDim(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -375,7 +375,7 @@ int hypercubeCosin::getDim(errorCode& status){
         return this->dim;
 }
 
-unsigned hypercubeCosin::size(void){
+unsigned hypercubeCosine::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
@@ -420,13 +420,13 @@ unsigned hypercubeCosin::size(void){
 }
 
 /* Print statistics */
-void hypercubeCosin::print(void){
+void hypercubeCosine::print(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
     else{
 
-        cout << "Hypercube cosin statistics\n";
+        cout << "Hypercube cosine statistics\n";
         cout << "Size per table: " << this->tableSize << "\n";
         cout << "Number of sub hash functions(k): " << this->k << "\n";
         cout << "M: " << this->m << "\n";
@@ -434,7 +434,7 @@ void hypercubeCosin::print(void){
     }
 }
 
-void hypercubeCosin::printHashFunctions(void){
+void hypercubeCosine::printHashFunctions(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
@@ -442,7 +442,7 @@ void hypercubeCosin::printHashFunctions(void){
         cout << "Method not fitted\n";
     else{
 
-        cout << "Hash functions hypercube cosin\n";
+        cout << "Hash functions hypercube cosine\n";
         this->hashFunctions->print();
     }
 }

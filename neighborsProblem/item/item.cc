@@ -342,7 +342,7 @@ double Item::euclideanDist(Item& x, errorCode& status){
 }
 
 /* dist(x,y) = 1 - cos(x,y) = 1 - (x.y / norm(x) * norm(y)) */
-double Item::cosinDist(Item& x, errorCode& status){
+double Item::cosineDist(Item& x, errorCode& status){
     double dist = 0, mult;
     double normX, normY;
 

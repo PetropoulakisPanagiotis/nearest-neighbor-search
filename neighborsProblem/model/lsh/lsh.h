@@ -48,8 +48,8 @@ class lshEuclidean: public model{
         void printHashFunctions(void);
 };
 
-/* Neighbors problem using lsh cosin */
-class lshCosin: public model{
+/* Neighbors problem using lsh cosine */
+class lshCosine: public model{
     private:
         std::vector<Item> points; // Keep points
         std::vector<std::vector<std::list<Item*> > > tables; // Each table is a hash table(vector of lists)
@@ -63,10 +63,10 @@ class lshCosin: public model{
     
     public:
 
-        lshCosin();
-        lshCosin(int k, int l, errorCode& status);
+        lshCosine();
+        lshCosine(int k, int l, errorCode& status);
 
-        ~lshCosin();
+        ~lshCosine();
 
         void fit(std::list<Item>& points, errorCode& status);
 

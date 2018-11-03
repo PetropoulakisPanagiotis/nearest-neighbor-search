@@ -7,9 +7,9 @@
 
 /* Forward declaration - for compare */
 class hEuclidean;
-class hCosin;
+class hCosine;
 class hashFunctionEuclidean;
-class hashFunctionCosin;
+class hashFunctionCosine;
 class hashFunctionEuclideanHypercube;
 
 /* Abstract class for sub has functions */
@@ -22,7 +22,7 @@ class h{
 
         /* Compare two sub has functions */
         virtual int compare(hEuclidean& x, errorCode& status) = 0;
-        virtual int compare(hCosin& x, errorCode& status) = 0;
+        virtual int compare(hCosine& x, errorCode& status) = 0;
 
         /* Get size of hash functions */
         virtual unsigned size(void) = 0;
@@ -52,31 +52,31 @@ class hEuclidean: public h{
         int hash(Item& p, errorCode& status);
 
         int compare(hEuclidean& x, errorCode& status);
-        int compare(hCosin& x, errorCode& status);
+        int compare(hCosine& x, errorCode& status);
         
         unsigned size(void);
         int getCount(void);
         void print(void);
 };
 
-/* Sub cosin hash function class */
+/* Sub cosine hash function class */
 /* h(p) = 1, if r.p >= 0         */
 /* h(p) = 0, if r.p < 0          */
-class hCosin: public h{
+class hCosine: public h{
     private:
         std::string id;
         Item* r; // Random item - Standard distribution
         static int count;
 
     public:
-        hCosin(int);
-        ~hCosin();
+        hCosine(int);
+        ~hCosine();
 
         /* Overide functions */
         int hash(Item& p, errorCode& status);
         
         int compare(hEuclidean& x, errorCode& status);
-        int compare(hCosin& x, errorCode& status);
+        int compare(hCosine& x, errorCode& status);
         
         unsigned size(void);
         int getCount(void);
@@ -95,7 +95,7 @@ class hashFunction{
 
         /* Compare two has functions */
         virtual int compare(hashFunctionEuclidean& x, errorCode& status) = 0;
-        virtual int compare(hashFunctionCosin& x, errorCode& status) = 0;
+        virtual int compare(hashFunctionCosine& x, errorCode& status) = 0;
         virtual int compare(hashFunctionEuclideanHypercube& x, errorCode& status) = 0;
        
         /* Get size */
@@ -130,7 +130,7 @@ class hashFunctionEuclidean: public hashFunction{
         int hashSubFunction(Item&p, int index, errorCode& status);
         
         int compare(hashFunctionEuclidean& x, errorCode& status);
-        int compare(hashFunctionCosin& x, errorCode& status);       
+        int compare(hashFunctionCosine& x, errorCode& status);       
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
         unsigned size(void);
@@ -138,25 +138,25 @@ class hashFunctionEuclidean: public hashFunction{
         void print(void);
 };
 
-/* Cosin hash function class                    */
+/* Cosine hash function class                    */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-class hashFunctionCosin: public hashFunction{
+class hashFunctionCosine: public hashFunction{
     private:
         std::string id;
-        std::vector<hCosin*> H; // H contains sub hash functions        
+        std::vector<hCosine*> H; // H contains sub hash functions        
         int k; // Number of sub hash functions
         static int count;
 
     public:
-        hashFunctionCosin(int dim, int k);
-        ~hashFunctionCosin();
+        hashFunctionCosine(int dim, int k);
+        ~hashFunctionCosine();
 
         /* Overide functions */
         int hash(Item& p, errorCode& status);
         int hashSubFunction(Item&p, int index, errorCode& status);
 
         int compare(hashFunctionEuclidean& x, errorCode& status);
-        int compare(hashFunctionCosin& x, errorCode& status);
+        int compare(hashFunctionCosine& x, errorCode& status);
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
         unsigned size(void);
@@ -186,7 +186,7 @@ class hashFunctionEuclideanHypercube: public hashFunction{
         int hashSubFunction(Item&p, int index, errorCode& status);
 
         int compare(hashFunctionEuclidean& x, errorCode& status);
-        int compare(hashFunctionCosin& x, errorCode& status);
+        int compare(hashFunctionCosine& x, errorCode& status);
         int compare(hashFunctionEuclideanHypercube& x, errorCode& status);
         
         unsigned size(void);

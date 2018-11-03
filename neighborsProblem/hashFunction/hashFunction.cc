@@ -111,7 +111,7 @@ int hEuclidean::compare(hEuclidean& x, errorCode& status){
 }
 
 /* Can't compare different hash functions */
-int hEuclidean::compare(hCosin& x, errorCode& status){
+int hEuclidean::compare(hCosine& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
@@ -151,13 +151,13 @@ void hEuclidean::print(void){
     }
 }
 
-/////////////////////////////////////////////////////
-/* Implementation of sub cosin hash function class */
-/////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+/* Implementation of sub cosine hash function class */
+//////////////////////////////////////////////////////
 
-int hCosin::count = 0;
+int hCosine::count = 0;
 
-hCosin::hCosin(int dim){
+hCosine::hCosine(int dim){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM){
         this->r = NULL;
@@ -169,7 +169,7 @@ hCosin::hCosin(int dim){
         errorCode status;
 
         /* Fix id */
-        this->id = "hCosin_" + to_string(this->count); 
+        this->id = "hCosine_" + to_string(this->count); 
         this->count += 1;
 
         /* Fix item - Pick random float in standard distribution */
@@ -188,7 +188,7 @@ hCosin::hCosin(int dim){
 }
 
 /* Destructor */
-hCosin::~hCosin(){
+hCosine::~hCosine(){
     if(r != NULL)
         delete r;
 }
@@ -196,7 +196,7 @@ hCosin::~hCosin(){
 /* Calculate hash value of given p item */
 /* h(p) = 1, if r.p >= 0                */
 /* h(p) = 0, if r.p < 0                 */
-int hCosin::hash(Item& p, errorCode& status){
+int hCosine::hash(Item& p, errorCode& status){
     double innerProduct;
     int result;
 
@@ -222,7 +222,7 @@ int hCosin::hash(Item& p, errorCode& status){
 /* Discard id                       */
 /* Equal: 0                         */
 /* Not equal: 1                     */
-int hCosin::compare(hCosin& x, errorCode& status){
+int hCosine::compare(hCosine& x, errorCode& status){
     
     status = SUCCESS;
 
@@ -239,13 +239,13 @@ int hCosin::compare(hCosin& x, errorCode& status){
 }
 
 /* Can't compare different hash functions */
-int hCosin::compare(hEuclidean& x, errorCode& status){
+int hCosine::compare(hEuclidean& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
 
 /* Get size */
-unsigned hCosin::size(void){
+unsigned hCosine::size(void){
     unsigned result = 0;
 
     if(this->r == NULL){
@@ -260,17 +260,17 @@ unsigned hCosin::size(void){
 }
 
 /* Get number of sub hash functions */
-int hCosin::getCount(void){
+int hCosine::getCount(void){
     return this->count;
 }
 
 /* Print statistics of sub hash function */
-void hCosin::print(void){
+void hCosine::print(void){
 
     if(this->r == NULL)
-        cout << "Invalid cosin sub hash function\n";
+        cout << "Invalid cosine sub hash function\n";
     else{
-        cout << "Cosin(h) id: " << this->id << "\n";
+        cout << "Cosine(h) id: " << this->id << "\n";
         cout << "Statistics of r: \n";
         this->r->print();
     }
@@ -462,7 +462,7 @@ int hashFunctionEuclidean::compare(hashFunctionEuclidean& x, errorCode& status){
 }
 
 /* Can't compare different hash functions */
-int hashFunctionEuclidean::compare(hashFunctionCosin& x, errorCode& status){
+int hashFunctionEuclidean::compare(hashFunctionCosine& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
@@ -529,13 +529,13 @@ void hashFunctionEuclidean::print(void){
     }
 }
 
-/////////////////////////////////////////////////
-/* Implementation of cosin hash function class */
-/////////////////////////////////////////////////
+//////////////////////////////////////////////////
+/* Implementation of cosine hash function class */
+//////////////////////////////////////////////////
 
-int hashFunctionCosin::count = 0;
+int hashFunctionCosine::count = 0;
 
-hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
+hashFunctionCosine::hashFunctionCosine(int dim, int k):k(k){
     /* Check parameters */
     if(dim <= 0 || dim > MAX_DIM || k <= 0 || k > MAX_K){
         this->k = -1;
@@ -543,19 +543,19 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
     else{ 
         int i, j;
         errorCode status;
-        hCosin* newFunc = NULL;
+        hCosine* newFunc = NULL;
         
         status = SUCCESS;
 
         /* Set name */
-        this->id = "CosinHash_" + to_string(this->count);
+        this->id = "cosineHash_" + to_string(this->count);
         this->count += 1;
 
         /* Set size of H */
         this->H.reserve(k);
 
         for(i = 0; i < this->k; i++){
-            newFunc = new hCosin(dim);
+            newFunc = new hCosine(dim);
             if(newFunc == NULL){
                 status = ALLOCATION_FAILED;
                 this->k = -1;
@@ -594,7 +594,7 @@ hashFunctionCosin::hashFunctionCosin(int dim, int k):k(k){
 }
 
 /* Destructor */
-hashFunctionCosin::~hashFunctionCosin(){
+hashFunctionCosine::~hashFunctionCosine(){
     if(this->k != -1){
         int i;
         
@@ -605,7 +605,7 @@ hashFunctionCosin::~hashFunctionCosin(){
 
 /* Calculate hash value of given p item         */
 /* G(p) = h1(p).h2(p)...hk(p) -> Concatenation  */
-int hashFunctionCosin::hash(Item& p, errorCode& status){
+int hashFunctionCosine::hash(Item& p, errorCode& status){
     int i;
     string resultStr=""; 
 
@@ -625,8 +625,8 @@ int hashFunctionCosin::hash(Item& p, errorCode& status){
     return stoi(resultStr, nullptr, 2);
 }
 
-/* Default behavior for cosin */
-int hashFunctionCosin::hashSubFunction(Item&p, int index, errorCode& status){ 
+/* Default behavior for cosine */
+int hashFunctionCosine::hashSubFunction(Item&p, int index, errorCode& status){ 
     status = METHOD_NOT_IMPLEMENTED;
     return 0;
 };
@@ -635,7 +635,7 @@ int hashFunctionCosin::hashSubFunction(Item&p, int index, errorCode& status){
 /* Discard id                   */
 /* Equal: 0                     */
 /* Not equal: 1                 */
-int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
+int hashFunctionCosine::compare(hashFunctionCosine& x, errorCode& status){
     int i;
 
     status = SUCCESS;
@@ -664,19 +664,19 @@ int hashFunctionCosin::compare(hashFunctionCosin& x, errorCode& status){
 }
 
 /* Can't compare different hash functions */
-int hashFunctionCosin::compare(hashFunctionEuclidean& x, errorCode& status){
+int hashFunctionCosine::compare(hashFunctionEuclidean& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
 
 /* Can't compare different hash functions */
-int hashFunctionCosin::compare(hashFunctionEuclideanHypercube& x, errorCode& status){
+int hashFunctionCosine::compare(hashFunctionEuclideanHypercube& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }
 
 /* Get size */
-unsigned hashFunctionCosin::size(void){
+unsigned hashFunctionCosine::size(void){
     unsigned result = 0;
 
     if(this->k == -1){
@@ -690,7 +690,7 @@ unsigned hashFunctionCosin::size(void){
     for(i = 0; i < this->k; i++)
         result +=this->H[i]->size(); 
 
-    result += this->H.capacity() * sizeof(hCosin*);
+    result += this->H.capacity() * sizeof(hCosine*);
 
     result += sizeof(this->H);
     result += sizeof(this->k);
@@ -698,20 +698,20 @@ unsigned hashFunctionCosin::size(void){
     return result;
 }
 
-/* Get total cosin functions */
-int hashFunctionCosin::getCount(void){
+/* Get total cosine functions */
+int hashFunctionCosine::getCount(void){
     return this->count;
 }
 
 /* Print statistics of sub hash function */
-void hashFunctionCosin::print(void){
+void hashFunctionCosine::print(void){
 
     if(this->k == -1)
-        cout << "Invalid cosin hash function\n";
+        cout << "Invalid cosine hash function\n";
     else{
         int i;
         
-        cout << "Cosin has function id: " << this->id << "\n";
+        cout << "Cosine has function id: " << this->id << "\n";
         cout << "Value of k: " << this->k << "\n\n";
         cout << "Statistics of sub hash functions: \n\n";
         
@@ -861,7 +861,7 @@ int hashFunctionEuclideanHypercube::compare(hashFunctionEuclidean& x, errorCode&
 }
 
 /* Can't compare different hash functions */
-int hashFunctionEuclideanHypercube::compare(hashFunctionCosin& x, errorCode& status){
+int hashFunctionEuclideanHypercube::compare(hashFunctionCosine& x, errorCode& status){
     status = INVALID_COMPARE;
     return -1;
 }

@@ -2,8 +2,8 @@
 CC = g++
 FLAGS = -g -Wall
 
-cube: cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o
-	$(CC) -o cube $(FLAGS) cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o -std=c++11
+cube: cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosine.o exhaustiveSearch.o
+	$(CC) -o cube $(FLAGS) cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosine.o exhaustiveSearch.o -std=c++11
 
 cube.o: cube.cc
 	$(CC) -c  $(FLAGS) cube.cc -std=c++11
@@ -23,8 +23,8 @@ fileHandler.o: ../../neighborsProblem/fileHandler/fileHandler.cc
 hypercubeEuclidean.o: ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc -std=c++11
 
-hypercubeCosin.o: ../../neighborsProblem/model/hypercube/hypercubeCosin.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeCosin.cc -std=c++11
+hypercubeCosine.o: ../../neighborsProblem/model/hypercube/hypercubeCosine.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/hypercube/hypercubeCosine.cc -std=c++11
 
 exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11
@@ -34,7 +34,7 @@ exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSear
 	check
 
 clean:
-	rm -rf cube cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosin.o exhaustiveSearch.o
+	rm -rf cube cube.o utils.o hashFunction.o item.o fileHandler.o hypercubeEuclidean.o hypercubeCosine.o exhaustiveSearch.o
 
 check:
-	g++ -o cube cube.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc ../../neighborsProblem/model/hypercube/hypercubeCosin.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 
+	g++ -o cube cube.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/hypercube/hypercubeEuclidean.cc ../../neighborsProblem/model/hypercube/hypercubeCosine.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 

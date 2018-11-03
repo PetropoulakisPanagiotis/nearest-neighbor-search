@@ -56,7 +56,7 @@ int main(int argc, char **argv){
     }
 
     /* Models to be tested */
-    model* myModel; // Euclidean or cosin lsh 
+    model* myModel; // Euclidean or cosine lsh 
     model* optimalModel; // For exhaustive search
 
     double nearestDistanceSubOpt, nearestDistanceOpt;
@@ -100,11 +100,11 @@ int main(int argc, char **argv){
                 else
                     myModel = new lshEuclidean();
             }
-            else if(metrice == "cosin"){
+            else if(metrice == "cosine"){
                 if(k != -1)
-                    myModel = new lshCosin(k,l, status);
+                    myModel = new lshCosine(k,l, status);
                 else
-                    myModel = new lshCosin();
+                    myModel = new lshCosine();
             }
 
             if(status != SUCCESS){

@@ -33,7 +33,7 @@ void exhaustiveSearch::fit(list<Item>& points, errorCode& status){
     }
 
     /* Check metrice */
-    if(this->metrice != "euclidean" && this->metrice != "cosin"){
+    if(this->metrice != "euclidean" && this->metrice != "cosine"){
         status = INVALID_METRICE;
         return;
     }
@@ -96,7 +96,7 @@ void exhaustiveSearch::radiusNeighbors(Item& query, int radius, list<Item>& neig
         if(this->metrice == "euclidean")
             currDist = this->points[i].euclideanDist(query, status);
         else 
-            currDist = this->points[i].cosinDist(query, status);
+            currDist = this->points[i].cosineDist(query, status);
 
         if(status != SUCCESS)
             return;
@@ -131,7 +131,7 @@ void exhaustiveSearch::nNeighbor(Item& query, Item& nNeighbor, double* neighborD
         if(this->metrice == "euclidean")
             currDist = this->points[i].euclideanDist(query, status);
         else 
-            currDist = this->points[i].cosinDist(query, status);
+            currDist = this->points[i].cosineDist(query, status);
         if(status != SUCCESS)
             return;
     

@@ -12,11 +12,11 @@
 using namespace std;
 
 ///////////////////////////////////////
-/* Implementation of lsh cosin class */
+/* Implementation of lsh cosine class */
 ///////////////////////////////////////
 
 /* Default constructor */
-lshCosin::lshCosin():tableSize(0),n(0),l(5),k(8),dim(0),fitted(0){
+lshCosine::lshCosine():tableSize(0),n(0),l(5),k(8),dim(0),fitted(0){
     int i;
     
     /* Set size of hash functions */
@@ -27,7 +27,7 @@ lshCosin::lshCosin():tableSize(0),n(0),l(5),k(8),dim(0),fitted(0){
         this->tables.push_back(vector<list<Item*> >(this->l));
 }
 
-lshCosin::lshCosin(int k, int l, errorCode& status):tableSize(0),n(0),l(l),k(k),dim(0),fitted(0){
+lshCosine::lshCosine(int k, int l, errorCode& status):tableSize(0),n(0),l(l),k(k),dim(0),fitted(0){
     int i;
     
     /* Check parameters */
@@ -46,7 +46,7 @@ lshCosin::lshCosin(int k, int l, errorCode& status):tableSize(0),n(0),l(l),k(k),
     }
 }
 
-lshCosin::~lshCosin(){
+lshCosine::~lshCosine(){
  
     /* Check method */
     if(this->k == -1){
@@ -61,8 +61,8 @@ lshCosin::~lshCosin(){
             delete this->hashFunctions[i];
 }
 
-/* Fix hash table, members of lsh cosin and add given points in the hash tables */
-void lshCosin::fit(list<Item>& points, errorCode& status){
+/* Fix hash table, members of lsh cosine and add given points in the hash tables */
+void lshCosine::fit(list<Item>& points, errorCode& status){
     int i, j, p;
     int pos; // Pos(line) in current hash table
 
@@ -120,10 +120,10 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
     ////////////////////////
 
     /* Function that will be inserted in hash functions table */
-    hashFunctionCosin* newFunc = NULL;  
+    hashFunctionCosine* newFunc = NULL;  
    
     for(i = 0; i < this->l; i++){
-        newFunc = new hashFunctionCosin(this->dim, this->k);
+        newFunc = new hashFunctionCosine(this->dim, this->k);
        
         /* Truncate same hash functions */
         for(j = 0; j < i; j++){
@@ -222,7 +222,7 @@ void lshCosin::fit(list<Item>& points, errorCode& status){
 }
 
 /* Find the radius neighbors of a given point */
-void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
+void lshCosine::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, list<double>* neighborsDistances, errorCode& status){
     int i, pos;
     double currDist; // Distance of a point in list
     list<Item*>::iterator iter;
@@ -274,7 +274,7 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
 
                         
             /* Find current distance */
-            currDist = ptrPoint->cosinDist(query, status);
+            currDist = ptrPoint->cosineDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -297,7 +297,7 @@ void lshCosin::radiusNeighbors(Item& query, int radius, list<Item>& neighbors, l
 }
 
 /* Find the nearest neighbor of a given point */
-void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
+void lshCosine::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance, errorCode& status){
     int i, pos, found = 0, flag = 0;
     double minDist = -1; // Current minimum distance 
     double currDist; // Distance of a point in list
@@ -336,7 +336,7 @@ void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance,
             ptrPoint = *iter;
 
             /* Find current distance */
-            currDist = ptrPoint->cosinDist(query, status);
+            currDist = ptrPoint->cosineDist(query, status);
             if(status != SUCCESS)
                 return;
             
@@ -376,7 +376,7 @@ void lshCosin::nNeighbor(Item& query, Item& nNeighbor, double* neighborDistance,
 /* Accessors */
 ///////////////
 
-int lshCosin::getNumberOfPoints(errorCode& status){
+int lshCosine::getNumberOfPoints(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -391,7 +391,7 @@ int lshCosin::getNumberOfPoints(errorCode& status){
         return this->n;
 }
 
-int lshCosin::getDim(errorCode& status){
+int lshCosine::getDim(errorCode& status){
     status = SUCCESS;
 
     if(fitted == 0){
@@ -406,7 +406,7 @@ int lshCosin::getDim(errorCode& status){
         return this->dim;
 }
 
-unsigned lshCosin::size(void){
+unsigned lshCosine::size(void){
     unsigned result = 0;
 
     if(fitted == 0){
@@ -465,20 +465,20 @@ unsigned lshCosin::size(void){
 }
 
 /* Print statistics */
-void lshCosin::print(void){
+void lshCosine::print(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
     else{
 
-        cout << "Lsh cosin statistics\n";
+        cout << "Lsh Cosine statistics\n";
         cout << "Number of hash tables(l): " << this->l << "\n";
         cout << "Size per table: " << this->tableSize << "\n";
         cout << "Number of sub hash functions(k): " << this->k << "\n\n";
     }
 }
 
-void lshCosin::printHashFunctions(void){
+void lshCosine::printHashFunctions(void){
 
     if(this->k == -1)
         cout << "Invalid method\n";
@@ -488,7 +488,7 @@ void lshCosin::printHashFunctions(void){
 
         int i;
 
-        cout << "Hash functions of lsh cosin\n";
+        cout << "Hash functions of lsh Cosine\n";
         for(i = 0; i < this->l; i++)
             this->hashFunctions[i]->print();
     }

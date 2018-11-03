@@ -44,6 +44,6 @@ class Item{
 
         /* Metrices */
         double euclideanDist(Item& x, errorCode& status);
-        double cosinDist(Item& x,errorCode& status);
+        double cosineDist(Item& x,errorCode& status);
 };
 // PetropoulakisPanagiotis

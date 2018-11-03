@@ -60,8 +60,8 @@ class hypercubeEuclidean: public model{
         void printHashFunctions(void);
 };
 
-/* Neighbors problem using hypercube cosin */
-class hypercubeCosin: public model{
+/* Neighbors problem using hypercube cosine */
+class hypercubeCosine: public model{
     private:
 
         /* For every vertice find all neighbors and keep up to probes(sorted by hamming Distance) */
@@ -94,10 +94,10 @@ class hypercubeCosin: public model{
         int fitted; // Method is fitted with data
     public:
 
-        hypercubeCosin();
-        hypercubeCosin(int k, int m, int probes, errorCode& status);
+        hypercubeCosine();
+        hypercubeCosine(int k, int m, int probes, errorCode& status);
         
-        ~hypercubeCosin();
+        ~hypercubeCosine();
 
         void fit(std::list<Item>& points, errorCode& status);
 

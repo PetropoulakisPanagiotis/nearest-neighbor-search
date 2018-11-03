@@ -2,8 +2,8 @@
 CC = g++
 FLAGS = -g -Wall
 
-lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o exhaustiveSearch.o
-	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o exhaustiveSearch.o -std=c++11
+lsh: lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosine.o exhaustiveSearch.o
+	$(CC) -o lsh $(FLAGS) lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosine.o exhaustiveSearch.o -std=c++11
 
 lsh.o: lsh.cc
 	$(CC) -c  $(FLAGS) lsh.cc -std=c++11
@@ -23,8 +23,8 @@ fileHandler.o: ../../neighborsProblem/fileHandler/fileHandler.cc
 lshEuclidean.o: ../../neighborsProblem/model/lsh/lshEuclidean.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lsh/lshEuclidean.cc -std=c++11
 
-lshCosin.o: ../../neighborsProblem/model/lsh/lshCosin.cc
-	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lsh/lshCosin.cc -std=c++11
+lshCosine.o: ../../neighborsProblem/model/lsh/lshCosine.cc
+	$(CC) -c $(FLAGS) ../../neighborsProblem/model/lsh/lshCosine.cc -std=c++11
 
 exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc
 	$(CC) -c $(FLAGS) ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11
@@ -34,7 +34,7 @@ exhaustiveSearch.o: ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSear
 	check
 
 clean:
-	rm -rf lsh lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosin.o exhaustiveSearch.o
+	rm -rf lsh lsh.o utils.o hashFunction.o item.o fileHandler.o lshEuclidean.o lshCosine.o exhaustiveSearch.o
 
 check:
-	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/lsh/lshEuclidean.cc ../../neighborsProblem/model/lsh/lshCosin.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 
+	g++ -o lsh lsh.cc ../../neighborsProblem/utils/utils.cc ../../neighborsProblem/hashFunction/hashFunction.cc ../../neighborsProblem/item/item.cc ../../neighborsProblem/fileHandler/fileHandler.cc ../../neighborsProblem/model/lsh/lshEuclidean.cc ../../neighborsProblem/model/lsh/lshCosine.cc ../../neighborsProblem/model/exhaustiveSearch/exhaustiveSearch.cc -std=c++11 && valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --vgdb-error=1 ./lsh 

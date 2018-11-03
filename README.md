@@ -11,15 +11,15 @@ Available methods:
 
 Metrices: euclidean and cosine
 
-# Requirements
+## Requirements
 * Compiler: g++ - C11 standard
 
-# Installation
+## Installation
 * Clone this repo to your local machine: 
 ```
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
-# Wiki
+## Wiki
 * This repository contains a [wiki](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki) page for the newcomers. <br /> It contains a section called [how it works](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/How-it-works) that explains lsh and hypercube hash functions and <br /> a usefull [tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/Tutorial)
 
 ## Author

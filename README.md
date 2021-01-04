@@ -14,7 +14,7 @@ You can build vectors using the item class and then you can perform a k-NN or a 
 Metrices: euclidean and cosine
 
 ## Installation
-* Clone this repo to your local machine: 
+* Clone this repository to your local machine: 
 ```
 https://github.com/PetropoulakisPanagiotis/nearest-neighbor-search.git
 ```

@@ -7,7 +7,7 @@
 You can build vectors using the item class and then you can perform a k-NN or a radius search using the model class. 
 
 ## Available Methods
-* Locality-sensitive hashing(lsh)
+* Locality-sensitive hashing(LSH)
 * Hypercube search
 * Exhuastive search <br />
 

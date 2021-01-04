@@ -1,17 +1,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ## Nearest Neighbor Search
 <p align="center">
-<img src="https://www.researchgate.net/profile/Saleh_Alaliyat/publication/267953942/figure/fig14/AS:295388776026147@1447437580523/K-nearest-neighbor-algorithm-illustration-The-green-circle-is-the-sample-which-is-to-be.png" width="400px" height="235px"> <br /> <br />
+<img src="https://www.researchgate.net/profile/Shaohui_Sun/publication/271529031/figure/fig4/AS:650154214449162@1532020252242/Two-types-of-nearest-neighbor-searching-K-Nearest-Neighbor-searching-K-is-6-in-the.png" width="400px" height="235px"> <br /> <br />
 </p>
 
-Methods: 
+You can build vectors using the item class and then you can perform a k-NN or a radius search using the model class. 
+
+Available Methods: 
 * Locality-sensitive hashing(lsh)
 * Hypercube search
 * Exhuastive search <br />
 Metrices: euclidean and cosine
-
-Note: Refer to file nearest-neighbor-search/neighborsProblem/model/
-
 
 ## Requirements
 * Compiler: g++ - C11 standard

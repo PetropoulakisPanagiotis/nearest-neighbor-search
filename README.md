@@ -13,14 +13,12 @@ You can build vectors using the item class and then you can perform a k-NN or a 
 
 Metrices: euclidean and cosine
 
-## Requirements
-* Compiler: g++ - C11 standard
-
 ## Installation
 * Clone this repo to your local machine: 
 ```
 git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 ```
+
 ## Wiki
 * [Tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/Tutorial)
 * [How it works](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/How-it-works)

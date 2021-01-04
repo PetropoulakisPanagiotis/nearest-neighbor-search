@@ -16,7 +16,7 @@ Metrices: euclidean and cosine
 ## Installation
 * Clone this repo to your local machine: 
 ```
-git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
+https://github.com/PetropoulakisPanagiotis/nearest-neighbor-search.git
 ```
 
 ## Wiki

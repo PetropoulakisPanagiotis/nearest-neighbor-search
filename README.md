@@ -8,8 +8,10 @@ Methods:
 * Locality-sensitive hashing(lsh)
 * Hypercube search
 * Exhuastive search <br />
-
 Metrices: euclidean and cosine
+
+Note: Refer to file nearest-neighbor-search/neighborsProblem/model/
+
 
 ## Requirements
 * Compiler: g++ - C11 standard

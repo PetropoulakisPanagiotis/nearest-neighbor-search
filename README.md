@@ -7,7 +7,7 @@
 You can build vectors using the item class and then you can perform a k-NN or a radius search using the model class. 
 
 ## Available Methods
-* Locality-sensitive hashing(lsh)
+* Locality-sensitive hashing(lsh): 
 * Hypercube search
 * Exhuastive search <br />
 
@@ -21,7 +21,7 @@ git clone https://github.com/PetropoulakisPanagiotis/neighbors-problem.git
 
 ## Wiki
 * [Tutorial](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/Tutorial)
-* [How it works](https://github.com/PetropoulakisPanagiotis/neighbors-problem/wiki/How-it-works)
+* [Short Explanation](https://github.com/PetropoulakisPanagiotis/nearest-neighbor-search/wiki/Short-Explanation)
 
 ## Author
 Petropoulakis Panagiotis petropoulakispanagiotis@gmail.com

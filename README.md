@@ -10,6 +10,7 @@ You can build vectors using the item class and then you can perform a k-NN or a 
 * Locality-sensitive hashing(lsh)
 * Hypercube search
 * Exhuastive search <br />
+
 Metrices: euclidean and cosine
 
 ## Requirements

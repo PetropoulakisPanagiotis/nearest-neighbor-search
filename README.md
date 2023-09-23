@@ -4,14 +4,14 @@
 <p align="center">
 <img src="https://www.jcchouinard.com/wp-content/uploads/2021/08/image-8.png" width="400px" height="235px"> <br /> <br />
 </p>
-You can build vectors using the item class and then you can perform a k-NN or a radius search using the model class. 
+You can first build data vectors using the item class and then you can run a k-NN or radius local search using the model class. 
 
 ## Available Methods
-* Locality-sensitive hashing(LSH)
+* Locality-sensitive hashing (LSH)
 * Hypercube search
 * Exhuastive search <br />
 
-Metrices: euclidean and cosine
+Metrics: Euclidean and Cosine
 
 ## Installation
 Clone this repository to your local machine: 
